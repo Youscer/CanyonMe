@@ -1,0 +1,8 @@
+{
+  "canyonMeApp": {
+    "PaymentMode": {
+      "null": "",
+      "YES_CARD": "YES_CARD"
+    }
+  }
+}

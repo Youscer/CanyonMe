@@ -1,0 +1,11 @@
+id;billing_address;shipping_address;order_state_id;delivery_mode_id;payment_mode_id
+1;invoice;invoice Keyboard program;TO_COMPLETE;DHL;YES_CARD
+2;West deposit;next-generation Lead;TO_SEND;DHL;YES_CARD
+3;Account state;bypassing Guadeloupe;NEW;DHL;YES_CARD
+4;Slovakia;systems back Regional;SENT;DHL;YES_CARD
+5;Borders;withdrawal motivating Outdoors;VALIDATED;DHL;YES_CARD
+6;Direct experiences;connect front-end Money;SENT;DHL;YES_CARD
+7;SDD Secured;Developer;VALIDATED;DHL;YES_CARD
+8;Japan Awesome SAS;Markets;TO_COMPLETE;DHL;YES_CARD
+9;SAS Clothing;Legacy Maryland;NEW;DHL;YES_CARD
+10;Cliffs Multi-channelled;Orchestrator;PAYED;DHL;YES_CARD
