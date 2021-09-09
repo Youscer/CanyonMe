@@ -1,6 +1,5 @@
 package com.canyoncorp.canyonme.domain;
 
-import com.canyoncorp.canyonme.domain.enumeration.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -26,33 +25,21 @@ public class Client implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "firstname", nullable = false)
-    private String firstname;
-
-    @NotNull
-    @Column(name = "lastname", nullable = false)
-    private String lastname;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "gender_id", nullable = false)
-    private Gender genderId;
-
-    @NotNull
-    @Column(name = "street_address", nullable = false)
-    private String streetAddress;
-
-    @NotNull
     @Column(name = "birth_date", nullable = false)
     private String birthDate;
 
-    @NotNull
-    @Column(name = "email", nullable = false)
-    private String email;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Address billingAddress;
 
-    @NotNull
-    @Column(name = "password", nullable = false)
-    private String password;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Address shippingAddress;
+
+    @OneToMany(mappedBy = "client")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "client", "employee" }, allowSetters = true)
+    private Set<Person> personIds = new HashSet<>();
 
     @OneToMany(mappedBy = "clientId")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -73,58 +60,6 @@ public class Client implements Serializable {
         return this;
     }
 
-    public String getFirstname() {
-        return this.firstname;
-    }
-
-    public Client firstname(String firstname) {
-        this.firstname = firstname;
-        return this;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return this.lastname;
-    }
-
-    public Client lastname(String lastname) {
-        this.lastname = lastname;
-        return this;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public Gender getGenderId() {
-        return this.genderId;
-    }
-
-    public Client genderId(Gender genderId) {
-        this.genderId = genderId;
-        return this;
-    }
-
-    public void setGenderId(Gender genderId) {
-        this.genderId = genderId;
-    }
-
-    public String getStreetAddress() {
-        return this.streetAddress;
-    }
-
-    public Client streetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-        return this;
-    }
-
-    public void setStreetAddress(String streetAddress) {
-        this.streetAddress = streetAddress;
-    }
-
     public String getBirthDate() {
         return this.birthDate;
     }
@@ -138,30 +73,61 @@ public class Client implements Serializable {
         this.birthDate = birthDate;
     }
 
-    public String getEmail() {
-        return this.email;
+    public Address getBillingAddress() {
+        return this.billingAddress;
     }
 
-    public Client email(String email) {
-        this.email = email;
+    public Client billingAddress(Address address) {
+        this.setBillingAddress(address);
         return this;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setBillingAddress(Address address) {
+        this.billingAddress = address;
     }
 
-    public String getPassword() {
-        return this.password;
+    public Address getShippingAddress() {
+        return this.shippingAddress;
     }
 
-    public Client password(String password) {
-        this.password = password;
+    public Client shippingAddress(Address address) {
+        this.setShippingAddress(address);
         return this;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setShippingAddress(Address address) {
+        this.shippingAddress = address;
+    }
+
+    public Set<Person> getPersonIds() {
+        return this.personIds;
+    }
+
+    public Client personIds(Set<Person> people) {
+        this.setPersonIds(people);
+        return this;
+    }
+
+    public Client addPersonId(Person person) {
+        this.personIds.add(person);
+        person.setClient(this);
+        return this;
+    }
+
+    public Client removePersonId(Person person) {
+        this.personIds.remove(person);
+        person.setClient(null);
+        return this;
+    }
+
+    public void setPersonIds(Set<Person> people) {
+        if (this.personIds != null) {
+            this.personIds.forEach(i -> i.setClient(null));
+        }
+        if (people != null) {
+            people.forEach(i -> i.setClient(this));
+        }
+        this.personIds = people;
     }
 
     public Set<PurchaseOrder> getPurchaseOrders() {
@@ -219,13 +185,7 @@ public class Client implements Serializable {
     public String toString() {
         return "Client{" +
             "id=" + getId() +
-            ", firstname='" + getFirstname() + "'" +
-            ", lastname='" + getLastname() + "'" +
-            ", genderId='" + getGenderId() + "'" +
-            ", streetAddress='" + getStreetAddress() + "'" +
             ", birthDate='" + getBirthDate() + "'" +
-            ", email='" + getEmail() + "'" +
-            ", password='" + getPassword() + "'" +
             "}";
     }
 }

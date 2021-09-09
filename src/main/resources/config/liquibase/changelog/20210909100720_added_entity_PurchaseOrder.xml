@@ -14,20 +14,23 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="billing_address" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            <column name="shipping_address" type="varchar(255)">
+            <column name="order_date" type="date">
                 <constraints nullable="false" />
             </column>
             <column name="order_state_id" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="delivery_mode_id" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="shipping_mode" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
-            <column name="payment_mode_id" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="shipping_fees" type="${floatType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="payment_mode" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="payment_fees" type="${floatType}">
+                <constraints nullable="true" />
             </column>
             <column name="client_id_id" type="bigint">
                 <constraints nullable="true" />
@@ -52,11 +55,12 @@
                   separator=";"
                   tableName="purchase_order">
             <column name="id" type="numeric"/>
-            <column name="billing_address" type="string"/>
-            <column name="shipping_address" type="string"/>
+            <column name="order_date" type="date"/>
             <column name="order_state_id" type="string"/>
-            <column name="delivery_mode_id" type="string"/>
-            <column name="payment_mode_id" type="string"/>
+            <column name="shipping_mode" type="string"/>
+            <column name="shipping_fees" type="numeric"/>
+            <column name="payment_mode" type="string"/>
+            <column name="payment_fees" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

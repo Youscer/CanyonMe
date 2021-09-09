@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
-import { Gender } from 'app/entities/enumerations/gender.model';
 import { IClient, Client } from '../client.model';
 
 import { ClientService } from './client.service';
@@ -23,13 +22,7 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        firstname: 'AAAAAAA',
-        lastname: 'AAAAAAA',
-        genderId: Gender.MISTER,
-        streetAddress: 'AAAAAAA',
         birthDate: 'AAAAAAA',
-        email: 'AAAAAAA',
-        password: 'AAAAAAA',
       };
     });
 
@@ -65,13 +58,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            firstname: 'BBBBBB',
-            lastname: 'BBBBBB',
-            genderId: 'BBBBBB',
-            streetAddress: 'BBBBBB',
             birthDate: 'BBBBBB',
-            email: 'BBBBBB',
-            password: 'BBBBBB',
           },
           elemDefault
         );
@@ -86,16 +73,7 @@ describe('Service Tests', () => {
       });
 
       it('should partial update a Client', () => {
-        const patchObject = Object.assign(
-          {
-            lastname: 'BBBBBB',
-            genderId: 'BBBBBB',
-            streetAddress: 'BBBBBB',
-            birthDate: 'BBBBBB',
-            email: 'BBBBBB',
-          },
-          new Client()
-        );
+        const patchObject = Object.assign({}, new Client());
 
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -112,13 +90,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            firstname: 'BBBBBB',
-            lastname: 'BBBBBB',
-            genderId: 'BBBBBB',
-            streetAddress: 'BBBBBB',
             birthDate: 'BBBBBB',
-            email: 'BBBBBB',
-            password: 'BBBBBB',
           },
           elemDefault
         );
@@ -170,7 +142,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Client to an array', () => {
-          const clientArray: IClient[] = [{ id: 123 }, { id: 456 }, { id: 42940 }];
+          const clientArray: IClient[] = [{ id: 123 }, { id: 456 }, { id: 61025 }];
           const clientCollection: IClient[] = [{ id: 123 }];
           expectedResult = service.addClientToCollectionIfMissing(clientCollection, ...clientArray);
           expect(expectedResult).toHaveLength(3);

@@ -1,21 +1,24 @@
 import { IPurchaseOrder } from 'app/entities/purchase-order/purchase-order.model';
-import { IProduct } from 'app/entities/product/product.model';
 
 export interface IOrderLine {
   id?: number;
+  productId?: number;
+  productName?: string;
   quantity?: number;
   unitPrice?: number;
+  discount?: number | null;
   orderId?: IPurchaseOrder | null;
-  productId?: IProduct | null;
 }
 
 export class OrderLine implements IOrderLine {
   constructor(
     public id?: number,
+    public productId?: number,
+    public productName?: string,
     public quantity?: number,
     public unitPrice?: number,
-    public orderId?: IPurchaseOrder | null,
-    public productId?: IProduct | null
+    public discount?: number | null,
+    public orderId?: IPurchaseOrder | null
   ) {}
 }
 

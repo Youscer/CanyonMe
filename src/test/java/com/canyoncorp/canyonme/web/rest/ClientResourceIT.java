@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.Client;
-import com.canyoncorp.canyonme.domain.enumeration.Gender;
 import com.canyoncorp.canyonme.repository.ClientRepository;
 import java.util.List;
 import java.util.Random;
@@ -30,26 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class ClientResourceIT {
 
-    private static final String DEFAULT_FIRSTNAME = "AAAAAAAAAA";
-    private static final String UPDATED_FIRSTNAME = "BBBBBBBBBB";
-
-    private static final String DEFAULT_LASTNAME = "AAAAAAAAAA";
-    private static final String UPDATED_LASTNAME = "BBBBBBBBBB";
-
-    private static final Gender DEFAULT_GENDER_ID = Gender.MISTER;
-    private static final Gender UPDATED_GENDER_ID = Gender.MISS;
-
-    private static final String DEFAULT_STREET_ADDRESS = "AAAAAAAAAA";
-    private static final String UPDATED_STREET_ADDRESS = "BBBBBBBBBB";
-
     private static final String DEFAULT_BIRTH_DATE = "AAAAAAAAAA";
     private static final String UPDATED_BIRTH_DATE = "BBBBBBBBBB";
-
-    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
-    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
-
-    private static final String DEFAULT_PASSWORD = "AAAAAAAAAA";
-    private static final String UPDATED_PASSWORD = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/clients";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -75,14 +56,7 @@ class ClientResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Client createEntity(EntityManager em) {
-        Client client = new Client()
-            .firstname(DEFAULT_FIRSTNAME)
-            .lastname(DEFAULT_LASTNAME)
-            .genderId(DEFAULT_GENDER_ID)
-            .streetAddress(DEFAULT_STREET_ADDRESS)
-            .birthDate(DEFAULT_BIRTH_DATE)
-            .email(DEFAULT_EMAIL)
-            .password(DEFAULT_PASSWORD);
+        Client client = new Client().birthDate(DEFAULT_BIRTH_DATE);
         return client;
     }
 
@@ -93,14 +67,7 @@ class ClientResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Client createUpdatedEntity(EntityManager em) {
-        Client client = new Client()
-            .firstname(UPDATED_FIRSTNAME)
-            .lastname(UPDATED_LASTNAME)
-            .genderId(UPDATED_GENDER_ID)
-            .streetAddress(UPDATED_STREET_ADDRESS)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .email(UPDATED_EMAIL)
-            .password(UPDATED_PASSWORD);
+        Client client = new Client().birthDate(UPDATED_BIRTH_DATE);
         return client;
     }
 
@@ -122,13 +89,7 @@ class ClientResourceIT {
         List<Client> clientList = clientRepository.findAll();
         assertThat(clientList).hasSize(databaseSizeBeforeCreate + 1);
         Client testClient = clientList.get(clientList.size() - 1);
-        assertThat(testClient.getFirstname()).isEqualTo(DEFAULT_FIRSTNAME);
-        assertThat(testClient.getLastname()).isEqualTo(DEFAULT_LASTNAME);
-        assertThat(testClient.getGenderId()).isEqualTo(DEFAULT_GENDER_ID);
-        assertThat(testClient.getStreetAddress()).isEqualTo(DEFAULT_STREET_ADDRESS);
         assertThat(testClient.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
-        assertThat(testClient.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testClient.getPassword()).isEqualTo(DEFAULT_PASSWORD);
     }
 
     @Test
@@ -151,112 +112,10 @@ class ClientResourceIT {
 
     @Test
     @Transactional
-    void checkFirstnameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = clientRepository.findAll().size();
-        // set the field null
-        client.setFirstname(null);
-
-        // Create the Client, which fails.
-
-        restClientMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(client)))
-            .andExpect(status().isBadRequest());
-
-        List<Client> clientList = clientRepository.findAll();
-        assertThat(clientList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkLastnameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = clientRepository.findAll().size();
-        // set the field null
-        client.setLastname(null);
-
-        // Create the Client, which fails.
-
-        restClientMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(client)))
-            .andExpect(status().isBadRequest());
-
-        List<Client> clientList = clientRepository.findAll();
-        assertThat(clientList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkGenderIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = clientRepository.findAll().size();
-        // set the field null
-        client.setGenderId(null);
-
-        // Create the Client, which fails.
-
-        restClientMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(client)))
-            .andExpect(status().isBadRequest());
-
-        List<Client> clientList = clientRepository.findAll();
-        assertThat(clientList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkStreetAddressIsRequired() throws Exception {
-        int databaseSizeBeforeTest = clientRepository.findAll().size();
-        // set the field null
-        client.setStreetAddress(null);
-
-        // Create the Client, which fails.
-
-        restClientMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(client)))
-            .andExpect(status().isBadRequest());
-
-        List<Client> clientList = clientRepository.findAll();
-        assertThat(clientList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void checkBirthDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = clientRepository.findAll().size();
         // set the field null
         client.setBirthDate(null);
-
-        // Create the Client, which fails.
-
-        restClientMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(client)))
-            .andExpect(status().isBadRequest());
-
-        List<Client> clientList = clientRepository.findAll();
-        assertThat(clientList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkEmailIsRequired() throws Exception {
-        int databaseSizeBeforeTest = clientRepository.findAll().size();
-        // set the field null
-        client.setEmail(null);
-
-        // Create the Client, which fails.
-
-        restClientMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(client)))
-            .andExpect(status().isBadRequest());
-
-        List<Client> clientList = clientRepository.findAll();
-        assertThat(clientList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkPasswordIsRequired() throws Exception {
-        int databaseSizeBeforeTest = clientRepository.findAll().size();
-        // set the field null
-        client.setPassword(null);
 
         // Create the Client, which fails.
 
@@ -280,13 +139,7 @@ class ClientResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(client.getId().intValue())))
-            .andExpect(jsonPath("$.[*].firstname").value(hasItem(DEFAULT_FIRSTNAME)))
-            .andExpect(jsonPath("$.[*].lastname").value(hasItem(DEFAULT_LASTNAME)))
-            .andExpect(jsonPath("$.[*].genderId").value(hasItem(DEFAULT_GENDER_ID.toString())))
-            .andExpect(jsonPath("$.[*].streetAddress").value(hasItem(DEFAULT_STREET_ADDRESS)))
-            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE)))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
-            .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)));
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE)));
     }
 
     @Test
@@ -301,13 +154,7 @@ class ClientResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(client.getId().intValue()))
-            .andExpect(jsonPath("$.firstname").value(DEFAULT_FIRSTNAME))
-            .andExpect(jsonPath("$.lastname").value(DEFAULT_LASTNAME))
-            .andExpect(jsonPath("$.genderId").value(DEFAULT_GENDER_ID.toString()))
-            .andExpect(jsonPath("$.streetAddress").value(DEFAULT_STREET_ADDRESS))
-            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD));
+            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE));
     }
 
     @Test
@@ -329,14 +176,7 @@ class ClientResourceIT {
         Client updatedClient = clientRepository.findById(client.getId()).get();
         // Disconnect from session so that the updates on updatedClient are not directly saved in db
         em.detach(updatedClient);
-        updatedClient
-            .firstname(UPDATED_FIRSTNAME)
-            .lastname(UPDATED_LASTNAME)
-            .genderId(UPDATED_GENDER_ID)
-            .streetAddress(UPDATED_STREET_ADDRESS)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .email(UPDATED_EMAIL)
-            .password(UPDATED_PASSWORD);
+        updatedClient.birthDate(UPDATED_BIRTH_DATE);
 
         restClientMockMvc
             .perform(
@@ -350,13 +190,7 @@ class ClientResourceIT {
         List<Client> clientList = clientRepository.findAll();
         assertThat(clientList).hasSize(databaseSizeBeforeUpdate);
         Client testClient = clientList.get(clientList.size() - 1);
-        assertThat(testClient.getFirstname()).isEqualTo(UPDATED_FIRSTNAME);
-        assertThat(testClient.getLastname()).isEqualTo(UPDATED_LASTNAME);
-        assertThat(testClient.getGenderId()).isEqualTo(UPDATED_GENDER_ID);
-        assertThat(testClient.getStreetAddress()).isEqualTo(UPDATED_STREET_ADDRESS);
         assertThat(testClient.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
-        assertThat(testClient.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testClient.getPassword()).isEqualTo(UPDATED_PASSWORD);
     }
 
     @Test
@@ -427,7 +261,7 @@ class ClientResourceIT {
         Client partialUpdatedClient = new Client();
         partialUpdatedClient.setId(client.getId());
 
-        partialUpdatedClient.firstname(UPDATED_FIRSTNAME).lastname(UPDATED_LASTNAME).genderId(UPDATED_GENDER_ID).password(UPDATED_PASSWORD);
+        partialUpdatedClient.birthDate(UPDATED_BIRTH_DATE);
 
         restClientMockMvc
             .perform(
@@ -441,13 +275,7 @@ class ClientResourceIT {
         List<Client> clientList = clientRepository.findAll();
         assertThat(clientList).hasSize(databaseSizeBeforeUpdate);
         Client testClient = clientList.get(clientList.size() - 1);
-        assertThat(testClient.getFirstname()).isEqualTo(UPDATED_FIRSTNAME);
-        assertThat(testClient.getLastname()).isEqualTo(UPDATED_LASTNAME);
-        assertThat(testClient.getGenderId()).isEqualTo(UPDATED_GENDER_ID);
-        assertThat(testClient.getStreetAddress()).isEqualTo(DEFAULT_STREET_ADDRESS);
-        assertThat(testClient.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
-        assertThat(testClient.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(testClient.getPassword()).isEqualTo(UPDATED_PASSWORD);
+        assertThat(testClient.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
     }
 
     @Test
@@ -462,14 +290,7 @@ class ClientResourceIT {
         Client partialUpdatedClient = new Client();
         partialUpdatedClient.setId(client.getId());
 
-        partialUpdatedClient
-            .firstname(UPDATED_FIRSTNAME)
-            .lastname(UPDATED_LASTNAME)
-            .genderId(UPDATED_GENDER_ID)
-            .streetAddress(UPDATED_STREET_ADDRESS)
-            .birthDate(UPDATED_BIRTH_DATE)
-            .email(UPDATED_EMAIL)
-            .password(UPDATED_PASSWORD);
+        partialUpdatedClient.birthDate(UPDATED_BIRTH_DATE);
 
         restClientMockMvc
             .perform(
@@ -483,13 +304,7 @@ class ClientResourceIT {
         List<Client> clientList = clientRepository.findAll();
         assertThat(clientList).hasSize(databaseSizeBeforeUpdate);
         Client testClient = clientList.get(clientList.size() - 1);
-        assertThat(testClient.getFirstname()).isEqualTo(UPDATED_FIRSTNAME);
-        assertThat(testClient.getLastname()).isEqualTo(UPDATED_LASTNAME);
-        assertThat(testClient.getGenderId()).isEqualTo(UPDATED_GENDER_ID);
-        assertThat(testClient.getStreetAddress()).isEqualTo(UPDATED_STREET_ADDRESS);
         assertThat(testClient.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
-        assertThat(testClient.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testClient.getPassword()).isEqualTo(UPDATED_PASSWORD);
     }
 
     @Test

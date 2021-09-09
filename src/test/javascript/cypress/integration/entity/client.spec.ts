@@ -97,19 +97,11 @@ describe('Client e2e test', () => {
     cy.get(entityCreateButtonSelector).click({ force: true });
     cy.getEntityCreateUpdateHeading('Client');
 
-    cy.get(`[data-cy="firstname"]`).type('Pants').should('have.value', 'Pants');
+    cy.get(`[data-cy="birthDate"]`).type('Pants').should('have.value', 'Pants');
 
-    cy.get(`[data-cy="lastname"]`).type('real-time Sterling').should('have.value', 'real-time Sterling');
+    cy.setFieldSelectToLastOfEntity('billingAddress');
 
-    cy.get(`[data-cy="genderId"]`).select('MISTER');
-
-    cy.get(`[data-cy="streetAddress"]`).type('SQL hierarchy').should('have.value', 'SQL hierarchy');
-
-    cy.get(`[data-cy="birthDate"]`).type('Mexico').should('have.value', 'Mexico');
-
-    cy.get(`[data-cy="email"]`).type('Rafael_Hessel28@yahoo.com').should('have.value', 'Rafael_Hessel28@yahoo.com');
-
-    cy.get(`[data-cy="password"]`).type('Balanced').should('have.value', 'Balanced');
+    cy.setFieldSelectToLastOfEntity('shippingAddress');
 
     cy.get(entityCreateSaveButtonSelector).click({ force: true });
     cy.scrollTo('top', { ensureScrollable: false });

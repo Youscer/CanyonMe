@@ -1,16 +1,16 @@
+import * as dayjs from 'dayjs';
 import { IOrderLine } from 'app/entities/order-line/order-line.model';
 import { IClient } from 'app/entities/client/client.model';
 import { OrderState } from 'app/entities/enumerations/order-state.model';
-import { DeliveryMode } from 'app/entities/enumerations/delivery-mode.model';
-import { PaymentMode } from 'app/entities/enumerations/payment-mode.model';
 
 export interface IPurchaseOrder {
   id?: number;
-  billingAddress?: string;
-  shippingAddress?: string;
+  orderDate?: dayjs.Dayjs;
   orderStateId?: OrderState;
-  deliveryModeId?: DeliveryMode;
-  paymentModeId?: PaymentMode;
+  shippingMode?: string | null;
+  shippingFees?: number | null;
+  paymentMode?: string | null;
+  paymentFees?: number | null;
   orderLines?: IOrderLine[] | null;
   clientId?: IClient | null;
 }
@@ -18,11 +18,12 @@ export interface IPurchaseOrder {
 export class PurchaseOrder implements IPurchaseOrder {
   constructor(
     public id?: number,
-    public billingAddress?: string,
-    public shippingAddress?: string,
+    public orderDate?: dayjs.Dayjs,
     public orderStateId?: OrderState,
-    public deliveryModeId?: DeliveryMode,
-    public paymentModeId?: PaymentMode,
+    public shippingMode?: string | null,
+    public shippingFees?: number | null,
+    public paymentMode?: string | null,
+    public paymentFees?: number | null,
     public orderLines?: IOrderLine[] | null,
     public clientId?: IClient | null
   ) {}

@@ -11,6 +11,13 @@
         "purchaseOrder": "Purchase Order",
         "orderLine": "Order Line",
         "product": "Product",
+        "shippingFees": "Shipping Fees",
+        "paymentFees": "Payment Fees",
+        "address": "Address",
+        "person": "Person",
+        "employee": "Employee",
+        "picture": "Picture",
+        "discount": "Discount",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

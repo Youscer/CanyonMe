@@ -1,10 +1,9 @@
 package com.canyoncorp.canyonme.domain;
 
-import com.canyoncorp.canyonme.domain.enumeration.DeliveryMode;
 import com.canyoncorp.canyonme.domain.enumeration.OrderState;
-import com.canyoncorp.canyonme.domain.enumeration.PaymentMode;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -28,35 +27,33 @@ public class PurchaseOrder implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "billing_address", nullable = false)
-    private String billingAddress;
-
-    @NotNull
-    @Column(name = "shipping_address", nullable = false)
-    private String shippingAddress;
+    @Column(name = "order_date", nullable = false)
+    private LocalDate orderDate;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "order_state_id", nullable = false)
     private OrderState orderStateId;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "delivery_mode_id", nullable = false)
-    private DeliveryMode deliveryModeId;
+    @Column(name = "shipping_mode")
+    private String shippingMode;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "payment_mode_id", nullable = false)
-    private PaymentMode paymentModeId;
+    @Column(name = "shipping_fees")
+    private Float shippingFees;
+
+    @Column(name = "payment_mode")
+    private String paymentMode;
+
+    @Column(name = "payment_fees")
+    private Float paymentFees;
 
     @OneToMany(mappedBy = "orderId")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "orderId", "productId" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "orderId" }, allowSetters = true)
     private Set<OrderLine> orderLines = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "purchaseOrders" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "billingAddress", "shippingAddress", "personIds", "purchaseOrders" }, allowSetters = true)
     private Client clientId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -73,30 +70,17 @@ public class PurchaseOrder implements Serializable {
         return this;
     }
 
-    public String getBillingAddress() {
-        return this.billingAddress;
+    public LocalDate getOrderDate() {
+        return this.orderDate;
     }
 
-    public PurchaseOrder billingAddress(String billingAddress) {
-        this.billingAddress = billingAddress;
+    public PurchaseOrder orderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
         return this;
     }
 
-    public void setBillingAddress(String billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
-    public String getShippingAddress() {
-        return this.shippingAddress;
-    }
-
-    public PurchaseOrder shippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
-        return this;
-    }
-
-    public void setShippingAddress(String shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 
     public OrderState getOrderStateId() {
@@ -112,30 +96,56 @@ public class PurchaseOrder implements Serializable {
         this.orderStateId = orderStateId;
     }
 
-    public DeliveryMode getDeliveryModeId() {
-        return this.deliveryModeId;
+    public String getShippingMode() {
+        return this.shippingMode;
     }
 
-    public PurchaseOrder deliveryModeId(DeliveryMode deliveryModeId) {
-        this.deliveryModeId = deliveryModeId;
+    public PurchaseOrder shippingMode(String shippingMode) {
+        this.shippingMode = shippingMode;
         return this;
     }
 
-    public void setDeliveryModeId(DeliveryMode deliveryModeId) {
-        this.deliveryModeId = deliveryModeId;
+    public void setShippingMode(String shippingMode) {
+        this.shippingMode = shippingMode;
     }
 
-    public PaymentMode getPaymentModeId() {
-        return this.paymentModeId;
+    public Float getShippingFees() {
+        return this.shippingFees;
     }
 
-    public PurchaseOrder paymentModeId(PaymentMode paymentModeId) {
-        this.paymentModeId = paymentModeId;
+    public PurchaseOrder shippingFees(Float shippingFees) {
+        this.shippingFees = shippingFees;
         return this;
     }
 
-    public void setPaymentModeId(PaymentMode paymentModeId) {
-        this.paymentModeId = paymentModeId;
+    public void setShippingFees(Float shippingFees) {
+        this.shippingFees = shippingFees;
+    }
+
+    public String getPaymentMode() {
+        return this.paymentMode;
+    }
+
+    public PurchaseOrder paymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
+        return this;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
+    }
+
+    public Float getPaymentFees() {
+        return this.paymentFees;
+    }
+
+    public PurchaseOrder paymentFees(Float paymentFees) {
+        this.paymentFees = paymentFees;
+        return this;
+    }
+
+    public void setPaymentFees(Float paymentFees) {
+        this.paymentFees = paymentFees;
     }
 
     public Set<OrderLine> getOrderLines() {
@@ -206,11 +216,12 @@ public class PurchaseOrder implements Serializable {
     public String toString() {
         return "PurchaseOrder{" +
             "id=" + getId() +
-            ", billingAddress='" + getBillingAddress() + "'" +
-            ", shippingAddress='" + getShippingAddress() + "'" +
+            ", orderDate='" + getOrderDate() + "'" +
             ", orderStateId='" + getOrderStateId() + "'" +
-            ", deliveryModeId='" + getDeliveryModeId() + "'" +
-            ", paymentModeId='" + getPaymentModeId() + "'" +
+            ", shippingMode='" + getShippingMode() + "'" +
+            ", shippingFees=" + getShippingFees() +
+            ", paymentMode='" + getPaymentMode() + "'" +
+            ", paymentFees=" + getPaymentFees() +
             "}";
     }
 }

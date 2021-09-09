@@ -126,26 +126,8 @@ public class ClientResource {
             .findById(client.getId())
             .map(
                 existingClient -> {
-                    if (client.getFirstname() != null) {
-                        existingClient.setFirstname(client.getFirstname());
-                    }
-                    if (client.getLastname() != null) {
-                        existingClient.setLastname(client.getLastname());
-                    }
-                    if (client.getGenderId() != null) {
-                        existingClient.setGenderId(client.getGenderId());
-                    }
-                    if (client.getStreetAddress() != null) {
-                        existingClient.setStreetAddress(client.getStreetAddress());
-                    }
                     if (client.getBirthDate() != null) {
                         existingClient.setBirthDate(client.getBirthDate());
-                    }
-                    if (client.getEmail() != null) {
-                        existingClient.setEmail(client.getEmail());
-                    }
-                    if (client.getPassword() != null) {
-                        existingClient.setPassword(client.getPassword());
                     }
 
                     return existingClient;

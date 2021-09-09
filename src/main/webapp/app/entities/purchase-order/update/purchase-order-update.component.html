@@ -26,53 +26,28 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.billingAddress" for="field_billingAddress"
-            >Billing Address</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="billingAddress"
-            id="field_billingAddress"
-            data-cy="billingAddress"
-            formControlName="billingAddress"
-          />
-          <div
-            *ngIf="
-              editForm.get('billingAddress')!.invalid && (editForm.get('billingAddress')!.dirty || editForm.get('billingAddress')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('billingAddress')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.orderDate" for="field_orderDate">Order Date</label>
+          <div class="input-group">
+            <input
+              id="field_orderDate"
+              data-cy="orderDate"
+              type="text"
+              class="form-control"
+              name="orderDate"
+              ngbDatepicker
+              #orderDateDp="ngbDatepicker"
+              formControlName="orderDate"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="orderDateDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.shippingAddress" for="field_shippingAddress"
-            >Shipping Address</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="shippingAddress"
-            id="field_shippingAddress"
-            data-cy="shippingAddress"
-            formControlName="shippingAddress"
-          />
-          <div
-            *ngIf="
-              editForm.get('shippingAddress')!.invalid &&
-              (editForm.get('shippingAddress')!.dirty || editForm.get('shippingAddress')!.touched)
-            "
-          >
+          <div *ngIf="editForm.get('orderDate')!.invalid && (editForm.get('orderDate')!.dirty || editForm.get('orderDate')!.touched)">
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('shippingAddress')?.errors?.required"
+              *ngIf="editForm.get('orderDate')?.errors?.required"
               jhiTranslate="entity.validation.required"
             >
               This field is required.
@@ -107,61 +82,59 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.deliveryModeId" for="field_deliveryModeId"
-            >Delivery Mode Id</label
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.shippingMode" for="field_shippingMode"
+            >Shipping Mode</label
           >
-          <select
+          <input
+            type="text"
             class="form-control"
-            name="deliveryModeId"
-            formControlName="deliveryModeId"
-            id="field_deliveryModeId"
-            data-cy="deliveryModeId"
-          >
-            <option [ngValue]="null">{{ 'canyonMeApp.DeliveryMode.null' | translate }}</option>
-            <option value="DHL">{{ 'canyonMeApp.DeliveryMode.DHL' | translate }}</option>
-          </select>
-          <div
-            *ngIf="
-              editForm.get('deliveryModeId')!.invalid && (editForm.get('deliveryModeId')!.dirty || editForm.get('deliveryModeId')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('deliveryModeId')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
+            name="shippingMode"
+            id="field_shippingMode"
+            data-cy="shippingMode"
+            formControlName="shippingMode"
+          />
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.paymentModeId" for="field_paymentModeId"
-            >Payment Mode Id</label
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.shippingFees" for="field_shippingFees"
+            >Shipping Fees</label
           >
-          <select
+          <input
+            type="number"
             class="form-control"
-            name="paymentModeId"
-            formControlName="paymentModeId"
-            id="field_paymentModeId"
-            data-cy="paymentModeId"
+            name="shippingFees"
+            id="field_shippingFees"
+            data-cy="shippingFees"
+            formControlName="shippingFees"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.paymentMode" for="field_paymentMode"
+            >Payment Mode</label
           >
-            <option [ngValue]="null">{{ 'canyonMeApp.PaymentMode.null' | translate }}</option>
-            <option value="YES_CARD">{{ 'canyonMeApp.PaymentMode.YES_CARD' | translate }}</option>
-          </select>
-          <div
-            *ngIf="
-              editForm.get('paymentModeId')!.invalid && (editForm.get('paymentModeId')!.dirty || editForm.get('paymentModeId')!.touched)
-            "
+          <input
+            type="text"
+            class="form-control"
+            name="paymentMode"
+            id="field_paymentMode"
+            data-cy="paymentMode"
+            formControlName="paymentMode"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchaseOrder.paymentFees" for="field_paymentFees"
+            >Payment Fees</label
           >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('paymentModeId')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
+          <input
+            type="number"
+            class="form-control"
+            name="paymentFees"
+            id="field_paymentFees"
+            data-cy="paymentFees"
+            formControlName="paymentFees"
+          />
         </div>
 
         <div class="form-group">

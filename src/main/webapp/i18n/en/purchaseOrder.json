@@ -18,11 +18,12 @@
         "title": "Purchase Order"
       },
       "id": "Id",
-      "billingAddress": "Billing Address",
-      "shippingAddress": "Shipping Address",
+      "orderDate": "Order Date",
       "orderStateId": "Order State Id",
-      "deliveryModeId": "Delivery Mode Id",
-      "paymentModeId": "Payment Mode Id",
+      "shippingMode": "Shipping Mode",
+      "shippingFees": "Shipping Fees",
+      "paymentMode": "Payment Mode",
+      "paymentFees": "Payment Fees",
       "orderLine": "Order Line",
       "clientId": "Client Id"
     }

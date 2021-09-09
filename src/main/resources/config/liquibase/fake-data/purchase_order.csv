@@ -1,11 +1,11 @@
-id;billing_address;shipping_address;order_state_id;delivery_mode_id;payment_mode_id
-1;invoice;invoice Keyboard program;TO_COMPLETE;DHL;YES_CARD
-2;West deposit;next-generation Lead;TO_SEND;DHL;YES_CARD
-3;Account state;bypassing Guadeloupe;NEW;DHL;YES_CARD
-4;Slovakia;systems back Regional;SENT;DHL;YES_CARD
-5;Borders;withdrawal motivating Outdoors;VALIDATED;DHL;YES_CARD
-6;Direct experiences;connect front-end Money;SENT;DHL;YES_CARD
-7;SDD Secured;Developer;VALIDATED;DHL;YES_CARD
-8;Japan Awesome SAS;Markets;TO_COMPLETE;DHL;YES_CARD
-9;SAS Clothing;Legacy Maryland;NEW;DHL;YES_CARD
-10;Cliffs Multi-channelled;Orchestrator;PAYED;DHL;YES_CARD
+id;order_date;order_state_id;shipping_mode;shipping_fees;payment_mode;payment_fees
+1;2021-09-09;PAYED;Cambridgeshire reboot Plastic;84661;object-oriented;54791
+2;2021-09-08;SENT;deposit;56543;parsing Tools;13215
+3;2021-09-08;PAYED;extend International;83309;Operations;82065
+4;2021-09-09;VALIDATED;Bike systems back;89206;matrix Implementation;51286
+5;2021-09-08;TO_SEND;tangible invoice;87815;empower Cambridgeshire groupware;56913
+6;2021-09-08;TO_SEND;Berkshire alarm;25653;Towels SDD Secured;216
+7;2021-09-08;TO_SEND;methodologies;91689;users Senegal;21604
+8;2021-09-08;TO_SEND;Industrial Functionality navigating;82382;Clothing cultivate;17947
+9;2021-09-08;VALIDATED;Garden web-enabled Market;76413;Orchestrator;54972
+10;2021-09-08;TO_SEND;ivory bypass;56710;National;50905

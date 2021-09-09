@@ -22,78 +22,6 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.client.firstname" for="field_firstname">Firstname</label>
-          <input type="text" class="form-control" name="firstname" id="field_firstname" data-cy="firstname" formControlName="firstname" />
-          <div *ngIf="editForm.get('firstname')!.invalid && (editForm.get('firstname')!.dirty || editForm.get('firstname')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('firstname')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.client.lastname" for="field_lastname">Lastname</label>
-          <input type="text" class="form-control" name="lastname" id="field_lastname" data-cy="lastname" formControlName="lastname" />
-          <div *ngIf="editForm.get('lastname')!.invalid && (editForm.get('lastname')!.dirty || editForm.get('lastname')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('lastname')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.client.genderId" for="field_genderId">Gender Id</label>
-          <select class="form-control" name="genderId" formControlName="genderId" id="field_genderId" data-cy="genderId">
-            <option [ngValue]="null">{{ 'canyonMeApp.Gender.null' | translate }}</option>
-            <option value="MISTER">{{ 'canyonMeApp.Gender.MISTER' | translate }}</option>
-            <option value="MISS">{{ 'canyonMeApp.Gender.MISS' | translate }}</option>
-            <option value="NON_BINARY">{{ 'canyonMeApp.Gender.NON_BINARY' | translate }}</option>
-          </select>
-          <div *ngIf="editForm.get('genderId')!.invalid && (editForm.get('genderId')!.dirty || editForm.get('genderId')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('genderId')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.client.streetAddress" for="field_streetAddress">Street Address</label>
-          <input
-            type="text"
-            class="form-control"
-            name="streetAddress"
-            id="field_streetAddress"
-            data-cy="streetAddress"
-            formControlName="streetAddress"
-          />
-          <div
-            *ngIf="
-              editForm.get('streetAddress')!.invalid && (editForm.get('streetAddress')!.dirty || editForm.get('streetAddress')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('streetAddress')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-          </div>
-        </div>
-
-        <div class="form-group">
           <label class="form-control-label" jhiTranslate="canyonMeApp.client.birthDate" for="field_birthDate">Birth Date</label>
           <input type="text" class="form-control" name="birthDate" id="field_birthDate" data-cy="birthDate" formControlName="birthDate" />
           <div *ngIf="editForm.get('birthDate')!.invalid && (editForm.get('birthDate')!.dirty || editForm.get('birthDate')!.touched)">
@@ -108,27 +36,49 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.client.email" for="field_email">Email</label>
-          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
-          <div *ngIf="editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('email')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-          </div>
+          <label class="form-control-label" jhiTranslate="canyonMeApp.client.billingAddress" for="field_billingAddress"
+            >Billing Address</label
+          >
+          <select
+            class="form-control"
+            id="field_billingAddress"
+            data-cy="billingAddress"
+            name="billingAddress"
+            formControlName="billingAddress"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                addressOption.id === editForm.get('billingAddress')!.value?.id ? editForm.get('billingAddress')!.value : addressOption
+              "
+              *ngFor="let addressOption of billingAddressesCollection; trackBy: trackAddressById"
+            >
+              {{ addressOption.id }}
+            </option>
+          </select>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.client.password" for="field_password">Password</label>
-          <input type="text" class="form-control" name="password" id="field_password" data-cy="password" formControlName="password" />
-          <div *ngIf="editForm.get('password')!.invalid && (editForm.get('password')!.dirty || editForm.get('password')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('password')?.errors?.required"
-              jhiTranslate="entity.validation.required"
+          <label class="form-control-label" jhiTranslate="canyonMeApp.client.shippingAddress" for="field_shippingAddress"
+            >Shipping Address</label
+          >
+          <select
+            class="form-control"
+            id="field_shippingAddress"
+            data-cy="shippingAddress"
+            name="shippingAddress"
+            formControlName="shippingAddress"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                addressOption.id === editForm.get('shippingAddress')!.value?.id ? editForm.get('shippingAddress')!.value : addressOption
+              "
+              *ngFor="let addressOption of shippingAddressesCollection; trackBy: trackAddressById"
             >
-              This field is required.
-            </small>
-          </div>
+              {{ addressOption.id }}
+            </option>
+          </select>
         </div>
       </div>
 

@@ -14,25 +14,29 @@
         <dd>
           <span>{{ purchaseOrder.id }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.billingAddress">Billing Address</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.orderDate">Order Date</span></dt>
         <dd>
-          <span>{{ purchaseOrder.billingAddress }}</span>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.shippingAddress">Shipping Address</span></dt>
-        <dd>
-          <span>{{ purchaseOrder.shippingAddress }}</span>
+          <span>{{ purchaseOrder.orderDate | formatMediumDate }}</span>
         </dd>
         <dt><span jhiTranslate="canyonMeApp.purchaseOrder.orderStateId">Order State Id</span></dt>
         <dd>
           <span jhiTranslate="{{ 'canyonMeApp.OrderState.' + purchaseOrder.orderStateId }}">{{ purchaseOrder.orderStateId }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.deliveryModeId">Delivery Mode Id</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.shippingMode">Shipping Mode</span></dt>
         <dd>
-          <span jhiTranslate="{{ 'canyonMeApp.DeliveryMode.' + purchaseOrder.deliveryModeId }}">{{ purchaseOrder.deliveryModeId }}</span>
+          <span>{{ purchaseOrder.shippingMode }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.paymentModeId">Payment Mode Id</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.shippingFees">Shipping Fees</span></dt>
         <dd>
-          <span jhiTranslate="{{ 'canyonMeApp.PaymentMode.' + purchaseOrder.paymentModeId }}">{{ purchaseOrder.paymentModeId }}</span>
+          <span>{{ purchaseOrder.shippingFees }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.paymentMode">Payment Mode</span></dt>
+        <dd>
+          <span>{{ purchaseOrder.paymentMode }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchaseOrder.paymentFees">Payment Fees</span></dt>
+        <dd>
+          <span>{{ purchaseOrder.paymentFees }}</span>
         </dd>
         <dt><span jhiTranslate="canyonMeApp.purchaseOrder.clientId">Client Id</span></dt>
         <dd>

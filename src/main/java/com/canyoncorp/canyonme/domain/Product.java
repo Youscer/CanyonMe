@@ -38,8 +38,8 @@ public class Product implements Serializable {
 
     @OneToMany(mappedBy = "productId")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "orderId", "productId" }, allowSetters = true)
-    private Set<OrderLine> orderLines = new HashSet<>();
+    @JsonIgnoreProperties(value = { "productId" }, allowSetters = true)
+    private Set<Discount> discounts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -94,35 +94,35 @@ public class Product implements Serializable {
         this.unitPrice = unitPrice;
     }
 
-    public Set<OrderLine> getOrderLines() {
-        return this.orderLines;
+    public Set<Discount> getDiscounts() {
+        return this.discounts;
     }
 
-    public Product orderLines(Set<OrderLine> orderLines) {
-        this.setOrderLines(orderLines);
+    public Product discounts(Set<Discount> discounts) {
+        this.setDiscounts(discounts);
         return this;
     }
 
-    public Product addOrderLine(OrderLine orderLine) {
-        this.orderLines.add(orderLine);
-        orderLine.setProductId(this);
+    public Product addDiscount(Discount discount) {
+        this.discounts.add(discount);
+        discount.setProductId(this);
         return this;
     }
 
-    public Product removeOrderLine(OrderLine orderLine) {
-        this.orderLines.remove(orderLine);
-        orderLine.setProductId(null);
+    public Product removeDiscount(Discount discount) {
+        this.discounts.remove(discount);
+        discount.setProductId(null);
         return this;
     }
 
-    public void setOrderLines(Set<OrderLine> orderLines) {
-        if (this.orderLines != null) {
-            this.orderLines.forEach(i -> i.setProductId(null));
+    public void setDiscounts(Set<Discount> discounts) {
+        if (this.discounts != null) {
+            this.discounts.forEach(i -> i.setProductId(null));
         }
-        if (orderLines != null) {
-            orderLines.forEach(i -> i.setProductId(this));
+        if (discounts != null) {
+            discounts.forEach(i -> i.setProductId(this));
         }
-        this.orderLines = orderLines;
+        this.discounts = discounts;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

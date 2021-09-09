@@ -29,11 +29,20 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class OrderLineResourceIT {
 
+    private static final Long DEFAULT_PRODUCT_ID = 1L;
+    private static final Long UPDATED_PRODUCT_ID = 2L;
+
+    private static final String DEFAULT_PRODUCT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_PRODUCT_NAME = "BBBBBBBBBB";
+
     private static final Long DEFAULT_QUANTITY = 1L;
     private static final Long UPDATED_QUANTITY = 2L;
 
     private static final Float DEFAULT_UNIT_PRICE = 1F;
     private static final Float UPDATED_UNIT_PRICE = 2F;
+
+    private static final Float DEFAULT_DISCOUNT = 1F;
+    private static final Float UPDATED_DISCOUNT = 2F;
 
     private static final String ENTITY_API_URL = "/api/order-lines";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -59,7 +68,12 @@ class OrderLineResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static OrderLine createEntity(EntityManager em) {
-        OrderLine orderLine = new OrderLine().quantity(DEFAULT_QUANTITY).unitPrice(DEFAULT_UNIT_PRICE);
+        OrderLine orderLine = new OrderLine()
+            .productId(DEFAULT_PRODUCT_ID)
+            .productName(DEFAULT_PRODUCT_NAME)
+            .quantity(DEFAULT_QUANTITY)
+            .unitPrice(DEFAULT_UNIT_PRICE)
+            .discount(DEFAULT_DISCOUNT);
         return orderLine;
     }
 
@@ -70,7 +84,12 @@ class OrderLineResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static OrderLine createUpdatedEntity(EntityManager em) {
-        OrderLine orderLine = new OrderLine().quantity(UPDATED_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
+        OrderLine orderLine = new OrderLine()
+            .productId(UPDATED_PRODUCT_ID)
+            .productName(UPDATED_PRODUCT_NAME)
+            .quantity(UPDATED_QUANTITY)
+            .unitPrice(UPDATED_UNIT_PRICE)
+            .discount(UPDATED_DISCOUNT);
         return orderLine;
     }
 
@@ -92,8 +111,11 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeCreate + 1);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
+        assertThat(testOrderLine.getProductId()).isEqualTo(DEFAULT_PRODUCT_ID);
+        assertThat(testOrderLine.getProductName()).isEqualTo(DEFAULT_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testOrderLine.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
+        assertThat(testOrderLine.getDiscount()).isEqualTo(DEFAULT_DISCOUNT);
     }
 
     @Test
@@ -112,6 +134,40 @@ class OrderLineResourceIT {
         // Validate the OrderLine in the database
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void checkProductIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = orderLineRepository.findAll().size();
+        // set the field null
+        orderLine.setProductId(null);
+
+        // Create the OrderLine, which fails.
+
+        restOrderLineMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .andExpect(status().isBadRequest());
+
+        List<OrderLine> orderLineList = orderLineRepository.findAll();
+        assertThat(orderLineList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkProductNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = orderLineRepository.findAll().size();
+        // set the field null
+        orderLine.setProductName(null);
+
+        // Create the OrderLine, which fails.
+
+        restOrderLineMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .andExpect(status().isBadRequest());
+
+        List<OrderLine> orderLineList = orderLineRepository.findAll();
+        assertThat(orderLineList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -160,8 +216,11 @@ class OrderLineResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orderLine.getId().intValue())))
+            .andExpect(jsonPath("$.[*].productId").value(hasItem(DEFAULT_PRODUCT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].productName").value(hasItem(DEFAULT_PRODUCT_NAME)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY.intValue())))
-            .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.doubleValue())));
+            .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.doubleValue())))
+            .andExpect(jsonPath("$.[*].discount").value(hasItem(DEFAULT_DISCOUNT.doubleValue())));
     }
 
     @Test
@@ -176,8 +235,11 @@ class OrderLineResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(orderLine.getId().intValue()))
+            .andExpect(jsonPath("$.productId").value(DEFAULT_PRODUCT_ID.intValue()))
+            .andExpect(jsonPath("$.productName").value(DEFAULT_PRODUCT_NAME))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY.intValue()))
-            .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()));
+            .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()))
+            .andExpect(jsonPath("$.discount").value(DEFAULT_DISCOUNT.doubleValue()));
     }
 
     @Test
@@ -199,7 +261,12 @@ class OrderLineResourceIT {
         OrderLine updatedOrderLine = orderLineRepository.findById(orderLine.getId()).get();
         // Disconnect from session so that the updates on updatedOrderLine are not directly saved in db
         em.detach(updatedOrderLine);
-        updatedOrderLine.quantity(UPDATED_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
+        updatedOrderLine
+            .productId(UPDATED_PRODUCT_ID)
+            .productName(UPDATED_PRODUCT_NAME)
+            .quantity(UPDATED_QUANTITY)
+            .unitPrice(UPDATED_UNIT_PRICE)
+            .discount(UPDATED_DISCOUNT);
 
         restOrderLineMockMvc
             .perform(
@@ -213,8 +280,11 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeUpdate);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
+        assertThat(testOrderLine.getProductId()).isEqualTo(UPDATED_PRODUCT_ID);
+        assertThat(testOrderLine.getProductName()).isEqualTo(UPDATED_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testOrderLine.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
+        assertThat(testOrderLine.getDiscount()).isEqualTo(UPDATED_DISCOUNT);
     }
 
     @Test
@@ -285,7 +355,7 @@ class OrderLineResourceIT {
         OrderLine partialUpdatedOrderLine = new OrderLine();
         partialUpdatedOrderLine.setId(orderLine.getId());
 
-        partialUpdatedOrderLine.quantity(UPDATED_QUANTITY);
+        partialUpdatedOrderLine.productId(UPDATED_PRODUCT_ID).quantity(UPDATED_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
 
         restOrderLineMockMvc
             .perform(
@@ -299,8 +369,11 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeUpdate);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
+        assertThat(testOrderLine.getProductId()).isEqualTo(UPDATED_PRODUCT_ID);
+        assertThat(testOrderLine.getProductName()).isEqualTo(DEFAULT_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(UPDATED_QUANTITY);
-        assertThat(testOrderLine.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
+        assertThat(testOrderLine.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
+        assertThat(testOrderLine.getDiscount()).isEqualTo(DEFAULT_DISCOUNT);
     }
 
     @Test
@@ -315,7 +388,12 @@ class OrderLineResourceIT {
         OrderLine partialUpdatedOrderLine = new OrderLine();
         partialUpdatedOrderLine.setId(orderLine.getId());
 
-        partialUpdatedOrderLine.quantity(UPDATED_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
+        partialUpdatedOrderLine
+            .productId(UPDATED_PRODUCT_ID)
+            .productName(UPDATED_PRODUCT_NAME)
+            .quantity(UPDATED_QUANTITY)
+            .unitPrice(UPDATED_UNIT_PRICE)
+            .discount(UPDATED_DISCOUNT);
 
         restOrderLineMockMvc
             .perform(
@@ -329,8 +407,11 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeUpdate);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
+        assertThat(testOrderLine.getProductId()).isEqualTo(UPDATED_PRODUCT_ID);
+        assertThat(testOrderLine.getProductName()).isEqualTo(UPDATED_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testOrderLine.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
+        assertThat(testOrderLine.getDiscount()).isEqualTo(UPDATED_DISCOUNT);
     }
 
     @Test

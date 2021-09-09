@@ -13,11 +13,5 @@
                                  constraintName="fk_order_line__order_id_id"
                                  referencedColumnNames="id"
                                  referencedTableName="purchase_order"/>
-
-        <addForeignKeyConstraint baseColumnNames="product_id_id"
-                                 baseTableName="order_line"
-                                 constraintName="fk_order_line__product_id_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="product"/>
     </changeSet>
 </databaseChangeLog>

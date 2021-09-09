@@ -33,11 +33,12 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.id">Id</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.billingAddress">Billing Address</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.shippingAddress">Shipping Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.orderDate">Order Date</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.orderStateId">Order State Id</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.deliveryModeId">Delivery Mode Id</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.paymentModeId">Payment Mode Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.shippingMode">Shipping Mode</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.shippingFees">Shipping Fees</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.paymentMode">Payment Mode</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.paymentFees">Payment Fees</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchaseOrder.clientId">Client Id</span></th>
           <th scope="col"></th>
         </tr>
@@ -47,11 +48,12 @@
           <td>
             <a [routerLink]="['/purchase-order', purchaseOrder.id, 'view']">{{ purchaseOrder.id }}</a>
           </td>
-          <td>{{ purchaseOrder.billingAddress }}</td>
-          <td>{{ purchaseOrder.shippingAddress }}</td>
+          <td>{{ purchaseOrder.orderDate | formatMediumDate }}</td>
           <td jhiTranslate="{{ 'canyonMeApp.OrderState.' + purchaseOrder.orderStateId }}">{{ purchaseOrder.orderStateId }}</td>
-          <td jhiTranslate="{{ 'canyonMeApp.DeliveryMode.' + purchaseOrder.deliveryModeId }}">{{ purchaseOrder.deliveryModeId }}</td>
-          <td jhiTranslate="{{ 'canyonMeApp.PaymentMode.' + purchaseOrder.paymentModeId }}">{{ purchaseOrder.paymentModeId }}</td>
+          <td>{{ purchaseOrder.shippingMode }}</td>
+          <td>{{ purchaseOrder.shippingFees }}</td>
+          <td>{{ purchaseOrder.paymentMode }}</td>
+          <td>{{ purchaseOrder.paymentFees }}</td>
           <td>
             <div *ngIf="purchaseOrder.clientId">
               <a [routerLink]="['/client', purchaseOrder.clientId?.id, 'view']">{{ purchaseOrder.clientId?.id }}</a>

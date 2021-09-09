@@ -9,6 +9,8 @@ import { of, Subject } from 'rxjs';
 
 import { ClientService } from '../service/client.service';
 import { IClient, Client } from '../client.model';
+import { IAddress } from 'app/entities/address/address.model';
+import { AddressService } from 'app/entities/address/service/address.service';
 
 import { ClientUpdateComponent } from './client-update.component';
 
@@ -18,6 +20,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<ClientUpdateComponent>;
     let activatedRoute: ActivatedRoute;
     let clientService: ClientService;
+    let addressService: AddressService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -31,18 +34,61 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(ClientUpdateComponent);
       activatedRoute = TestBed.inject(ActivatedRoute);
       clientService = TestBed.inject(ClientService);
+      addressService = TestBed.inject(AddressService);
 
       comp = fixture.componentInstance;
     });
 
     describe('ngOnInit', () => {
+      it('Should call billingAddress query and add missing value', () => {
+        const client: IClient = { id: 456 };
+        const billingAddress: IAddress = { id: 39675 };
+        client.billingAddress = billingAddress;
+
+        const billingAddressCollection: IAddress[] = [{ id: 96757 }];
+        jest.spyOn(addressService, 'query').mockReturnValue(of(new HttpResponse({ body: billingAddressCollection })));
+        const expectedCollection: IAddress[] = [billingAddress, ...billingAddressCollection];
+        jest.spyOn(addressService, 'addAddressToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+        activatedRoute.data = of({ client });
+        comp.ngOnInit();
+
+        expect(addressService.query).toHaveBeenCalled();
+        expect(addressService.addAddressToCollectionIfMissing).toHaveBeenCalledWith(billingAddressCollection, billingAddress);
+        expect(comp.billingAddressesCollection).toEqual(expectedCollection);
+      });
+
+      it('Should call shippingAddress query and add missing value', () => {
+        const client: IClient = { id: 456 };
+        const shippingAddress: IAddress = { id: 63509 };
+        client.shippingAddress = shippingAddress;
+
+        const shippingAddressCollection: IAddress[] = [{ id: 2012 }];
+        jest.spyOn(addressService, 'query').mockReturnValue(of(new HttpResponse({ body: shippingAddressCollection })));
+        const expectedCollection: IAddress[] = [shippingAddress, ...shippingAddressCollection];
+        jest.spyOn(addressService, 'addAddressToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+        activatedRoute.data = of({ client });
+        comp.ngOnInit();
+
+        expect(addressService.query).toHaveBeenCalled();
+        expect(addressService.addAddressToCollectionIfMissing).toHaveBeenCalledWith(shippingAddressCollection, shippingAddress);
+        expect(comp.shippingAddressesCollection).toEqual(expectedCollection);
+      });
+
       it('Should update editForm', () => {
         const client: IClient = { id: 456 };
+        const billingAddress: IAddress = { id: 80385 };
+        client.billingAddress = billingAddress;
+        const shippingAddress: IAddress = { id: 67664 };
+        client.shippingAddress = shippingAddress;
 
         activatedRoute.data = of({ client });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(client));
+        expect(comp.billingAddressesCollection).toContain(billingAddress);
+        expect(comp.shippingAddressesCollection).toContain(shippingAddress);
       });
     });
 
@@ -107,6 +153,16 @@ describe('Component Tests', () => {
         expect(clientService.update).toHaveBeenCalledWith(client);
         expect(comp.isSaving).toEqual(false);
         expect(comp.previousState).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('Tracking relationships identifiers', () => {
+      describe('trackAddressById', () => {
+        it('Should return tracked Address primary key', () => {
+          const entity = { id: 123 };
+          const trackResult = comp.trackAddressById(0, entity);
+          expect(trackResult).toEqual(entity.id);
+        });
       });
     });
   });

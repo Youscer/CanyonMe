@@ -55,6 +55,16 @@ public class CacheConfiguration {
             createCache(cm, com.canyoncorp.canyonme.domain.OrderLine.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName() + ".orderLines");
+            createCache(cm, com.canyoncorp.canyonme.domain.Client.class.getName() + ".personIds");
+            createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName() + ".discounts");
+            createCache(cm, com.canyoncorp.canyonme.domain.ShippingFees.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.PaymentFees.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Address.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Person.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Employee.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Employee.class.getName() + ".personIds");
+            createCache(cm, com.canyoncorp.canyonme.domain.Picture.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Discount.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

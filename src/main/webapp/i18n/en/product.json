@@ -21,7 +21,7 @@
       "name": "Name",
       "description": "Description",
       "unitPrice": "Unit Price",
-      "orderLine": "Order Line"
+      "discount": "Discount"
     }
   }
 }

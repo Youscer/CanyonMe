@@ -11,8 +11,6 @@ import { OrderLineService } from '../service/order-line.service';
 import { IOrderLine, OrderLine } from '../order-line.model';
 import { IPurchaseOrder } from 'app/entities/purchase-order/purchase-order.model';
 import { PurchaseOrderService } from 'app/entities/purchase-order/service/purchase-order.service';
-import { IProduct } from 'app/entities/product/product.model';
-import { ProductService } from 'app/entities/product/service/product.service';
 
 import { OrderLineUpdateComponent } from './order-line-update.component';
 
@@ -23,7 +21,6 @@ describe('Component Tests', () => {
     let activatedRoute: ActivatedRoute;
     let orderLineService: OrderLineService;
     let purchaseOrderService: PurchaseOrderService;
-    let productService: ProductService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -38,7 +35,6 @@ describe('Component Tests', () => {
       activatedRoute = TestBed.inject(ActivatedRoute);
       orderLineService = TestBed.inject(OrderLineService);
       purchaseOrderService = TestBed.inject(PurchaseOrderService);
-      productService = TestBed.inject(ProductService);
 
       comp = fixture.componentInstance;
     });
@@ -66,38 +62,16 @@ describe('Component Tests', () => {
         expect(comp.purchaseOrdersSharedCollection).toEqual(expectedCollection);
       });
 
-      it('Should call Product query and add missing value', () => {
-        const orderLine: IOrderLine = { id: 456 };
-        const productId: IProduct = { id: 63374 };
-        orderLine.productId = productId;
-
-        const productCollection: IProduct[] = [{ id: 30020 }];
-        jest.spyOn(productService, 'query').mockReturnValue(of(new HttpResponse({ body: productCollection })));
-        const additionalProducts = [productId];
-        const expectedCollection: IProduct[] = [...additionalProducts, ...productCollection];
-        jest.spyOn(productService, 'addProductToCollectionIfMissing').mockReturnValue(expectedCollection);
-
-        activatedRoute.data = of({ orderLine });
-        comp.ngOnInit();
-
-        expect(productService.query).toHaveBeenCalled();
-        expect(productService.addProductToCollectionIfMissing).toHaveBeenCalledWith(productCollection, ...additionalProducts);
-        expect(comp.productsSharedCollection).toEqual(expectedCollection);
-      });
-
       it('Should update editForm', () => {
         const orderLine: IOrderLine = { id: 456 };
         const orderId: IPurchaseOrder = { id: 86151 };
         orderLine.orderId = orderId;
-        const productId: IProduct = { id: 19186 };
-        orderLine.productId = productId;
 
         activatedRoute.data = of({ orderLine });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(orderLine));
         expect(comp.purchaseOrdersSharedCollection).toContain(orderId);
-        expect(comp.productsSharedCollection).toContain(productId);
       });
     });
 
@@ -170,14 +144,6 @@ describe('Component Tests', () => {
         it('Should return tracked PurchaseOrder primary key', () => {
           const entity = { id: 123 };
           const trackResult = comp.trackPurchaseOrderById(0, entity);
-          expect(trackResult).toEqual(entity.id);
-        });
-      });
-
-      describe('trackProductById', () => {
-        it('Should return tracked Product primary key', () => {
-          const entity = { id: 123 };
-          const trackResult = comp.trackProductById(0, entity);
           expect(trackResult).toEqual(entity.id);
         });
       });

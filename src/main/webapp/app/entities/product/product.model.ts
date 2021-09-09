@@ -1,11 +1,11 @@
-import { IOrderLine } from 'app/entities/order-line/order-line.model';
+import { IDiscount } from 'app/entities/discount/discount.model';
 
 export interface IProduct {
   id?: number;
   name?: string;
   description?: string;
   unitPrice?: number;
-  orderLines?: IOrderLine[] | null;
+  discounts?: IDiscount[] | null;
 }
 
 export class Product implements IProduct {
@@ -14,7 +14,7 @@ export class Product implements IProduct {
     public name?: string,
     public description?: string,
     public unitPrice?: number,
-    public orderLines?: IOrderLine[] | null
+    public discounts?: IDiscount[] | null
   ) {}
 }
 

@@ -97,15 +97,17 @@ describe('PurchaseOrder e2e test', () => {
     cy.get(entityCreateButtonSelector).click({ force: true });
     cy.getEntityCreateUpdateHeading('PurchaseOrder');
 
-    cy.get(`[data-cy="billingAddress"]`).type('Mountain Tasty').should('have.value', 'Mountain Tasty');
-
-    cy.get(`[data-cy="shippingAddress"]`).type('Buckinghamshire input').should('have.value', 'Buckinghamshire input');
+    cy.get(`[data-cy="orderDate"]`).type('2021-09-09').should('have.value', '2021-09-09');
 
     cy.get(`[data-cy="orderStateId"]`).select('VALIDATED');
 
-    cy.get(`[data-cy="deliveryModeId"]`).select('DHL');
+    cy.get(`[data-cy="shippingMode"]`).type('Peso recontextualize').should('have.value', 'Peso recontextualize');
 
-    cy.get(`[data-cy="paymentModeId"]`).select('YES_CARD');
+    cy.get(`[data-cy="shippingFees"]`).type('46675').should('have.value', '46675');
+
+    cy.get(`[data-cy="paymentMode"]`).type('panel transmit').should('have.value', 'panel transmit');
+
+    cy.get(`[data-cy="paymentFees"]`).type('41562').should('have.value', '41562');
 
     cy.setFieldSelectToLastOfEntity('clientId');
 

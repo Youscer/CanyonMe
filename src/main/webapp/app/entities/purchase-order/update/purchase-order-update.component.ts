@@ -21,11 +21,12 @@ export class PurchaseOrderUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [null, [Validators.required]],
-    billingAddress: [null, [Validators.required]],
-    shippingAddress: [null, [Validators.required]],
+    orderDate: [null, [Validators.required]],
     orderStateId: [null, [Validators.required]],
-    deliveryModeId: [null, [Validators.required]],
-    paymentModeId: [null, [Validators.required]],
+    shippingMode: [],
+    shippingFees: [],
+    paymentMode: [],
+    paymentFees: [],
     clientId: [],
   });
 
@@ -84,11 +85,12 @@ export class PurchaseOrderUpdateComponent implements OnInit {
   protected updateForm(purchaseOrder: IPurchaseOrder): void {
     this.editForm.patchValue({
       id: purchaseOrder.id,
-      billingAddress: purchaseOrder.billingAddress,
-      shippingAddress: purchaseOrder.shippingAddress,
+      orderDate: purchaseOrder.orderDate,
       orderStateId: purchaseOrder.orderStateId,
-      deliveryModeId: purchaseOrder.deliveryModeId,
-      paymentModeId: purchaseOrder.paymentModeId,
+      shippingMode: purchaseOrder.shippingMode,
+      shippingFees: purchaseOrder.shippingFees,
+      paymentMode: purchaseOrder.paymentMode,
+      paymentFees: purchaseOrder.paymentFees,
       clientId: purchaseOrder.clientId,
     });
 
@@ -107,11 +109,12 @@ export class PurchaseOrderUpdateComponent implements OnInit {
     return {
       ...new PurchaseOrder(),
       id: this.editForm.get(['id'])!.value,
-      billingAddress: this.editForm.get(['billingAddress'])!.value,
-      shippingAddress: this.editForm.get(['shippingAddress'])!.value,
+      orderDate: this.editForm.get(['orderDate'])!.value,
       orderStateId: this.editForm.get(['orderStateId'])!.value,
-      deliveryModeId: this.editForm.get(['deliveryModeId'])!.value,
-      paymentModeId: this.editForm.get(['paymentModeId'])!.value,
+      shippingMode: this.editForm.get(['shippingMode'])!.value,
+      shippingFees: this.editForm.get(['shippingFees'])!.value,
+      paymentMode: this.editForm.get(['paymentMode'])!.value,
+      paymentFees: this.editForm.get(['paymentFees'])!.value,
       clientId: this.editForm.get(['clientId'])!.value,
     };
   }

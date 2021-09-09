@@ -97,13 +97,17 @@ describe('OrderLine e2e test', () => {
     cy.get(entityCreateButtonSelector).click({ force: true });
     cy.getEntityCreateUpdateHeading('OrderLine');
 
-    cy.get(`[data-cy="quantity"]`).type('12218').should('have.value', '12218');
+    cy.get(`[data-cy="productId"]`).type('12218').should('have.value', '12218');
 
-    cy.get(`[data-cy="unitPrice"]`).type('26789').should('have.value', '26789');
+    cy.get(`[data-cy="productName"]`).type('Assistant').should('have.value', 'Assistant');
+
+    cy.get(`[data-cy="quantity"]`).type('25858').should('have.value', '25858');
+
+    cy.get(`[data-cy="unitPrice"]`).type('64642').should('have.value', '64642');
+
+    cy.get(`[data-cy="discount"]`).type('78431').should('have.value', '78431');
 
     cy.setFieldSelectToLastOfEntity('orderId');
-
-    cy.setFieldSelectToLastOfEntity('productId');
 
     cy.get(entityCreateSaveButtonSelector).click({ force: true });
     cy.scrollTo('top', { ensureScrollable: false });

@@ -126,20 +126,23 @@ public class PurchaseOrderResource {
             .findById(purchaseOrder.getId())
             .map(
                 existingPurchaseOrder -> {
-                    if (purchaseOrder.getBillingAddress() != null) {
-                        existingPurchaseOrder.setBillingAddress(purchaseOrder.getBillingAddress());
-                    }
-                    if (purchaseOrder.getShippingAddress() != null) {
-                        existingPurchaseOrder.setShippingAddress(purchaseOrder.getShippingAddress());
+                    if (purchaseOrder.getOrderDate() != null) {
+                        existingPurchaseOrder.setOrderDate(purchaseOrder.getOrderDate());
                     }
                     if (purchaseOrder.getOrderStateId() != null) {
                         existingPurchaseOrder.setOrderStateId(purchaseOrder.getOrderStateId());
                     }
-                    if (purchaseOrder.getDeliveryModeId() != null) {
-                        existingPurchaseOrder.setDeliveryModeId(purchaseOrder.getDeliveryModeId());
+                    if (purchaseOrder.getShippingMode() != null) {
+                        existingPurchaseOrder.setShippingMode(purchaseOrder.getShippingMode());
                     }
-                    if (purchaseOrder.getPaymentModeId() != null) {
-                        existingPurchaseOrder.setPaymentModeId(purchaseOrder.getPaymentModeId());
+                    if (purchaseOrder.getShippingFees() != null) {
+                        existingPurchaseOrder.setShippingFees(purchaseOrder.getShippingFees());
+                    }
+                    if (purchaseOrder.getPaymentMode() != null) {
+                        existingPurchaseOrder.setPaymentMode(purchaseOrder.getPaymentMode());
+                    }
+                    if (purchaseOrder.getPaymentFees() != null) {
+                        existingPurchaseOrder.setPaymentFees(purchaseOrder.getPaymentFees());
                     }
 
                     return existingPurchaseOrder;

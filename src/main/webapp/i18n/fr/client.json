@@ -18,13 +18,10 @@
         "title": "Client"
       },
       "id": "Id",
-      "firstname": "Firstname",
-      "lastname": "Lastname",
-      "genderId": "Gender Id",
-      "streetAddress": "Street Address",
       "birthDate": "Birth Date",
-      "email": "Email",
-      "password": "Password",
+      "billingAddress": "Billing Address",
+      "shippingAddress": "Shipping Address",
+      "personId": "Person Id",
       "purchaseOrder": "Purchase Order"
     }
   }

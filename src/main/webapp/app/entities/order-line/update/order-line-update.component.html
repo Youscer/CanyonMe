@@ -22,6 +22,48 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.orderLine.productId" for="field_productId">Product Id</label>
+          <input type="number" class="form-control" name="productId" id="field_productId" data-cy="productId" formControlName="productId" />
+          <div *ngIf="editForm.get('productId')!.invalid && (editForm.get('productId')!.dirty || editForm.get('productId')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('productId')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('productId')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.orderLine.productName" for="field_productName">Product Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="productName"
+            id="field_productName"
+            data-cy="productName"
+            formControlName="productName"
+          />
+          <div *ngIf="editForm.get('productName')!.invalid && (editForm.get('productName')!.dirty || editForm.get('productName')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('productName')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="canyonMeApp.orderLine.quantity" for="field_quantity">Quantity</label>
           <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
           <div *ngIf="editForm.get('quantity')!.invalid && (editForm.get('quantity')!.dirty || editForm.get('quantity')!.touched)">
@@ -64,6 +106,11 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.orderLine.discount" for="field_discount">Discount</label>
+          <input type="number" class="form-control" name="discount" id="field_discount" data-cy="discount" formControlName="discount" />
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="canyonMeApp.orderLine.orderId" for="field_orderId">Order Id</label>
           <select class="form-control" id="field_orderId" data-cy="orderId" name="orderId" formControlName="orderId">
             <option [ngValue]="null"></option>
@@ -74,19 +121,6 @@
               *ngFor="let purchaseOrderOption of purchaseOrdersSharedCollection; trackBy: trackPurchaseOrderById"
             >
               {{ purchaseOrderOption.id }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.orderLine.productId" for="field_productId">Product Id</label>
-          <select class="form-control" id="field_productId" data-cy="productId" name="productId" formControlName="productId">
-            <option [ngValue]="null"></option>
-            <option
-              [ngValue]="productOption.id === editForm.get('productId')!.value?.id ? editForm.get('productId')!.value : productOption"
-              *ngFor="let productOption of productsSharedCollection; trackBy: trackProductById"
-            >
-              {{ productOption.id }}
             </option>
           </select>
         </div>

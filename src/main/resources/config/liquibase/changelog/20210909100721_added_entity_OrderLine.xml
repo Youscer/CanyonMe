@@ -14,16 +14,22 @@
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="product_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="product_name" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="quantity" type="bigint">
                 <constraints nullable="false" />
             </column>
             <column name="unit_price" type="${floatType}">
                 <constraints nullable="false" />
             </column>
-            <column name="order_id_id" type="bigint">
+            <column name="discount" type="${floatType}">
                 <constraints nullable="true" />
             </column>
-            <column name="product_id_id" type="bigint">
+            <column name="order_id_id" type="bigint">
                 <constraints nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -46,8 +52,11 @@
                   separator=";"
                   tableName="order_line">
             <column name="id" type="numeric"/>
+            <column name="product_id" type="numeric"/>
+            <column name="product_name" type="string"/>
             <column name="quantity" type="numeric"/>
             <column name="unit_price" type="numeric"/>
+            <column name="discount" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

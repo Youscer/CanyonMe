@@ -14,33 +14,21 @@
         <dd>
           <span>{{ client.id }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.client.firstname">Firstname</span></dt>
-        <dd>
-          <span>{{ client.firstname }}</span>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.client.lastname">Lastname</span></dt>
-        <dd>
-          <span>{{ client.lastname }}</span>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.client.genderId">Gender Id</span></dt>
-        <dd>
-          <span jhiTranslate="{{ 'canyonMeApp.Gender.' + client.genderId }}">{{ client.genderId }}</span>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.client.streetAddress">Street Address</span></dt>
-        <dd>
-          <span>{{ client.streetAddress }}</span>
-        </dd>
         <dt><span jhiTranslate="canyonMeApp.client.birthDate">Birth Date</span></dt>
         <dd>
           <span>{{ client.birthDate }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.client.email">Email</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.client.billingAddress">Billing Address</span></dt>
         <dd>
-          <span>{{ client.email }}</span>
+          <div *ngIf="client.billingAddress">
+            <a [routerLink]="['/address', client.billingAddress?.id, 'view']">{{ client.billingAddress?.id }}</a>
+          </div>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.client.password">Password</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.client.shippingAddress">Shipping Address</span></dt>
         <dd>
-          <span>{{ client.password }}</span>
+          <div *ngIf="client.shippingAddress">
+            <a [routerLink]="['/address', client.shippingAddress?.id, 'view']">{{ client.shippingAddress?.id }}</a>
+          </div>
         </dd>
       </dl>
 

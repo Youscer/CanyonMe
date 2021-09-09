@@ -1,0 +1,25 @@
+{
+  "canyonMeApp": {
+    "shippingFees": {
+      "home": {
+        "title": "ShippingFees",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Shipping Fees",
+        "createOrEditLabel": "Créer ou éditer un Shipping Fees",
+        "notFound": "Aucun Shipping Fees trouvé"
+      },
+      "created": "Un nouveau Shipping Fees a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Shipping Fees avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Shipping Fees avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Shipping Fees {{ id }} ?"
+      },
+      "detail": {
+        "title": "Shipping Fees"
+      },
+      "id": "ID",
+      "shippingMode": "Shipping Mode",
+      "fees": "Fees"
+    }
+  }
+}

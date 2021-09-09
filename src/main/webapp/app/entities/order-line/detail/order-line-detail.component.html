@@ -14,6 +14,14 @@
         <dd>
           <span>{{ orderLine.id }}</span>
         </dd>
+        <dt><span jhiTranslate="canyonMeApp.orderLine.productId">Product Id</span></dt>
+        <dd>
+          <span>{{ orderLine.productId }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.orderLine.productName">Product Name</span></dt>
+        <dd>
+          <span>{{ orderLine.productName }}</span>
+        </dd>
         <dt><span jhiTranslate="canyonMeApp.orderLine.quantity">Quantity</span></dt>
         <dd>
           <span>{{ orderLine.quantity }}</span>
@@ -22,16 +30,14 @@
         <dd>
           <span>{{ orderLine.unitPrice }}</span>
         </dd>
+        <dt><span jhiTranslate="canyonMeApp.orderLine.discount">Discount</span></dt>
+        <dd>
+          <span>{{ orderLine.discount }}</span>
+        </dd>
         <dt><span jhiTranslate="canyonMeApp.orderLine.orderId">Order Id</span></dt>
         <dd>
           <div *ngIf="orderLine.orderId">
             <a [routerLink]="['/purchase-order', orderLine.orderId?.id, 'view']">{{ orderLine.orderId?.id }}</a>
-          </div>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.orderLine.productId">Product Id</span></dt>
-        <dd>
-          <div *ngIf="orderLine.productId">
-            <a [routerLink]="['/product', orderLine.productId?.id, 'view']">{{ orderLine.productId?.id }}</a>
           </div>
         </dd>
       </dl>

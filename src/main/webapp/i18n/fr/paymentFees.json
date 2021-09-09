@@ -1,0 +1,25 @@
+{
+  "canyonMeApp": {
+    "paymentFees": {
+      "home": {
+        "title": "PaymentFees",
+        "refreshListLabel": "Actualiser la liste",
+        "createLabel": "Créer un nouveau Payment Fees",
+        "createOrEditLabel": "Créer ou éditer un Payment Fees",
+        "notFound": "Aucun Payment Fees trouvé"
+      },
+      "created": "Un nouveau Payment Fees a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Payment Fees avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Payment Fees avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Payment Fees {{ id }} ?"
+      },
+      "detail": {
+        "title": "Payment Fees"
+      },
+      "id": "ID",
+      "paymentMode": "Payment Mode",
+      "fees": "Fees"
+    }
+  }
+}

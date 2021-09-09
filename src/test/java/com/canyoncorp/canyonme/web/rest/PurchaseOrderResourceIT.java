@@ -7,10 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.PurchaseOrder;
-import com.canyoncorp.canyonme.domain.enumeration.DeliveryMode;
 import com.canyoncorp.canyonme.domain.enumeration.OrderState;
-import com.canyoncorp.canyonme.domain.enumeration.PaymentMode;
 import com.canyoncorp.canyonme.repository.PurchaseOrderRepository;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -32,20 +32,23 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class PurchaseOrderResourceIT {
 
-    private static final String DEFAULT_BILLING_ADDRESS = "AAAAAAAAAA";
-    private static final String UPDATED_BILLING_ADDRESS = "BBBBBBBBBB";
-
-    private static final String DEFAULT_SHIPPING_ADDRESS = "AAAAAAAAAA";
-    private static final String UPDATED_SHIPPING_ADDRESS = "BBBBBBBBBB";
+    private static final LocalDate DEFAULT_ORDER_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_ORDER_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final OrderState DEFAULT_ORDER_STATE_ID = OrderState.NEW;
     private static final OrderState UPDATED_ORDER_STATE_ID = OrderState.TO_COMPLETE;
 
-    private static final DeliveryMode DEFAULT_DELIVERY_MODE_ID = DeliveryMode.DHL;
-    private static final DeliveryMode UPDATED_DELIVERY_MODE_ID = DeliveryMode.DHL;
+    private static final String DEFAULT_SHIPPING_MODE = "AAAAAAAAAA";
+    private static final String UPDATED_SHIPPING_MODE = "BBBBBBBBBB";
 
-    private static final PaymentMode DEFAULT_PAYMENT_MODE_ID = PaymentMode.YES_CARD;
-    private static final PaymentMode UPDATED_PAYMENT_MODE_ID = PaymentMode.YES_CARD;
+    private static final Float DEFAULT_SHIPPING_FEES = 1F;
+    private static final Float UPDATED_SHIPPING_FEES = 2F;
+
+    private static final String DEFAULT_PAYMENT_MODE = "AAAAAAAAAA";
+    private static final String UPDATED_PAYMENT_MODE = "BBBBBBBBBB";
+
+    private static final Float DEFAULT_PAYMENT_FEES = 1F;
+    private static final Float UPDATED_PAYMENT_FEES = 2F;
 
     private static final String ENTITY_API_URL = "/api/purchase-orders";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -72,11 +75,12 @@ class PurchaseOrderResourceIT {
      */
     public static PurchaseOrder createEntity(EntityManager em) {
         PurchaseOrder purchaseOrder = new PurchaseOrder()
-            .billingAddress(DEFAULT_BILLING_ADDRESS)
-            .shippingAddress(DEFAULT_SHIPPING_ADDRESS)
+            .orderDate(DEFAULT_ORDER_DATE)
             .orderStateId(DEFAULT_ORDER_STATE_ID)
-            .deliveryModeId(DEFAULT_DELIVERY_MODE_ID)
-            .paymentModeId(DEFAULT_PAYMENT_MODE_ID);
+            .shippingMode(DEFAULT_SHIPPING_MODE)
+            .shippingFees(DEFAULT_SHIPPING_FEES)
+            .paymentMode(DEFAULT_PAYMENT_MODE)
+            .paymentFees(DEFAULT_PAYMENT_FEES);
         return purchaseOrder;
     }
 
@@ -88,11 +92,12 @@ class PurchaseOrderResourceIT {
      */
     public static PurchaseOrder createUpdatedEntity(EntityManager em) {
         PurchaseOrder purchaseOrder = new PurchaseOrder()
-            .billingAddress(UPDATED_BILLING_ADDRESS)
-            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .orderDate(UPDATED_ORDER_DATE)
             .orderStateId(UPDATED_ORDER_STATE_ID)
-            .deliveryModeId(UPDATED_DELIVERY_MODE_ID)
-            .paymentModeId(UPDATED_PAYMENT_MODE_ID);
+            .shippingMode(UPDATED_SHIPPING_MODE)
+            .shippingFees(UPDATED_SHIPPING_FEES)
+            .paymentMode(UPDATED_PAYMENT_MODE)
+            .paymentFees(UPDATED_PAYMENT_FEES);
         return purchaseOrder;
     }
 
@@ -114,11 +119,12 @@ class PurchaseOrderResourceIT {
         List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll();
         assertThat(purchaseOrderList).hasSize(databaseSizeBeforeCreate + 1);
         PurchaseOrder testPurchaseOrder = purchaseOrderList.get(purchaseOrderList.size() - 1);
-        assertThat(testPurchaseOrder.getBillingAddress()).isEqualTo(DEFAULT_BILLING_ADDRESS);
-        assertThat(testPurchaseOrder.getShippingAddress()).isEqualTo(DEFAULT_SHIPPING_ADDRESS);
+        assertThat(testPurchaseOrder.getOrderDate()).isEqualTo(DEFAULT_ORDER_DATE);
         assertThat(testPurchaseOrder.getOrderStateId()).isEqualTo(DEFAULT_ORDER_STATE_ID);
-        assertThat(testPurchaseOrder.getDeliveryModeId()).isEqualTo(DEFAULT_DELIVERY_MODE_ID);
-        assertThat(testPurchaseOrder.getPaymentModeId()).isEqualTo(DEFAULT_PAYMENT_MODE_ID);
+        assertThat(testPurchaseOrder.getShippingMode()).isEqualTo(DEFAULT_SHIPPING_MODE);
+        assertThat(testPurchaseOrder.getShippingFees()).isEqualTo(DEFAULT_SHIPPING_FEES);
+        assertThat(testPurchaseOrder.getPaymentMode()).isEqualTo(DEFAULT_PAYMENT_MODE);
+        assertThat(testPurchaseOrder.getPaymentFees()).isEqualTo(DEFAULT_PAYMENT_FEES);
     }
 
     @Test
@@ -141,27 +147,10 @@ class PurchaseOrderResourceIT {
 
     @Test
     @Transactional
-    void checkBillingAddressIsRequired() throws Exception {
+    void checkOrderDateIsRequired() throws Exception {
         int databaseSizeBeforeTest = purchaseOrderRepository.findAll().size();
         // set the field null
-        purchaseOrder.setBillingAddress(null);
-
-        // Create the PurchaseOrder, which fails.
-
-        restPurchaseOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
-            .andExpect(status().isBadRequest());
-
-        List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll();
-        assertThat(purchaseOrderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkShippingAddressIsRequired() throws Exception {
-        int databaseSizeBeforeTest = purchaseOrderRepository.findAll().size();
-        // set the field null
-        purchaseOrder.setShippingAddress(null);
+        purchaseOrder.setOrderDate(null);
 
         // Create the PurchaseOrder, which fails.
 
@@ -192,40 +181,6 @@ class PurchaseOrderResourceIT {
 
     @Test
     @Transactional
-    void checkDeliveryModeIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = purchaseOrderRepository.findAll().size();
-        // set the field null
-        purchaseOrder.setDeliveryModeId(null);
-
-        // Create the PurchaseOrder, which fails.
-
-        restPurchaseOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
-            .andExpect(status().isBadRequest());
-
-        List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll();
-        assertThat(purchaseOrderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    void checkPaymentModeIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = purchaseOrderRepository.findAll().size();
-        // set the field null
-        purchaseOrder.setPaymentModeId(null);
-
-        // Create the PurchaseOrder, which fails.
-
-        restPurchaseOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchaseOrder)))
-            .andExpect(status().isBadRequest());
-
-        List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll();
-        assertThat(purchaseOrderList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllPurchaseOrders() throws Exception {
         // Initialize the database
         purchaseOrderRepository.saveAndFlush(purchaseOrder);
@@ -236,11 +191,12 @@ class PurchaseOrderResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(purchaseOrder.getId().intValue())))
-            .andExpect(jsonPath("$.[*].billingAddress").value(hasItem(DEFAULT_BILLING_ADDRESS)))
-            .andExpect(jsonPath("$.[*].shippingAddress").value(hasItem(DEFAULT_SHIPPING_ADDRESS)))
+            .andExpect(jsonPath("$.[*].orderDate").value(hasItem(DEFAULT_ORDER_DATE.toString())))
             .andExpect(jsonPath("$.[*].orderStateId").value(hasItem(DEFAULT_ORDER_STATE_ID.toString())))
-            .andExpect(jsonPath("$.[*].deliveryModeId").value(hasItem(DEFAULT_DELIVERY_MODE_ID.toString())))
-            .andExpect(jsonPath("$.[*].paymentModeId").value(hasItem(DEFAULT_PAYMENT_MODE_ID.toString())));
+            .andExpect(jsonPath("$.[*].shippingMode").value(hasItem(DEFAULT_SHIPPING_MODE)))
+            .andExpect(jsonPath("$.[*].shippingFees").value(hasItem(DEFAULT_SHIPPING_FEES.doubleValue())))
+            .andExpect(jsonPath("$.[*].paymentMode").value(hasItem(DEFAULT_PAYMENT_MODE)))
+            .andExpect(jsonPath("$.[*].paymentFees").value(hasItem(DEFAULT_PAYMENT_FEES.doubleValue())));
     }
 
     @Test
@@ -255,11 +211,12 @@ class PurchaseOrderResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(purchaseOrder.getId().intValue()))
-            .andExpect(jsonPath("$.billingAddress").value(DEFAULT_BILLING_ADDRESS))
-            .andExpect(jsonPath("$.shippingAddress").value(DEFAULT_SHIPPING_ADDRESS))
+            .andExpect(jsonPath("$.orderDate").value(DEFAULT_ORDER_DATE.toString()))
             .andExpect(jsonPath("$.orderStateId").value(DEFAULT_ORDER_STATE_ID.toString()))
-            .andExpect(jsonPath("$.deliveryModeId").value(DEFAULT_DELIVERY_MODE_ID.toString()))
-            .andExpect(jsonPath("$.paymentModeId").value(DEFAULT_PAYMENT_MODE_ID.toString()));
+            .andExpect(jsonPath("$.shippingMode").value(DEFAULT_SHIPPING_MODE))
+            .andExpect(jsonPath("$.shippingFees").value(DEFAULT_SHIPPING_FEES.doubleValue()))
+            .andExpect(jsonPath("$.paymentMode").value(DEFAULT_PAYMENT_MODE))
+            .andExpect(jsonPath("$.paymentFees").value(DEFAULT_PAYMENT_FEES.doubleValue()));
     }
 
     @Test
@@ -282,11 +239,12 @@ class PurchaseOrderResourceIT {
         // Disconnect from session so that the updates on updatedPurchaseOrder are not directly saved in db
         em.detach(updatedPurchaseOrder);
         updatedPurchaseOrder
-            .billingAddress(UPDATED_BILLING_ADDRESS)
-            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .orderDate(UPDATED_ORDER_DATE)
             .orderStateId(UPDATED_ORDER_STATE_ID)
-            .deliveryModeId(UPDATED_DELIVERY_MODE_ID)
-            .paymentModeId(UPDATED_PAYMENT_MODE_ID);
+            .shippingMode(UPDATED_SHIPPING_MODE)
+            .shippingFees(UPDATED_SHIPPING_FEES)
+            .paymentMode(UPDATED_PAYMENT_MODE)
+            .paymentFees(UPDATED_PAYMENT_FEES);
 
         restPurchaseOrderMockMvc
             .perform(
@@ -300,11 +258,12 @@ class PurchaseOrderResourceIT {
         List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll();
         assertThat(purchaseOrderList).hasSize(databaseSizeBeforeUpdate);
         PurchaseOrder testPurchaseOrder = purchaseOrderList.get(purchaseOrderList.size() - 1);
-        assertThat(testPurchaseOrder.getBillingAddress()).isEqualTo(UPDATED_BILLING_ADDRESS);
-        assertThat(testPurchaseOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchaseOrder.getOrderDate()).isEqualTo(UPDATED_ORDER_DATE);
         assertThat(testPurchaseOrder.getOrderStateId()).isEqualTo(UPDATED_ORDER_STATE_ID);
-        assertThat(testPurchaseOrder.getDeliveryModeId()).isEqualTo(UPDATED_DELIVERY_MODE_ID);
-        assertThat(testPurchaseOrder.getPaymentModeId()).isEqualTo(UPDATED_PAYMENT_MODE_ID);
+        assertThat(testPurchaseOrder.getShippingMode()).isEqualTo(UPDATED_SHIPPING_MODE);
+        assertThat(testPurchaseOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
+        assertThat(testPurchaseOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
+        assertThat(testPurchaseOrder.getPaymentFees()).isEqualTo(UPDATED_PAYMENT_FEES);
     }
 
     @Test
@@ -375,7 +334,7 @@ class PurchaseOrderResourceIT {
         PurchaseOrder partialUpdatedPurchaseOrder = new PurchaseOrder();
         partialUpdatedPurchaseOrder.setId(purchaseOrder.getId());
 
-        partialUpdatedPurchaseOrder.orderStateId(UPDATED_ORDER_STATE_ID).paymentModeId(UPDATED_PAYMENT_MODE_ID);
+        partialUpdatedPurchaseOrder.shippingMode(UPDATED_SHIPPING_MODE).paymentMode(UPDATED_PAYMENT_MODE).paymentFees(UPDATED_PAYMENT_FEES);
 
         restPurchaseOrderMockMvc
             .perform(
@@ -389,11 +348,12 @@ class PurchaseOrderResourceIT {
         List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll();
         assertThat(purchaseOrderList).hasSize(databaseSizeBeforeUpdate);
         PurchaseOrder testPurchaseOrder = purchaseOrderList.get(purchaseOrderList.size() - 1);
-        assertThat(testPurchaseOrder.getBillingAddress()).isEqualTo(DEFAULT_BILLING_ADDRESS);
-        assertThat(testPurchaseOrder.getShippingAddress()).isEqualTo(DEFAULT_SHIPPING_ADDRESS);
-        assertThat(testPurchaseOrder.getOrderStateId()).isEqualTo(UPDATED_ORDER_STATE_ID);
-        assertThat(testPurchaseOrder.getDeliveryModeId()).isEqualTo(DEFAULT_DELIVERY_MODE_ID);
-        assertThat(testPurchaseOrder.getPaymentModeId()).isEqualTo(UPDATED_PAYMENT_MODE_ID);
+        assertThat(testPurchaseOrder.getOrderDate()).isEqualTo(DEFAULT_ORDER_DATE);
+        assertThat(testPurchaseOrder.getOrderStateId()).isEqualTo(DEFAULT_ORDER_STATE_ID);
+        assertThat(testPurchaseOrder.getShippingMode()).isEqualTo(UPDATED_SHIPPING_MODE);
+        assertThat(testPurchaseOrder.getShippingFees()).isEqualTo(DEFAULT_SHIPPING_FEES);
+        assertThat(testPurchaseOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
+        assertThat(testPurchaseOrder.getPaymentFees()).isEqualTo(UPDATED_PAYMENT_FEES);
     }
 
     @Test
@@ -409,11 +369,12 @@ class PurchaseOrderResourceIT {
         partialUpdatedPurchaseOrder.setId(purchaseOrder.getId());
 
         partialUpdatedPurchaseOrder
-            .billingAddress(UPDATED_BILLING_ADDRESS)
-            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .orderDate(UPDATED_ORDER_DATE)
             .orderStateId(UPDATED_ORDER_STATE_ID)
-            .deliveryModeId(UPDATED_DELIVERY_MODE_ID)
-            .paymentModeId(UPDATED_PAYMENT_MODE_ID);
+            .shippingMode(UPDATED_SHIPPING_MODE)
+            .shippingFees(UPDATED_SHIPPING_FEES)
+            .paymentMode(UPDATED_PAYMENT_MODE)
+            .paymentFees(UPDATED_PAYMENT_FEES);
 
         restPurchaseOrderMockMvc
             .perform(
@@ -427,11 +388,12 @@ class PurchaseOrderResourceIT {
         List<PurchaseOrder> purchaseOrderList = purchaseOrderRepository.findAll();
         assertThat(purchaseOrderList).hasSize(databaseSizeBeforeUpdate);
         PurchaseOrder testPurchaseOrder = purchaseOrderList.get(purchaseOrderList.size() - 1);
-        assertThat(testPurchaseOrder.getBillingAddress()).isEqualTo(UPDATED_BILLING_ADDRESS);
-        assertThat(testPurchaseOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchaseOrder.getOrderDate()).isEqualTo(UPDATED_ORDER_DATE);
         assertThat(testPurchaseOrder.getOrderStateId()).isEqualTo(UPDATED_ORDER_STATE_ID);
-        assertThat(testPurchaseOrder.getDeliveryModeId()).isEqualTo(UPDATED_DELIVERY_MODE_ID);
-        assertThat(testPurchaseOrder.getPaymentModeId()).isEqualTo(UPDATED_PAYMENT_MODE_ID);
+        assertThat(testPurchaseOrder.getShippingMode()).isEqualTo(UPDATED_SHIPPING_MODE);
+        assertThat(testPurchaseOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
+        assertThat(testPurchaseOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
+        assertThat(testPurchaseOrder.getPaymentFees()).isEqualTo(UPDATED_PAYMENT_FEES);
     }
 
     @Test

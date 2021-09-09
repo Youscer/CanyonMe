@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <!--
+        Added the constraints for entity Client.
+    -->
+    <changeSet id="20210909100719-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="billing_address_id"
+                                 baseTableName="client"
+                                 constraintName="fk_client__billing_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+
+        <addForeignKeyConstraint baseColumnNames="shipping_address_id"
+                                 baseTableName="client"
+                                 constraintName="fk_client__shipping_address_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"/>
+    </changeSet>
+</databaseChangeLog>

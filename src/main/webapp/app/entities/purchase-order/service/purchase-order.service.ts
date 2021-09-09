@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import * as dayjs from 'dayjs';
 
 import { isPresent } from 'app/core/util/operators';
+import { DATE_FORMAT } from 'app/config/input.constants';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
 import { createRequestOption } from 'app/core/request/request-util';
 import { IPurchaseOrder, getPurchaseOrderIdentifier } from '../purchase-order.model';
@@ -17,28 +20,37 @@ export class PurchaseOrderService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(purchaseOrder: IPurchaseOrder): Observable<EntityResponseType> {
-    return this.http.post<IPurchaseOrder>(this.resourceUrl, purchaseOrder, { observe: 'response' });
+    const copy = this.convertDateFromClient(purchaseOrder);
+    return this.http
+      .post<IPurchaseOrder>(this.resourceUrl, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   update(purchaseOrder: IPurchaseOrder): Observable<EntityResponseType> {
-    return this.http.put<IPurchaseOrder>(`${this.resourceUrl}/${getPurchaseOrderIdentifier(purchaseOrder) as number}`, purchaseOrder, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(purchaseOrder);
+    return this.http
+      .put<IPurchaseOrder>(`${this.resourceUrl}/${getPurchaseOrderIdentifier(purchaseOrder) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   partialUpdate(purchaseOrder: IPurchaseOrder): Observable<EntityResponseType> {
-    return this.http.patch<IPurchaseOrder>(`${this.resourceUrl}/${getPurchaseOrderIdentifier(purchaseOrder) as number}`, purchaseOrder, {
-      observe: 'response',
-    });
+    const copy = this.convertDateFromClient(purchaseOrder);
+    return this.http
+      .patch<IPurchaseOrder>(`${this.resourceUrl}/${getPurchaseOrderIdentifier(purchaseOrder) as number}`, copy, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IPurchaseOrder>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http
+      .get<IPurchaseOrder>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IPurchaseOrder[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http
+      .get<IPurchaseOrder[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -65,5 +77,27 @@ export class PurchaseOrderService {
       return [...purchaseOrdersToAdd, ...purchaseOrderCollection];
     }
     return purchaseOrderCollection;
+  }
+
+  protected convertDateFromClient(purchaseOrder: IPurchaseOrder): IPurchaseOrder {
+    return Object.assign({}, purchaseOrder, {
+      orderDate: purchaseOrder.orderDate?.isValid() ? purchaseOrder.orderDate.format(DATE_FORMAT) : undefined,
+    });
+  }
+
+  protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
+    if (res.body) {
+      res.body.orderDate = res.body.orderDate ? dayjs(res.body.orderDate) : undefined;
+    }
+    return res;
+  }
+
+  protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+    if (res.body) {
+      res.body.forEach((purchaseOrder: IPurchaseOrder) => {
+        purchaseOrder.orderDate = purchaseOrder.orderDate ? dayjs(purchaseOrder.orderDate) : undefined;
+      });
+    }
+    return res;
   }
 }

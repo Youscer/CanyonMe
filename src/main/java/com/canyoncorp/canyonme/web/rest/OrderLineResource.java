@@ -126,11 +126,20 @@ public class OrderLineResource {
             .findById(orderLine.getId())
             .map(
                 existingOrderLine -> {
+                    if (orderLine.getProductId() != null) {
+                        existingOrderLine.setProductId(orderLine.getProductId());
+                    }
+                    if (orderLine.getProductName() != null) {
+                        existingOrderLine.setProductName(orderLine.getProductName());
+                    }
                     if (orderLine.getQuantity() != null) {
                         existingOrderLine.setQuantity(orderLine.getQuantity());
                     }
                     if (orderLine.getUnitPrice() != null) {
                         existingOrderLine.setUnitPrice(orderLine.getUnitPrice());
+                    }
+                    if (orderLine.getDiscount() != null) {
+                        existingOrderLine.setDiscount(orderLine.getDiscount());
                     }
 
                     return existingOrderLine;
