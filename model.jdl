@@ -1,0 +1,67 @@
+
+// Entities
+
+entity Client {
+	id Long required
+    firstname String required
+    lastname String required
+    genderId Gender required
+    streetAddress String required
+    birthDate String required
+    email String required
+    password String required
+}
+
+entity PurchaseOrder {
+	id Long required
+    billingAddress String required
+    shippingAddress String required
+    orderStateId OrderState required
+    deliveryModeId DeliveryMode required
+    paymentModeId PaymentMode required
+}
+
+entity OrderLine {
+	id Long required
+    quantity Long required
+    unitPrice Float required
+}
+
+entity Product {
+	id Long required
+    name String required
+    description String required
+    unitPrice Float required
+}
+
+// Enumerations
+
+enum DeliveryMode {
+	DHL
+}
+
+enum PaymentMode {
+	YES_CARD
+}
+
+enum Gender {
+	MISTER, MISS, NON_BINARY
+}
+
+enum OrderState {
+	NEW, TO_COMPLETE, VALIDATED, PAYED, TO_SEND, SENT
+}
+
+// Relationships
+
+relationship OneToMany {
+	Client to PurchaseOrder{clientId}
+}
+
+relationship OneToMany {
+	PurchaseOrder to OrderLine{orderId}
+}
+
+relationship OneToMany {
+	Product to OrderLine{productId}
+}
