@@ -126,8 +126,8 @@ public class OrderLineResource {
             .findById(orderLine.getId())
             .map(
                 existingOrderLine -> {
-                    if (orderLine.getProductId() != null) {
-                        existingOrderLine.setProductId(orderLine.getProductId());
+                    if (orderLine.getProduct() != null) {
+                        existingOrderLine.setProduct(orderLine.getProduct());
                     }
                     if (orderLine.getProductName() != null) {
                         existingOrderLine.setProductName(orderLine.getProductName());

@@ -132,8 +132,11 @@ public class PersonResource {
                     if (person.getLastname() != null) {
                         existingPerson.setLastname(person.getLastname());
                     }
-                    if (person.getGenderId() != null) {
-                        existingPerson.setGenderId(person.getGenderId());
+                    if (person.getGender() != null) {
+                        existingPerson.setGender(person.getGender());
+                    }
+                    if (person.getBirthDate() != null) {
+                        existingPerson.setBirthDate(person.getBirthDate());
                     }
                     if (person.getEmail() != null) {
                         existingPerson.setEmail(person.getEmail());

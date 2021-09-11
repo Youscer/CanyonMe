@@ -22,9 +22,13 @@
         <dd>
           <span>{{ person.lastname }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.person.genderId">Gender Id</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.person.gender">Gender</span></dt>
         <dd>
-          <span jhiTranslate="{{ 'canyonMeApp.Gender.' + person.genderId }}">{{ person.genderId }}</span>
+          <span jhiTranslate="{{ 'canyonMeApp.Gender.' + person.gender }}">{{ person.gender }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.person.birthDate">Birth Date</span></dt>
+        <dd>
+          <span>{{ person.birthDate | formatMediumDatetime }}</span>
         </dd>
         <dt><span jhiTranslate="canyonMeApp.person.email">Email</span></dt>
         <dd>
@@ -34,11 +38,21 @@
         <dd>
           <span>{{ person.password }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.person.client">Client</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.person.billingAddress">Billing Address</span></dt>
         <dd>
-          <div *ngIf="person.client">
-            <a [routerLink]="['/client', person.client?.id, 'view']">{{ person.client?.id }}</a>
+          <div *ngIf="person.billingAddress">
+            <a [routerLink]="['/address', person.billingAddress?.id, 'view']">{{ person.billingAddress?.id }}</a>
           </div>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.person.shippingAddress">Shipping Address</span></dt>
+        <dd>
+          <div *ngIf="person.shippingAddress">
+            <a [routerLink]="['/address', person.shippingAddress?.id, 'view']">{{ person.shippingAddress?.id }}</a>
+          </div>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.person.user">User</span></dt>
+        <dd>
+          <span>{{ person.user?.login }}</span>
         </dd>
         <dt><span jhiTranslate="canyonMeApp.person.employee">Employee</span></dt>
         <dd>

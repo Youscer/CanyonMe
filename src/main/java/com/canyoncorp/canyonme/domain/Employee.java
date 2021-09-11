@@ -32,8 +32,8 @@ public class Employee implements Serializable {
 
     @OneToMany(mappedBy = "employee")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "client", "employee" }, allowSetters = true)
-    private Set<Person> personIds = new HashSet<>();
+    @JsonIgnoreProperties(value = { "billingAddress", "shippingAddress", "user", "purchasedOrders", "employee" }, allowSetters = true)
+    private Set<Person> people = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -62,35 +62,35 @@ public class Employee implements Serializable {
         this.role = role;
     }
 
-    public Set<Person> getPersonIds() {
-        return this.personIds;
+    public Set<Person> getPeople() {
+        return this.people;
     }
 
-    public Employee personIds(Set<Person> people) {
-        this.setPersonIds(people);
+    public Employee people(Set<Person> people) {
+        this.setPeople(people);
         return this;
     }
 
-    public Employee addPersonId(Person person) {
-        this.personIds.add(person);
+    public Employee addPerson(Person person) {
+        this.people.add(person);
         person.setEmployee(this);
         return this;
     }
 
-    public Employee removePersonId(Person person) {
-        this.personIds.remove(person);
+    public Employee removePerson(Person person) {
+        this.people.remove(person);
         person.setEmployee(null);
         return this;
     }
 
-    public void setPersonIds(Set<Person> people) {
-        if (this.personIds != null) {
-            this.personIds.forEach(i -> i.setEmployee(null));
+    public void setPeople(Set<Person> people) {
+        if (this.people != null) {
+            this.people.forEach(i -> i.setEmployee(null));
         }
         if (people != null) {
             people.forEach(i -> i.setEmployee(this));
         }
-        this.personIds = people;
+        this.people = people;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

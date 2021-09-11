@@ -129,6 +129,9 @@ public class ProductResource {
                     if (product.getName() != null) {
                         existingProduct.setName(product.getName());
                     }
+                    if (product.getBrand() != null) {
+                        existingProduct.setBrand(product.getBrand());
+                    }
                     if (product.getDescription() != null) {
                         existingProduct.setDescription(product.getDescription());
                     }

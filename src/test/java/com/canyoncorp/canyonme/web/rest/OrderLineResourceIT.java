@@ -29,8 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class OrderLineResourceIT {
 
-    private static final Long DEFAULT_PRODUCT_ID = 1L;
-    private static final Long UPDATED_PRODUCT_ID = 2L;
+    private static final Long DEFAULT_PRODUCT = 1L;
+    private static final Long UPDATED_PRODUCT = 2L;
 
     private static final String DEFAULT_PRODUCT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_PRODUCT_NAME = "BBBBBBBBBB";
@@ -69,7 +69,7 @@ class OrderLineResourceIT {
      */
     public static OrderLine createEntity(EntityManager em) {
         OrderLine orderLine = new OrderLine()
-            .productId(DEFAULT_PRODUCT_ID)
+            .product(DEFAULT_PRODUCT)
             .productName(DEFAULT_PRODUCT_NAME)
             .quantity(DEFAULT_QUANTITY)
             .unitPrice(DEFAULT_UNIT_PRICE)
@@ -85,7 +85,7 @@ class OrderLineResourceIT {
      */
     public static OrderLine createUpdatedEntity(EntityManager em) {
         OrderLine orderLine = new OrderLine()
-            .productId(UPDATED_PRODUCT_ID)
+            .product(UPDATED_PRODUCT)
             .productName(UPDATED_PRODUCT_NAME)
             .quantity(UPDATED_QUANTITY)
             .unitPrice(UPDATED_UNIT_PRICE)
@@ -111,7 +111,7 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeCreate + 1);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
-        assertThat(testOrderLine.getProductId()).isEqualTo(DEFAULT_PRODUCT_ID);
+        assertThat(testOrderLine.getProduct()).isEqualTo(DEFAULT_PRODUCT);
         assertThat(testOrderLine.getProductName()).isEqualTo(DEFAULT_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testOrderLine.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
@@ -138,10 +138,10 @@ class OrderLineResourceIT {
 
     @Test
     @Transactional
-    void checkProductIdIsRequired() throws Exception {
+    void checkProductIsRequired() throws Exception {
         int databaseSizeBeforeTest = orderLineRepository.findAll().size();
         // set the field null
-        orderLine.setProductId(null);
+        orderLine.setProduct(null);
 
         // Create the OrderLine, which fails.
 
@@ -216,7 +216,7 @@ class OrderLineResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(orderLine.getId().intValue())))
-            .andExpect(jsonPath("$.[*].productId").value(hasItem(DEFAULT_PRODUCT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].product").value(hasItem(DEFAULT_PRODUCT.intValue())))
             .andExpect(jsonPath("$.[*].productName").value(hasItem(DEFAULT_PRODUCT_NAME)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY.intValue())))
             .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.doubleValue())))
@@ -235,7 +235,7 @@ class OrderLineResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(orderLine.getId().intValue()))
-            .andExpect(jsonPath("$.productId").value(DEFAULT_PRODUCT_ID.intValue()))
+            .andExpect(jsonPath("$.product").value(DEFAULT_PRODUCT.intValue()))
             .andExpect(jsonPath("$.productName").value(DEFAULT_PRODUCT_NAME))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY.intValue()))
             .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()))
@@ -262,7 +262,7 @@ class OrderLineResourceIT {
         // Disconnect from session so that the updates on updatedOrderLine are not directly saved in db
         em.detach(updatedOrderLine);
         updatedOrderLine
-            .productId(UPDATED_PRODUCT_ID)
+            .product(UPDATED_PRODUCT)
             .productName(UPDATED_PRODUCT_NAME)
             .quantity(UPDATED_QUANTITY)
             .unitPrice(UPDATED_UNIT_PRICE)
@@ -280,7 +280,7 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeUpdate);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
-        assertThat(testOrderLine.getProductId()).isEqualTo(UPDATED_PRODUCT_ID);
+        assertThat(testOrderLine.getProduct()).isEqualTo(UPDATED_PRODUCT);
         assertThat(testOrderLine.getProductName()).isEqualTo(UPDATED_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testOrderLine.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
@@ -355,7 +355,7 @@ class OrderLineResourceIT {
         OrderLine partialUpdatedOrderLine = new OrderLine();
         partialUpdatedOrderLine.setId(orderLine.getId());
 
-        partialUpdatedOrderLine.productId(UPDATED_PRODUCT_ID).quantity(UPDATED_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
+        partialUpdatedOrderLine.product(UPDATED_PRODUCT).quantity(UPDATED_QUANTITY).unitPrice(UPDATED_UNIT_PRICE);
 
         restOrderLineMockMvc
             .perform(
@@ -369,7 +369,7 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeUpdate);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
-        assertThat(testOrderLine.getProductId()).isEqualTo(UPDATED_PRODUCT_ID);
+        assertThat(testOrderLine.getProduct()).isEqualTo(UPDATED_PRODUCT);
         assertThat(testOrderLine.getProductName()).isEqualTo(DEFAULT_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testOrderLine.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
@@ -389,7 +389,7 @@ class OrderLineResourceIT {
         partialUpdatedOrderLine.setId(orderLine.getId());
 
         partialUpdatedOrderLine
-            .productId(UPDATED_PRODUCT_ID)
+            .product(UPDATED_PRODUCT)
             .productName(UPDATED_PRODUCT_NAME)
             .quantity(UPDATED_QUANTITY)
             .unitPrice(UPDATED_UNIT_PRICE)
@@ -407,7 +407,7 @@ class OrderLineResourceIT {
         List<OrderLine> orderLineList = orderLineRepository.findAll();
         assertThat(orderLineList).hasSize(databaseSizeBeforeUpdate);
         OrderLine testOrderLine = orderLineList.get(orderLineList.size() - 1);
-        assertThat(testOrderLine.getProductId()).isEqualTo(UPDATED_PRODUCT_ID);
+        assertThat(testOrderLine.getProduct()).isEqualTo(UPDATED_PRODUCT);
         assertThat(testOrderLine.getProductName()).isEqualTo(UPDATED_PRODUCT_NAME);
         assertThat(testOrderLine.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testOrderLine.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);

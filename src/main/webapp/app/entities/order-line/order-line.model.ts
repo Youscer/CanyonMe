@@ -1,24 +1,24 @@
-import { IPurchaseOrder } from 'app/entities/purchase-order/purchase-order.model';
+import { IPurchasedOrder } from 'app/entities/purchased-order/purchased-order.model';
 
 export interface IOrderLine {
   id?: number;
-  productId?: number;
+  product?: number;
   productName?: string;
   quantity?: number;
   unitPrice?: number;
   discount?: number | null;
-  orderId?: IPurchaseOrder | null;
+  order?: IPurchasedOrder | null;
 }
 
 export class OrderLine implements IOrderLine {
   constructor(
     public id?: number,
-    public productId?: number,
+    public product?: number,
     public productName?: string,
     public quantity?: number,
     public unitPrice?: number,
     public discount?: number | null,
-    public orderId?: IPurchaseOrder | null
+    public order?: IPurchasedOrder | null
   ) {}
 }
 

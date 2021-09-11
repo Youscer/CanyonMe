@@ -4,11 +4,11 @@ import { Role } from 'app/entities/enumerations/role.model';
 export interface IEmployee {
   id?: number;
   role?: Role;
-  personIds?: IPerson[] | null;
+  people?: IPerson[] | null;
 }
 
 export class Employee implements IEmployee {
-  constructor(public id?: number, public role?: Role, public personIds?: IPerson[] | null) {}
+  constructor(public id?: number, public role?: Role, public people?: IPerson[] | null) {}
 }
 
 export function getEmployeeIdentifier(employee: IEmployee): number | undefined {

@@ -35,7 +35,7 @@ public class Discount implements Serializable {
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "discounts" }, allowSetters = true)
-    private Product productId;
+    private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -90,17 +90,17 @@ public class Discount implements Serializable {
         this.endDate = endDate;
     }
 
-    public Product getProductId() {
-        return this.productId;
+    public Product getProduct() {
+        return this.product;
     }
 
-    public Discount productId(Product product) {
-        this.setProductId(product);
+    public Discount product(Product product) {
+        this.setProduct(product);
         return this;
     }
 
-    public void setProductId(Product product) {
-        this.productId = product;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here

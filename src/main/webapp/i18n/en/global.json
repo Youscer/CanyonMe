@@ -7,15 +7,14 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
-        "client": "Client",
-        "purchaseOrder": "Purchase Order",
-        "orderLine": "Order Line",
-        "product": "Product",
         "shippingFees": "Shipping Fees",
         "paymentFees": "Payment Fees",
         "address": "Address",
         "person": "Person",
         "employee": "Employee",
+        "purchasedOrder": "Purchased Order",
+        "orderLine": "Order Line",
+        "product": "Product",
         "picture": "Picture",
         "discount": "Discount",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"

@@ -18,10 +18,10 @@
         <dd>
           <span>{{ picture.link }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.picture.productId">Product Id</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.picture.product">Product</span></dt>
         <dd>
-          <div *ngIf="picture.productId">
-            <a [routerLink]="['/product', picture.productId?.id, 'view']">{{ picture.productId?.id }}</a>
+          <div *ngIf="picture.product">
+            <a [routerLink]="['/product', picture.product?.id, 'view']">{{ picture.product?.id }}</a>
           </div>
         </dd>
       </dl>

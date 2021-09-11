@@ -18,12 +18,12 @@
         "title": "Order Line"
       },
       "id": "Id",
-      "productId": "Product Id",
+      "product": "Product",
       "productName": "Product Name",
       "quantity": "Quantity",
       "unitPrice": "Unit Price",
       "discount": "Discount",
-      "orderId": "Order Id"
+      "order": "Order"
     }
   }
 }

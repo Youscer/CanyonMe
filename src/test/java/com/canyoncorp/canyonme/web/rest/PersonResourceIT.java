@@ -9,6 +9,8 @@ import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.Person;
 import com.canyoncorp.canyonme.domain.enumeration.Gender;
 import com.canyoncorp.canyonme.repository.PersonRepository;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,8 +38,11 @@ class PersonResourceIT {
     private static final String DEFAULT_LASTNAME = "AAAAAAAAAA";
     private static final String UPDATED_LASTNAME = "BBBBBBBBBB";
 
-    private static final Gender DEFAULT_GENDER_ID = Gender.MISTER;
-    private static final Gender UPDATED_GENDER_ID = Gender.MISS;
+    private static final Gender DEFAULT_GENDER = Gender.MISTER;
+    private static final Gender UPDATED_GENDER = Gender.MISS;
+
+    private static final Instant DEFAULT_BIRTH_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_BIRTH_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
@@ -72,7 +77,8 @@ class PersonResourceIT {
         Person person = new Person()
             .firstname(DEFAULT_FIRSTNAME)
             .lastname(DEFAULT_LASTNAME)
-            .genderId(DEFAULT_GENDER_ID)
+            .gender(DEFAULT_GENDER)
+            .birthDate(DEFAULT_BIRTH_DATE)
             .email(DEFAULT_EMAIL)
             .password(DEFAULT_PASSWORD);
         return person;
@@ -88,7 +94,8 @@ class PersonResourceIT {
         Person person = new Person()
             .firstname(UPDATED_FIRSTNAME)
             .lastname(UPDATED_LASTNAME)
-            .genderId(UPDATED_GENDER_ID)
+            .gender(UPDATED_GENDER)
+            .birthDate(UPDATED_BIRTH_DATE)
             .email(UPDATED_EMAIL)
             .password(UPDATED_PASSWORD);
         return person;
@@ -114,7 +121,8 @@ class PersonResourceIT {
         Person testPerson = personList.get(personList.size() - 1);
         assertThat(testPerson.getFirstname()).isEqualTo(DEFAULT_FIRSTNAME);
         assertThat(testPerson.getLastname()).isEqualTo(DEFAULT_LASTNAME);
-        assertThat(testPerson.getGenderId()).isEqualTo(DEFAULT_GENDER_ID);
+        assertThat(testPerson.getGender()).isEqualTo(DEFAULT_GENDER);
+        assertThat(testPerson.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
         assertThat(testPerson.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testPerson.getPassword()).isEqualTo(DEFAULT_PASSWORD);
     }
@@ -173,10 +181,27 @@ class PersonResourceIT {
 
     @Test
     @Transactional
-    void checkGenderIdIsRequired() throws Exception {
+    void checkGenderIsRequired() throws Exception {
         int databaseSizeBeforeTest = personRepository.findAll().size();
         // set the field null
-        person.setGenderId(null);
+        person.setGender(null);
+
+        // Create the Person, which fails.
+
+        restPersonMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .andExpect(status().isBadRequest());
+
+        List<Person> personList = personRepository.findAll();
+        assertThat(personList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    void checkBirthDateIsRequired() throws Exception {
+        int databaseSizeBeforeTest = personRepository.findAll().size();
+        // set the field null
+        person.setBirthDate(null);
 
         // Create the Person, which fails.
 
@@ -236,7 +261,8 @@ class PersonResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(person.getId().intValue())))
             .andExpect(jsonPath("$.[*].firstname").value(hasItem(DEFAULT_FIRSTNAME)))
             .andExpect(jsonPath("$.[*].lastname").value(hasItem(DEFAULT_LASTNAME)))
-            .andExpect(jsonPath("$.[*].genderId").value(hasItem(DEFAULT_GENDER_ID.toString())))
+            .andExpect(jsonPath("$.[*].gender").value(hasItem(DEFAULT_GENDER.toString())))
+            .andExpect(jsonPath("$.[*].birthDate").value(hasItem(DEFAULT_BIRTH_DATE.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].password").value(hasItem(DEFAULT_PASSWORD)));
     }
@@ -255,7 +281,8 @@ class PersonResourceIT {
             .andExpect(jsonPath("$.id").value(person.getId().intValue()))
             .andExpect(jsonPath("$.firstname").value(DEFAULT_FIRSTNAME))
             .andExpect(jsonPath("$.lastname").value(DEFAULT_LASTNAME))
-            .andExpect(jsonPath("$.genderId").value(DEFAULT_GENDER_ID.toString()))
+            .andExpect(jsonPath("$.gender").value(DEFAULT_GENDER.toString()))
+            .andExpect(jsonPath("$.birthDate").value(DEFAULT_BIRTH_DATE.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
             .andExpect(jsonPath("$.password").value(DEFAULT_PASSWORD));
     }
@@ -282,7 +309,8 @@ class PersonResourceIT {
         updatedPerson
             .firstname(UPDATED_FIRSTNAME)
             .lastname(UPDATED_LASTNAME)
-            .genderId(UPDATED_GENDER_ID)
+            .gender(UPDATED_GENDER)
+            .birthDate(UPDATED_BIRTH_DATE)
             .email(UPDATED_EMAIL)
             .password(UPDATED_PASSWORD);
 
@@ -300,7 +328,8 @@ class PersonResourceIT {
         Person testPerson = personList.get(personList.size() - 1);
         assertThat(testPerson.getFirstname()).isEqualTo(UPDATED_FIRSTNAME);
         assertThat(testPerson.getLastname()).isEqualTo(UPDATED_LASTNAME);
-        assertThat(testPerson.getGenderId()).isEqualTo(UPDATED_GENDER_ID);
+        assertThat(testPerson.getGender()).isEqualTo(UPDATED_GENDER);
+        assertThat(testPerson.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
         assertThat(testPerson.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testPerson.getPassword()).isEqualTo(UPDATED_PASSWORD);
     }
@@ -373,7 +402,7 @@ class PersonResourceIT {
         Person partialUpdatedPerson = new Person();
         partialUpdatedPerson.setId(person.getId());
 
-        partialUpdatedPerson.genderId(UPDATED_GENDER_ID);
+        partialUpdatedPerson.gender(UPDATED_GENDER);
 
         restPersonMockMvc
             .perform(
@@ -389,7 +418,8 @@ class PersonResourceIT {
         Person testPerson = personList.get(personList.size() - 1);
         assertThat(testPerson.getFirstname()).isEqualTo(DEFAULT_FIRSTNAME);
         assertThat(testPerson.getLastname()).isEqualTo(DEFAULT_LASTNAME);
-        assertThat(testPerson.getGenderId()).isEqualTo(UPDATED_GENDER_ID);
+        assertThat(testPerson.getGender()).isEqualTo(UPDATED_GENDER);
+        assertThat(testPerson.getBirthDate()).isEqualTo(DEFAULT_BIRTH_DATE);
         assertThat(testPerson.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testPerson.getPassword()).isEqualTo(DEFAULT_PASSWORD);
     }
@@ -409,7 +439,8 @@ class PersonResourceIT {
         partialUpdatedPerson
             .firstname(UPDATED_FIRSTNAME)
             .lastname(UPDATED_LASTNAME)
-            .genderId(UPDATED_GENDER_ID)
+            .gender(UPDATED_GENDER)
+            .birthDate(UPDATED_BIRTH_DATE)
             .email(UPDATED_EMAIL)
             .password(UPDATED_PASSWORD);
 
@@ -427,7 +458,8 @@ class PersonResourceIT {
         Person testPerson = personList.get(personList.size() - 1);
         assertThat(testPerson.getFirstname()).isEqualTo(UPDATED_FIRSTNAME);
         assertThat(testPerson.getLastname()).isEqualTo(UPDATED_LASTNAME);
-        assertThat(testPerson.getGenderId()).isEqualTo(UPDATED_GENDER_ID);
+        assertThat(testPerson.getGender()).isEqualTo(UPDATED_GENDER);
+        assertThat(testPerson.getBirthDate()).isEqualTo(UPDATED_BIRTH_DATE);
         assertThat(testPerson.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testPerson.getPassword()).isEqualTo(UPDATED_PASSWORD);
     }

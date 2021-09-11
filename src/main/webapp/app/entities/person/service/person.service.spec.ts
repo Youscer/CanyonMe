@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import * as dayjs from 'dayjs';
 
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 import { Gender } from 'app/entities/enumerations/gender.model';
 import { IPerson, Person } from '../person.model';
 
@@ -12,6 +14,7 @@ describe('Service Tests', () => {
     let httpMock: HttpTestingController;
     let elemDefault: IPerson;
     let expectedResult: IPerson | IPerson[] | boolean | null;
+    let currentDate: dayjs.Dayjs;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -20,12 +23,14 @@ describe('Service Tests', () => {
       expectedResult = null;
       service = TestBed.inject(PersonService);
       httpMock = TestBed.inject(HttpTestingController);
+      currentDate = dayjs();
 
       elemDefault = {
         id: 0,
         firstname: 'AAAAAAA',
         lastname: 'AAAAAAA',
-        genderId: Gender.MISTER,
+        gender: Gender.MISTER,
+        birthDate: currentDate,
         email: 'AAAAAAA',
         password: 'AAAAAAA',
       };
@@ -33,7 +38,12 @@ describe('Service Tests', () => {
 
     describe('Service methods', () => {
       it('should find an element', () => {
-        const returnedFromService = Object.assign({}, elemDefault);
+        const returnedFromService = Object.assign(
+          {
+            birthDate: currentDate.format(DATE_TIME_FORMAT),
+          },
+          elemDefault
+        );
 
         service.find(123).subscribe(resp => (expectedResult = resp.body));
 
@@ -46,11 +56,17 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
+            birthDate: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            birthDate: currentDate,
+          },
+          returnedFromService
+        );
 
         service.create(new Person()).subscribe(resp => (expectedResult = resp.body));
 
@@ -65,14 +81,20 @@ describe('Service Tests', () => {
             id: 1,
             firstname: 'BBBBBB',
             lastname: 'BBBBBB',
-            genderId: 'BBBBBB',
+            gender: 'BBBBBB',
+            birthDate: currentDate.format(DATE_TIME_FORMAT),
             email: 'BBBBBB',
             password: 'BBBBBB',
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            birthDate: currentDate,
+          },
+          returnedFromService
+        );
 
         service.update(expected).subscribe(resp => (expectedResult = resp.body));
 
@@ -85,14 +107,20 @@ describe('Service Tests', () => {
         const patchObject = Object.assign(
           {
             lastname: 'BBBBBB',
-            email: 'BBBBBB',
+            birthDate: currentDate.format(DATE_TIME_FORMAT),
+            password: 'BBBBBB',
           },
           new Person()
         );
 
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            birthDate: currentDate,
+          },
+          returnedFromService
+        );
 
         service.partialUpdate(patchObject).subscribe(resp => (expectedResult = resp.body));
 
@@ -107,14 +135,20 @@ describe('Service Tests', () => {
             id: 1,
             firstname: 'BBBBBB',
             lastname: 'BBBBBB',
-            genderId: 'BBBBBB',
+            gender: 'BBBBBB',
+            birthDate: currentDate.format(DATE_TIME_FORMAT),
             email: 'BBBBBB',
             password: 'BBBBBB',
           },
           elemDefault
         );
 
-        const expected = Object.assign({}, returnedFromService);
+        const expected = Object.assign(
+          {
+            birthDate: currentDate,
+          },
+          returnedFromService
+        );
 
         service.query().subscribe(resp => (expectedResult = resp.body));
 
@@ -161,7 +195,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Person to an array', () => {
-          const personArray: IPerson[] = [{ id: 123 }, { id: 456 }, { id: 80467 }];
+          const personArray: IPerson[] = [{ id: 123 }, { id: 456 }, { id: 61901 }];
           const personCollection: IPerson[] = [{ id: 123 }];
           expectedResult = service.addPersonToCollectionIfMissing(personCollection, ...personArray);
           expect(expectedResult).toHaveLength(3);
