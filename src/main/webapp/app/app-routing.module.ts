@@ -30,6 +30,11 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           path: 'login',
           loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
         },
+        {
+          path: 'catalog',
+          data: { pageTitle: 'canyonMeApp.product.home.title' },
+          loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
+        },
         ...LAYOUT_ROUTES,
       ],
       { enableTracing: DEBUG_INFO_ENABLED }
