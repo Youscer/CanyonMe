@@ -30,6 +30,9 @@ import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
 import { ButtonAddBasketComponent } from './products/products-detail/button-add-basket/button-add-basket.component';
 import { ConfirmAddBasketComponent } from './products/products-detail/button-add-basket/confirm-add-basket/confirm-add-basket.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -54,6 +57,9 @@ import { ConfirmAddBasketComponent } from './products/products-detail/button-add
         useFactory: missingTranslationHandler,
       },
     }),
+    MatSnackBarModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
   ],
   providers: [
     Title,

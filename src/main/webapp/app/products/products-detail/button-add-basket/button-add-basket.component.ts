@@ -10,10 +10,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ButtonAddBasketComponent {
   durationInSeconds = 3;
 
-  constructor(private _snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) {}
+
+  //  ConfirmAddBasket(): void {
+  //    this.snackBar.openFromComponent(ConfirmAddBasketComponent, {
+  //      duration: this.durationInSeconds * 1000,
+  //    });
+  //  }
 
   ConfirmAddBasket(): void {
-    this._snackBar.openFromComponent(ConfirmAddBasketComponent, {
+    this.snackBar.open('Produit ajouté au panier', 'OK', {
       duration: this.durationInSeconds * 1000,
     });
   }
