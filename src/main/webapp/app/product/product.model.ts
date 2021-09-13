@@ -4,7 +4,6 @@ export interface IProduct {
   name?: string;
   description?: string;
   unitPrice?: number;
-//  discounts?: IDiscount[] | null;
 }
 
 export class Product implements IProduct {
@@ -13,7 +12,6 @@ export class Product implements IProduct {
     public name?: string,
     public description?: string,
     public unitPrice?: number,
-//    public discounts?: IDiscount[] | null
   ) {}
 }
 
