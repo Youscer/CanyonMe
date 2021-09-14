@@ -21,15 +21,17 @@ export interface ICart {
 }
 
 export class Cart implements ICart {
-  items: CartItem[] = [];
+  items: CartItem[];
 
-  constructor() { }
+  constructor() {
+    this.items = [];
+   }
 
   /**
    * Ajoute un produit au panier
    * @param product 
    */
-  addProduct(product: Product, quantity : number = 1) {
+  addProduct(product: Product, quantity : number = 1): void {
     this.changeQuantity(product, quantity);
   }
 
@@ -37,16 +39,16 @@ export class Cart implements ICart {
    * Supprime une produit du panier
    * @param productID 
    */
-  deleteProduct(productID: number) {
+  deleteProduct(productID: number): void {
     this.items = this.items.filter(ci => ci.product.id !== productID);
   }
 
   /**
    * Ajoute une quantité au produit
-   * @param product 
-   * @param quantity 
+   * @param product
+   * @param quantity
    */
-  addQuantity(product: Product, quantity: number) {
+  addQuantity(product: Product, quantity: number): void {
     this.changeQuantity(product, quantity);
   }
 
@@ -55,7 +57,7 @@ export class Cart implements ICart {
    * @param product 
    * @param quantity 
    */
-  subQuantity(product: Product, quantity: number) {
+  subQuantity(product: Product, quantity: number): void {
     this.changeQuantity(product, -quantity);
   }
 
@@ -66,7 +68,7 @@ export class Cart implements ICart {
    * @param cartItem 
    * @param quantity 
    */
-  setQuantity(cartItem: CartItem, quantity: number) {
+  setQuantity(cartItem: CartItem, quantity: number): void {
     if (quantity <= 0) {
       this.deleteProduct(cartItem.product.id);
     } else {
@@ -74,10 +76,10 @@ export class Cart implements ICart {
     }
   }
 
-  private changeQuantity(product: Product, quantity: number) {
-    let cartItem = this.items.find(ci => ci.product.id === product.id);
+  private changeQuantity(product: Product, quantity: number): void {
+    const cartItem = this.items.find(ci => ci.product.id === product.id);
     if (cartItem !== undefined) {
-      let newquantity = cartItem.quantity + quantity;
+      const newquantity = cartItem.quantity + quantity;
       this.setQuantity(cartItem, newquantity);
     } else {
       if (quantity > 0) {

@@ -6,11 +6,7 @@ import { ProductService } from '../service/product.service';
 
 
 @Component({
-<<<<<<< Updated upstream
-  selector: 'jhi-product',
-=======
   selector: 'jhi-catalog',
->>>>>>> Stashed changes
   templateUrl: './product.component.html',
 })
 export class ProductComponent implements OnInit {
@@ -38,7 +34,7 @@ export class ProductComponent implements OnInit {
   }
 
   trackId(index: number, item: IProduct): number {
-    return item.id!;
+    return item.id;
   }
 
 }

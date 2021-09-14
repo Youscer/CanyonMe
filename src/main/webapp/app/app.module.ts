@@ -33,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { ButtonAddCartComponent } from './products/products-detail/button-add-cart/button-add-cart.component';
 import { ConfirmAddCartComponent } from './products/products-detail/button-add-cart/confirm-add-cart/confirm-add-cart.component';
+import { CartComponent } from './cart/list/cart.component';
 
 @NgModule({
   imports: [
@@ -76,6 +77,7 @@ import { ConfirmAddCartComponent } from './products/products-detail/button-add-c
     FooterComponent,
     ButtonAddCartComponent,
     ConfirmAddCartComponent,
+    CartComponent,
   ],
   bootstrap: [MainComponent],
 })

@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ICart } from './../cart.model';
+import { ICart, Cart } from './../cart.model';
 import { CartService } from './../services/cart.service';
 
 
 @Component({
-  selector: 'canyonme-cart',
+  selector: 'jhi-cart',
   templateUrl: './cart.component.html',
 })
 export class CartComponent implements OnInit {
-  cart?: ICart;
+  cart: ICart;
+  isLoading = false;
 
   constructor(public cartService: CartService) {
-    
+    this.cart = new Cart();
   }
 
   ngOnInit(): void {
@@ -19,8 +20,13 @@ export class CartComponent implements OnInit {
   }
 
   refreshCart(): void {
-    this.cartService.refreshCartProducts();
-    this.cart = this.cartService.getCart();
+    this.isLoading = true;
+    this.cartService.refreshCartProducts().subscribe(
+      () => {
+        this.cart = this.cartService.getCart();
+        this.isLoading = false;
+      }
+    );
   }
 
 }
