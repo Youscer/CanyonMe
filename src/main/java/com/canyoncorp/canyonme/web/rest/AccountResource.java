@@ -17,6 +17,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +59,13 @@ public class AccountResource {
      */
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
+    /*
+    public void registerAccount(HttpEntity<String> httpEntity) {
+        String body = httpEntity.getBody();
+        System.out.println(body);
+    }
+    */
+
     public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
         if (isPasswordLengthInvalid(managedUserVM.getPassword())) {
             throw new InvalidPasswordException();
