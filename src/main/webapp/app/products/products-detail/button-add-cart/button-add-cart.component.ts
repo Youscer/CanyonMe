@@ -13,7 +13,7 @@ export class ButtonAddCartComponent {
 
   constructor(private snackBar: MatSnackBar) {}
 
-  confirmAddCart(): void {
+  addCart(): void {
     this.snackBar.openFromComponent(ConfirmAddCartComponent, {
       duration: this.durationInSeconds * this.durationConversion,
     });
