@@ -6,7 +6,11 @@ import { ProductService } from '../service/product.service';
 
 
 @Component({
+<<<<<<< Updated upstream
   selector: 'jhi-product',
+=======
+  selector: 'jhi-catalog',
+>>>>>>> Stashed changes
   templateUrl: './product.component.html',
 })
 export class ProductComponent implements OnInit {
