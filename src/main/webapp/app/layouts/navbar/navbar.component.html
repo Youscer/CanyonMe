@@ -307,6 +307,14 @@
           </li>
         </ul>
       </li>
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" routerLink="cart" (click)="collapseNavbar()">
+          <span>
+            <fa-icon icon="shopping-cart"></fa-icon>
+            <span>Cart</span>
+          </span>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
