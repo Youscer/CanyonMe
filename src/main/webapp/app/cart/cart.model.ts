@@ -17,9 +17,6 @@ export class CartItem implements ICartItem {
 
 export interface ICart {
   items: CartItem[];
-
-  deleteProduct(productID: number): void;
-
 }
 
 export class Cart implements ICart {
