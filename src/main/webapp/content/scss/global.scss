@@ -3,7 +3,6 @@
 @import '~bootstrap/scss/variables';
 @import '~@angular/material/theming';
 @include mat-core();
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -211,3 +210,8 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+.align-buttons {
+  display: flex;
+  justify-content: space-around;
+}

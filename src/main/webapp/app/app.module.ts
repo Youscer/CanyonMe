@@ -31,8 +31,6 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
-import { ButtonAddCartComponent } from './products/products-detail/button-add-cart/button-add-cart.component';
-import { ConfirmAddCartComponent } from './products/products-detail/button-add-cart/confirm-add-cart/confirm-add-cart.component';
 import { CartComponent } from './cart/list/cart.component';
 
 @NgModule({
@@ -75,8 +73,6 @@ import { CartComponent } from './cart/list/cart.component';
     PageRibbonComponent,
     ActiveMenuDirective,
     FooterComponent,
-    ButtonAddCartComponent,
-    ConfirmAddCartComponent,
     CartComponent,
   ],
   bootstrap: [MainComponent],
