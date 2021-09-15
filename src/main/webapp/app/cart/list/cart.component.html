@@ -1,0 +1,53 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductHeading">
+    <span jhiTranslate="canyonMeApp.product.home.title">Products</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="refreshCart()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="canyonMeApp.product.home.refreshListLabel">Refresh List</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="cart.items.length === 0">
+    <span jhiTranslate="canyonMeApp.product.home.notFound">No products found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="cart.items && cart.items.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="canyonMeApp.product.id">Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.product.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.product.description">Description</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.product.unitPrice">Unit Price</span></th>
+          <th scope="col"><span>Quantity</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cart.items" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/catalog', item.product.id]">{{ item.product.id }}</a>
+          </td>
+          <td>{{ item.product.name }}</td>
+          <td>{{ item.product.description }}</td>
+          <td>{{ item.product.unitPrice }}</td>
+          <td>{{ item.quantity }}</td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                <span class="d-none d-md-inline">View</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
