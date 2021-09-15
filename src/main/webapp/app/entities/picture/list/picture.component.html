@@ -34,7 +34,7 @@
         <tr>
           <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.picture.link">Link</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.picture.productId">Product Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.picture.product">Product</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -45,8 +45,8 @@
           </td>
           <td>{{ picture.link }}</td>
           <td>
-            <div *ngIf="picture.productId">
-              <a [routerLink]="['/product', picture.productId?.id, 'view']">{{ picture.productId?.id }}</a>
+            <div *ngIf="picture.product">
+              <a [routerLink]="['/product', picture.product?.id, 'view']">{{ picture.product?.id }}</a>
             </div>
           </td>
           <td class="text-right">

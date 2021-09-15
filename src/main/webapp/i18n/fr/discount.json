@@ -21,7 +21,7 @@
       "rate": "Rate",
       "startDate": "Start Date",
       "endDate": "End Date",
-      "productId": "Product Id"
+      "product": "Product"
     }
   }
 }

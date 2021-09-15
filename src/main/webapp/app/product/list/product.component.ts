@@ -4,7 +4,6 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { IProduct } from '../product.model';
 import { ProductService } from '../service/product.service';
 
-
 @Component({
   selector: 'jhi-catalog',
   templateUrl: './product.component.html',
@@ -36,5 +35,4 @@ export class ProductComponent implements OnInit {
   trackId(index: number, item: IProduct): number {
     return item.id;
   }
-
 }

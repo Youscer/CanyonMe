@@ -1,5 +1,4 @@
-import { Product } from "app/product/product.model";
-
+import { Product } from 'app/product/product.model';
 
 export interface ICartItem {
   product: Product;
@@ -25,19 +24,19 @@ export class Cart implements ICart {
 
   constructor() {
     this.items = [];
-   }
+  }
 
   /**
    * Ajoute un produit au panier
-   * @param product 
+   * @param product
    */
-  addProduct(product: Product, quantity : number = 1): void {
+  addProduct(product: Product, quantity: number = 1): void {
     this.changeQuantity(product, quantity);
   }
 
   /**
    * Supprime une produit du panier
-   * @param productID 
+   * @param productID
    */
   deleteProduct(productID: number): void {
     this.items = this.items.filter(ci => ci.product.id !== productID);
@@ -54,8 +53,8 @@ export class Cart implements ICart {
 
   /**
    * Reduit d'une quantité au produit
-   * @param product 
-   * @param quantity 
+   * @param product
+   * @param quantity
    */
   subQuantity(product: Product, quantity: number): void {
     this.changeQuantity(product, -quantity);
@@ -64,9 +63,9 @@ export class Cart implements ICart {
   /**
    * Applique la quantité à l'item du panier
    * Supprime l'item si la quantité est négatif ou nul
-   * 
-   * @param cartItem 
-   * @param quantity 
+   *
+   * @param cartItem
+   * @param quantity
    */
   setQuantity(cartItem: CartItem, quantity: number): void {
     if (quantity <= 0) {
@@ -87,9 +86,4 @@ export class Cart implements ICart {
       }
     }
   }
-
-
-
-
-
 }

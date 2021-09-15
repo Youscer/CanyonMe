@@ -22,7 +22,7 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
-        productId: 0,
+        product: 0,
         productName: 'AAAAAAA',
         quantity: 0,
         unitPrice: 0,
@@ -62,7 +62,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            productId: 1,
+            product: 1,
             productName: 'BBBBBB',
             quantity: 1,
             unitPrice: 1,
@@ -83,7 +83,7 @@ describe('Service Tests', () => {
       it('should partial update a OrderLine', () => {
         const patchObject = Object.assign(
           {
-            productId: 1,
+            product: 1,
             productName: 'BBBBBB',
           },
           new OrderLine()
@@ -104,7 +104,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
-            productId: 1,
+            product: 1,
             productName: 'BBBBBB',
             quantity: 1,
             unitPrice: 1,

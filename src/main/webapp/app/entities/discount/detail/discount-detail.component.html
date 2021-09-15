@@ -26,10 +26,10 @@
         <dd>
           <span>{{ discount.endDate | formatMediumDate }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.discount.productId">Product Id</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.discount.product">Product</span></dt>
         <dd>
-          <div *ngIf="discount.productId">
-            <a [routerLink]="['/product', discount.productId?.id, 'view']">{{ discount.productId?.id }}</a>
+          <div *ngIf="discount.product">
+            <a [routerLink]="['/product', discount.product?.id, 'view']">{{ discount.product?.id }}</a>
           </div>
         </dd>
       </dl>

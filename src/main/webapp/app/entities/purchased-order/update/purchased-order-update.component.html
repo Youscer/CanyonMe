@@ -1,0 +1,167 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-purchased-order-heading"
+        data-cy="PurchasedOrderCreateUpdateHeading"
+        jhiTranslate="canyonMeApp.purchasedOrder.home.createOrEditLabel"
+      >
+        Create or edit a Purchased Order
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.id" for="field_id">Id</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('id')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('id')?.errors?.number" jhiTranslate="entity.validation.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.orderDate" for="field_orderDate">Order Date</label>
+          <div class="input-group">
+            <input
+              id="field_orderDate"
+              data-cy="orderDate"
+              type="text"
+              class="form-control"
+              name="orderDate"
+              ngbDatepicker
+              #orderDateDp="ngbDatepicker"
+              formControlName="orderDate"
+            />
+            <span class="input-group-append">
+              <button type="button" class="btn btn-secondary" (click)="orderDateDp.toggle()">
+                <fa-icon icon="calendar-alt"></fa-icon>
+              </button>
+            </span>
+          </div>
+          <div *ngIf="editForm.get('orderDate')!.invalid && (editForm.get('orderDate')!.dirty || editForm.get('orderDate')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('orderDate')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.orderState" for="field_orderState">Order State</label>
+          <select class="form-control" name="orderState" formControlName="orderState" id="field_orderState" data-cy="orderState">
+            <option [ngValue]="null">{{ 'canyonMeApp.OrderState.null' | translate }}</option>
+            <option value="NEW">{{ 'canyonMeApp.OrderState.NEW' | translate }}</option>
+            <option value="TO_COMPLETE">{{ 'canyonMeApp.OrderState.TO_COMPLETE' | translate }}</option>
+            <option value="VALIDATED">{{ 'canyonMeApp.OrderState.VALIDATED' | translate }}</option>
+            <option value="PAYED">{{ 'canyonMeApp.OrderState.PAYED' | translate }}</option>
+            <option value="TO_SEND">{{ 'canyonMeApp.OrderState.TO_SEND' | translate }}</option>
+            <option value="SENT">{{ 'canyonMeApp.OrderState.SENT' | translate }}</option>
+          </select>
+          <div *ngIf="editForm.get('orderState')!.invalid && (editForm.get('orderState')!.dirty || editForm.get('orderState')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('orderState')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.shippingMode" for="field_shippingMode"
+            >Shipping Mode</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="shippingMode"
+            id="field_shippingMode"
+            data-cy="shippingMode"
+            formControlName="shippingMode"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.shippingFees" for="field_shippingFees"
+            >Shipping Fees</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="shippingFees"
+            id="field_shippingFees"
+            data-cy="shippingFees"
+            formControlName="shippingFees"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.paymentMode" for="field_paymentMode"
+            >Payment Mode</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="paymentMode"
+            id="field_paymentMode"
+            data-cy="paymentMode"
+            formControlName="paymentMode"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.paymentFees" for="field_paymentFees"
+            >Payment Fees</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="paymentFees"
+            id="field_paymentFees"
+            data-cy="paymentFees"
+            formControlName="paymentFees"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.person" for="field_person">Person</label>
+          <select class="form-control" id="field_person" data-cy="person" name="person" formControlName="person">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="personOption.id === editForm.get('person')!.value?.id ? editForm.get('person')!.value : personOption"
+              *ngFor="let personOption of peopleSharedCollection; trackBy: trackPersonById"
+            >
+              {{ personOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

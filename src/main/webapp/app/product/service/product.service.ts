@@ -5,7 +5,6 @@ import { createRequestOption } from 'app/core/request/request-util';
 import { Observable } from 'rxjs';
 import { IProduct } from '../product.model';
 
-
 export type EntityResponseType = HttpResponse<IProduct>;
 export type EntityArrayResponseType = HttpResponse<IProduct[]>;
 
@@ -13,12 +12,12 @@ export type EntityArrayResponseType = HttpResponse<IProduct[]>;
 export class ProductService {
   protected resourceUrl = this.applicationConfigService.getEndpointFor('api/products');
 
-  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) { }
+  constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   /**
    * Get all Product from Product API
-   * @param req 
-   * @returns 
+   * @param req
+   * @returns
    */
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
@@ -32,8 +31,6 @@ export class ProductService {
    */
   getProduct(id: number): Observable<IProduct> {
     const url = `${this.resourceUrl}/${id}`;
-    return this.http
-      .get<IProduct>(url)
-    ;
+    return this.http.get<IProduct>(url);
   }
 }
