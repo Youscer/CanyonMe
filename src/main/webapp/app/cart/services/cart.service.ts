@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IProduct } from 'app/product/product.model';
+import { IProduct, Product } from 'app/product/product.model';
 import { ProductService } from 'app/product/service/product.service';
 import { Cart, ICart } from '../cart.model';
 @Injectable({ providedIn: 'root' })
@@ -14,6 +14,40 @@ export class CartService {
 
   getCart(): ICart {
     return this.cart;
+  }
+
+  /**
+   * Ajoute un produit au panier
+   * @param product
+   */
+   addProduct(product: Product, quantity: number = 1): void {
+    this.cart.changeQuantity(product, quantity);
+  }
+
+  /**
+   * Supprime une produit du panier
+   * @param productID
+   */
+  deleteProduct(productID: number): void {
+    this.cart.deleteProduct(productID);
+  }
+
+  /**
+   * Ajoute une quantité au produit
+   * @param product
+   * @param quantity
+   */
+  addQuantity(product: Product, quantity: number): void {
+    this.cart.changeQuantity(product, quantity);
+  }
+
+  /**
+   * Reduit d'une quantité au produit
+   * @param product
+   * @param quantity
+   */
+  subQuantity(product: Product, quantity: number): void {
+    this.cart.changeQuantity(product, -quantity);
   }
 
   refreshCartProducts(): Observable<void> {
@@ -37,7 +71,7 @@ export class CartService {
     this.cart = new Cart();
 
     for (const product of products) {
-      this.cart.addProduct(product, tempCart.items.find(item => item.product.id === product.id)?.quantity ?? 0);
+      this.addProduct(product, tempCart.items.find(item => item.product.id === product.id)?.quantity ?? 0);
     }
   }
 }

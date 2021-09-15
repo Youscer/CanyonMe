@@ -18,7 +18,6 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshCart();
-    this.cartService.getCart().addProduct( new Product(1, 'test', 'test', 234), 3 );
   }
 
   refreshCart(): void {
@@ -30,10 +29,10 @@ export class CartComponent implements OnInit {
   }
 
   addQuantity(product : Product, quantity: number): void{
-    this.cart.addProduct(product, quantity);
+    this.cartService.addProduct(product, quantity);
   }
 
   deleteItem(product : Product): void{
-    this.cart.deleteProduct(product.id);
+    this.cartService.deleteProduct(product.id);
   }
 }
