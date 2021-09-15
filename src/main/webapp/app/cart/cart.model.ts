@@ -27,37 +27,11 @@ export class Cart implements ICart {
   }
 
   /**
-   * Ajoute un produit au panier
-   * @param product
-   */
-  addProduct(product: Product, quantity: number = 1): void {
-    this.changeQuantity(product, quantity);
-  }
-
-  /**
    * Supprime une produit du panier
    * @param productID
    */
   deleteProduct(productID: number): void {
     this.items = this.items.filter(ci => ci.product.id !== productID);
-  }
-
-  /**
-   * Ajoute une quantité au produit
-   * @param product
-   * @param quantity
-   */
-  addQuantity(product: Product, quantity: number): void {
-    this.changeQuantity(product, quantity);
-  }
-
-  /**
-   * Reduit d'une quantité au produit
-   * @param product
-   * @param quantity
-   */
-  subQuantity(product: Product, quantity: number): void {
-    this.changeQuantity(product, -quantity);
   }
 
   /**
@@ -75,7 +49,7 @@ export class Cart implements ICart {
     }
   }
 
-  private changeQuantity(product: Product, quantity: number): void {
+  changeQuantity(product: Product, quantity: number): void {
     const cartItem = this.items.find(ci => ci.product.id === product.id);
     if (cartItem !== undefined) {
       const newquantity = cartItem.quantity + quantity;

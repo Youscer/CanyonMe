@@ -14,6 +14,8 @@
 
   <jhi-alert></jhi-alert>
 
+  <span >{{ cart.items.length }}</span>
+
   <div class="alert alert-warning" id="no-result" *ngIf="cart.items.length === 0">
     <span jhiTranslate="canyonMeApp.product.home.notFound">No products found</span>
   </div>
@@ -41,8 +43,14 @@
           <td>{{ item.quantity }}</td>
           <td class="text-right">
             <div class="btn-group">
-              <button class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <span class="d-none d-md-inline">View</span>
+              <button class="btn btn-info btn-sm" data-cy="entityDetailsButton" (click)="addQuantity(item.product, 1)">
+                <span class="d-none d-md-inline">+</span>
+              </button>
+              <button class="btn btn-info btn-sm" data-cy="entityDetailsButton" (click)="addQuantity(item.product, -1)">
+                <span class="d-none d-md-inline">-</span>
+              </button>
+              <button class="btn btn-info btn-sm" data-cy="entityDetailsButton" (click)="deleteItem(item.product)">
+                <span class="d-none d-md-inline">X</span>
               </button>
             </div>
           </td>
