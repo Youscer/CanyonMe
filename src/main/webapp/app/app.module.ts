@@ -31,8 +31,6 @@ import { ErrorComponent } from './layouts/error/error.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
-import { ButtonAddCartComponent } from './products/products-detail/button-add-cart/button-add-cart.component';
-import { ConfirmAddCartComponent } from './products/products-detail/button-add-cart/confirm-add-cart/confirm-add-cart.component';
 
 @NgModule({
   imports: [
@@ -67,16 +65,7 @@ import { ConfirmAddCartComponent } from './products/products-detail/button-add-c
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
   ],
-  declarations: [
-    MainComponent,
-    NavbarComponent,
-    ErrorComponent,
-    PageRibbonComponent,
-    ActiveMenuDirective,
-    FooterComponent,
-    ButtonAddCartComponent,
-    ConfirmAddCartComponent,
-  ],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   bootstrap: [MainComponent],
 })
 export class AppModule {
