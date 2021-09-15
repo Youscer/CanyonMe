@@ -18,6 +18,12 @@ export class CartItem implements ICartItem {
 
 export interface ICart {
   items: CartItem[];
+
+  addProduct(product: Product, quantity : number): void;
+  deleteProduct(productID: number): void;
+  addQuantity(product: Product, quantity: number): void;
+  subQuantity(product: Product, quantity: number): void;
+  changeQuantity(product: Product, quantity: number): void;
 }
 
 export class Cart implements ICart {
@@ -76,7 +82,7 @@ export class Cart implements ICart {
     }
   }
 
-  private changeQuantity(product: Product, quantity: number): void {
+  changeQuantity(product: Product, quantity: number): void {
     const cartItem = this.items.find(ci => ci.product.id === product.id);
     if (cartItem !== undefined) {
       const newquantity = cartItem.quantity + quantity;

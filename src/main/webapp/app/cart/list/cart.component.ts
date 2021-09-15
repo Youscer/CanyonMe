@@ -1,4 +1,6 @@
+import { IProduct } from './../../entities/product/product.model';
 import { Component, OnInit } from '@angular/core';
+import { Product } from 'app/product/product.model';
 import { ICart, Cart } from './../cart.model';
 import { CartService } from './../services/cart.service';
 
@@ -17,6 +19,7 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.refreshCart();
+    this.cartService.getCart().addProduct( new Product(1, 'test', 'test', 234), 3 );
   }
 
   refreshCart(): void {
@@ -27,6 +30,14 @@ export class CartComponent implements OnInit {
         this.isLoading = false;
       }
     );
+  }
+
+  addQuantity(product : Product, quantity: number): void{
+    this.cart.addProduct(product, quantity);
+  }
+
+  deleteItem(product : Product): void{
+    this.cart.deleteProduct(product.id);
   }
 
 }
