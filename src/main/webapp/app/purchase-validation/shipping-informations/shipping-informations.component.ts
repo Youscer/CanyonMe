@@ -7,10 +7,9 @@ import { ShippingInformationsUpdateService } from './shipping-informations-updat
   styleUrls: ['./shipping-informations.component.scss'],
 })
 export class ShippingInformationsComponent implements OnInit {
-  count = 0;
   constructor(private shippingInformationsUpdateService: ShippingInformationsUpdateService) {}
 
   ngOnInit(): void {
-    this.count += 1;
+    return;
   }
 }
