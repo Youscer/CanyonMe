@@ -19,7 +19,7 @@
       },
       "id": "Id",
       "role": "Role",
-      "personId": "Person Id"
+      "person": "Person"
     }
   }
 }

@@ -20,10 +20,14 @@
       "id": "Id",
       "firstname": "Firstname",
       "lastname": "Lastname",
-      "genderId": "Gender Id",
+      "gender": "Gender",
+      "birthDate": "Birth Date",
       "email": "Email",
       "password": "Password",
-      "client": "Client",
+      "billingAddress": "Billing Address",
+      "shippingAddress": "Shipping Address",
+      "user": "User",
+      "purchasedOrder": "Purchased Order",
       "employee": "Employee"
     }
   }

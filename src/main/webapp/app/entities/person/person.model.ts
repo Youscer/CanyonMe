@@ -1,4 +1,7 @@
-import { IClient } from 'app/entities/client/client.model';
+import * as dayjs from 'dayjs';
+import { IAddress } from 'app/entities/address/address.model';
+import { IUser } from 'app/entities/user/user.model';
+import { IPurchasedOrder } from 'app/entities/purchased-order/purchased-order.model';
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { Gender } from 'app/entities/enumerations/gender.model';
 
@@ -6,10 +9,14 @@ export interface IPerson {
   id?: number;
   firstname?: string;
   lastname?: string;
-  genderId?: Gender;
+  gender?: Gender;
+  birthDate?: dayjs.Dayjs;
   email?: string;
   password?: string;
-  client?: IClient | null;
+  billingAddress?: IAddress | null;
+  shippingAddress?: IAddress | null;
+  user?: IUser | null;
+  purchasedOrders?: IPurchasedOrder[] | null;
   employee?: IEmployee | null;
 }
 
@@ -18,10 +25,14 @@ export class Person implements IPerson {
     public id?: number,
     public firstname?: string,
     public lastname?: string,
-    public genderId?: Gender,
+    public gender?: Gender,
+    public birthDate?: dayjs.Dayjs,
     public email?: string,
     public password?: string,
-    public client?: IClient | null,
+    public billingAddress?: IAddress | null,
+    public shippingAddress?: IAddress | null,
+    public user?: IUser | null,
+    public purchasedOrders?: IPurchasedOrder[] | null,
     public employee?: IEmployee | null
   ) {}
 }

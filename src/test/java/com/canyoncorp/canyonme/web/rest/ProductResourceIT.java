@@ -32,6 +32,9 @@ class ProductResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_BRAND = "AAAAAAAAAA";
+    private static final String UPDATED_BRAND = "BBBBBBBBBB";
+
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
@@ -62,7 +65,11 @@ class ProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Product createEntity(EntityManager em) {
-        Product product = new Product().name(DEFAULT_NAME).description(DEFAULT_DESCRIPTION).unitPrice(DEFAULT_UNIT_PRICE);
+        Product product = new Product()
+            .name(DEFAULT_NAME)
+            .brand(DEFAULT_BRAND)
+            .description(DEFAULT_DESCRIPTION)
+            .unitPrice(DEFAULT_UNIT_PRICE);
         return product;
     }
 
@@ -73,7 +80,11 @@ class ProductResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Product createUpdatedEntity(EntityManager em) {
-        Product product = new Product().name(UPDATED_NAME).description(UPDATED_DESCRIPTION).unitPrice(UPDATED_UNIT_PRICE);
+        Product product = new Product()
+            .name(UPDATED_NAME)
+            .brand(UPDATED_BRAND)
+            .description(UPDATED_DESCRIPTION)
+            .unitPrice(UPDATED_UNIT_PRICE);
         return product;
     }
 
@@ -96,6 +107,7 @@ class ProductResourceIT {
         assertThat(productList).hasSize(databaseSizeBeforeCreate + 1);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProduct.getBrand()).isEqualTo(DEFAULT_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
     }
@@ -182,6 +194,7 @@ class ProductResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.doubleValue())));
     }
@@ -199,6 +212,7 @@ class ProductResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(product.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()));
     }
@@ -222,7 +236,7 @@ class ProductResourceIT {
         Product updatedProduct = productRepository.findById(product.getId()).get();
         // Disconnect from session so that the updates on updatedProduct are not directly saved in db
         em.detach(updatedProduct);
-        updatedProduct.name(UPDATED_NAME).description(UPDATED_DESCRIPTION).unitPrice(UPDATED_UNIT_PRICE);
+        updatedProduct.name(UPDATED_NAME).brand(UPDATED_BRAND).description(UPDATED_DESCRIPTION).unitPrice(UPDATED_UNIT_PRICE);
 
         restProductMockMvc
             .perform(
@@ -237,6 +251,7 @@ class ProductResourceIT {
         assertThat(productList).hasSize(databaseSizeBeforeUpdate);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
     }
@@ -322,6 +337,7 @@ class ProductResourceIT {
         assertThat(productList).hasSize(databaseSizeBeforeUpdate);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testProduct.getBrand()).isEqualTo(DEFAULT_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
     }
@@ -338,7 +354,7 @@ class ProductResourceIT {
         Product partialUpdatedProduct = new Product();
         partialUpdatedProduct.setId(product.getId());
 
-        partialUpdatedProduct.name(UPDATED_NAME).description(UPDATED_DESCRIPTION).unitPrice(UPDATED_UNIT_PRICE);
+        partialUpdatedProduct.name(UPDATED_NAME).brand(UPDATED_BRAND).description(UPDATED_DESCRIPTION).unitPrice(UPDATED_UNIT_PRICE);
 
         restProductMockMvc
             .perform(
@@ -353,6 +369,7 @@ class ProductResourceIT {
         assertThat(productList).hasSize(databaseSizeBeforeUpdate);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
     }

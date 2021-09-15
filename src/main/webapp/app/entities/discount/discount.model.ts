@@ -6,7 +6,7 @@ export interface IDiscount {
   rate?: number;
   startDate?: dayjs.Dayjs | null;
   endDate?: dayjs.Dayjs | null;
-  productId?: IProduct | null;
+  product?: IProduct | null;
 }
 
 export class Discount implements IDiscount {
@@ -15,7 +15,7 @@ export class Discount implements IDiscount {
     public rate?: number,
     public startDate?: dayjs.Dayjs | null,
     public endDate?: dayjs.Dayjs | null,
-    public productId?: IProduct | null
+    public product?: IProduct | null
   ) {}
 }
 

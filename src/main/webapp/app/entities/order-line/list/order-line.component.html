@@ -33,12 +33,12 @@
       <thead>
         <tr>
           <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.id">Id</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.productId">Product Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.product">Product</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.productName">Product Name</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.quantity">Quantity</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.unitPrice">Unit Price</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.discount">Discount</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.orderId">Order Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.orderLine.order">Order</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -47,14 +47,14 @@
           <td>
             <a [routerLink]="['/order-line', orderLine.id, 'view']">{{ orderLine.id }}</a>
           </td>
-          <td>{{ orderLine.productId }}</td>
+          <td>{{ orderLine.product }}</td>
           <td>{{ orderLine.productName }}</td>
           <td>{{ orderLine.quantity }}</td>
           <td>{{ orderLine.unitPrice }}</td>
           <td>{{ orderLine.discount }}</td>
           <td>
-            <div *ngIf="orderLine.orderId">
-              <a [routerLink]="['/purchase-order', orderLine.orderId?.id, 'view']">{{ orderLine.orderId?.id }}</a>
+            <div *ngIf="orderLine.order">
+              <a [routerLink]="['/purchased-order', orderLine.order?.id, 'view']">{{ orderLine.order?.id }}</a>
             </div>
           </td>
           <td class="text-right">

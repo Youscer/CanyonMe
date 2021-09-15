@@ -5,26 +5,6 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
-        path: 'client',
-        data: { pageTitle: 'canyonMeApp.client.home.title' },
-        loadChildren: () => import('./client/client.module').then(m => m.ClientModule),
-      },
-      {
-        path: 'purchase-order',
-        data: { pageTitle: 'canyonMeApp.purchaseOrder.home.title' },
-        loadChildren: () => import('./purchase-order/purchase-order.module').then(m => m.PurchaseOrderModule),
-      },
-      {
-        path: 'order-line',
-        data: { pageTitle: 'canyonMeApp.orderLine.home.title' },
-        loadChildren: () => import('./order-line/order-line.module').then(m => m.OrderLineModule),
-      },
-      {
-        path: 'product',
-        data: { pageTitle: 'canyonMeApp.product.home.title' },
-        loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
-      },
-      {
         path: 'shipping-fees',
         data: { pageTitle: 'canyonMeApp.shippingFees.home.title' },
         loadChildren: () => import('./shipping-fees/shipping-fees.module').then(m => m.ShippingFeesModule),
@@ -48,6 +28,21 @@ import { RouterModule } from '@angular/router';
         path: 'employee',
         data: { pageTitle: 'canyonMeApp.employee.home.title' },
         loadChildren: () => import('./employee/employee.module').then(m => m.EmployeeModule),
+      },
+      {
+        path: 'purchased-order',
+        data: { pageTitle: 'canyonMeApp.purchasedOrder.home.title' },
+        loadChildren: () => import('./purchased-order/purchased-order.module').then(m => m.PurchasedOrderModule),
+      },
+      {
+        path: 'order-line',
+        data: { pageTitle: 'canyonMeApp.orderLine.home.title' },
+        loadChildren: () => import('./order-line/order-line.module').then(m => m.OrderLineModule),
+      },
+      {
+        path: 'product',
+        data: { pageTitle: 'canyonMeApp.product.home.title' },
+        loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
       },
       {
         path: 'picture',

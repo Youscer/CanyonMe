@@ -24,7 +24,7 @@ export class DiscountUpdateComponent implements OnInit {
     rate: [null, [Validators.required]],
     startDate: [],
     endDate: [],
-    productId: [],
+    product: [],
   });
 
   constructor(
@@ -85,10 +85,10 @@ export class DiscountUpdateComponent implements OnInit {
       rate: discount.rate,
       startDate: discount.startDate,
       endDate: discount.endDate,
-      productId: discount.productId,
+      product: discount.product,
     });
 
-    this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(this.productsSharedCollection, discount.productId);
+    this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(this.productsSharedCollection, discount.product);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -96,7 +96,7 @@ export class DiscountUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProduct[]>) => res.body ?? []))
       .pipe(
-        map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing(products, this.editForm.get('productId')!.value))
+        map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing(products, this.editForm.get('product')!.value))
       )
       .subscribe((products: IProduct[]) => (this.productsSharedCollection = products));
   }
@@ -108,7 +108,7 @@ export class DiscountUpdateComponent implements OnInit {
       rate: this.editForm.get(['rate'])!.value,
       startDate: this.editForm.get(['startDate'])!.value,
       endDate: this.editForm.get(['endDate'])!.value,
-      productId: this.editForm.get(['productId'])!.value,
+      product: this.editForm.get(['product'])!.value,
     };
   }
 }

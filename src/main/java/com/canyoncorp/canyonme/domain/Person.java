@@ -3,6 +3,9 @@ package com.canyoncorp.canyonme.domain;
 import com.canyoncorp.canyonme.domain.enumeration.Gender;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import org.hibernate.annotations.Cache;
@@ -23,33 +26,46 @@ public class Person implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
+    //@NotNull
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
-    @NotNull
+    //@NotNull
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "gender_id", nullable = false)
-    private Gender genderId;
+    @Column(name = "gender", nullable = false)
+    private Gender gender;
 
-    @NotNull
+    @Column(name = "birth_date", nullable = false)
+    private Instant birthDate;
+
     @Column(name = "email", nullable = false)
     private String email;
 
-    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToOne
-    @JsonIgnoreProperties(value = { "billingAddress", "shippingAddress", "personIds", "purchaseOrders" }, allowSetters = true)
-    private Client client;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Address billingAddress;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Address shippingAddress;
+
+    @OneToOne
+    @JoinColumn(unique = true)
+    private User user;
+
+    @OneToMany(mappedBy = "person")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnoreProperties(value = { "orderLines", "person" }, allowSetters = true)
+    private Set<PurchasedOrder> purchasedOrders = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "personIds" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "people" }, allowSetters = true)
     private Employee employee;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -92,17 +108,30 @@ public class Person implements Serializable {
         this.lastname = lastname;
     }
 
-    public Gender getGenderId() {
-        return this.genderId;
+    public Gender getGender() {
+        return this.gender;
     }
 
-    public Person genderId(Gender genderId) {
-        this.genderId = genderId;
+    public Person gender(Gender gender) {
+        this.gender = gender;
         return this;
     }
 
-    public void setGenderId(Gender genderId) {
-        this.genderId = genderId;
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public Instant getBirthDate() {
+        return this.birthDate;
+    }
+
+    public Person birthDate(Instant birthDate) {
+        this.birthDate = birthDate;
+        return this;
+    }
+
+    public void setBirthDate(Instant birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getEmail() {
@@ -131,17 +160,74 @@ public class Person implements Serializable {
         this.password = password;
     }
 
-    public Client getClient() {
-        return this.client;
+    public Address getBillingAddress() {
+        return this.billingAddress;
     }
 
-    public Person client(Client client) {
-        this.setClient(client);
+    public Person billingAddress(Address address) {
+        this.setBillingAddress(address);
         return this;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setBillingAddress(Address address) {
+        this.billingAddress = address;
+    }
+
+    public Address getShippingAddress() {
+        return this.shippingAddress;
+    }
+
+    public Person shippingAddress(Address address) {
+        this.setShippingAddress(address);
+        return this;
+    }
+
+    public void setShippingAddress(Address address) {
+        this.shippingAddress = address;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public Person user(User user) {
+        this.setUser(user);
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<PurchasedOrder> getPurchasedOrders() {
+        return this.purchasedOrders;
+    }
+
+    public Person purchasedOrders(Set<PurchasedOrder> purchasedOrders) {
+        this.setPurchasedOrders(purchasedOrders);
+        return this;
+    }
+
+    public Person addPurchasedOrder(PurchasedOrder purchasedOrder) {
+        this.purchasedOrders.add(purchasedOrder);
+        purchasedOrder.setPerson(this);
+        return this;
+    }
+
+    public Person removePurchasedOrder(PurchasedOrder purchasedOrder) {
+        this.purchasedOrders.remove(purchasedOrder);
+        purchasedOrder.setPerson(null);
+        return this;
+    }
+
+    public void setPurchasedOrders(Set<PurchasedOrder> purchasedOrders) {
+        if (this.purchasedOrders != null) {
+            this.purchasedOrders.forEach(i -> i.setPerson(null));
+        }
+        if (purchasedOrders != null) {
+            purchasedOrders.forEach(i -> i.setPerson(this));
+        }
+        this.purchasedOrders = purchasedOrders;
     }
 
     public Employee getEmployee() {
@@ -183,7 +269,8 @@ public class Person implements Serializable {
             "id=" + getId() +
             ", firstname='" + getFirstname() + "'" +
             ", lastname='" + getLastname() + "'" +
-            ", genderId='" + getGenderId() + "'" +
+            ", gender='" + getGender() + "'" +
+            ", birthDate='" + getBirthDate() + "'" +
             ", email='" + getEmail() + "'" +
             ", password='" + getPassword() + "'" +
             "}";

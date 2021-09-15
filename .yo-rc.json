@@ -19,7 +19,7 @@
     "serviceDiscoveryType": false,
     "reactive": false,
     "authenticationType": "jwt",
-    "packageName": "com.mycompany.myapp",
+    "packageName": "com.canyoncorp.canyonme",
     "serverPort": "8080",
     "cacheProvider": "ehcache",
     "enableHibernateCache": true,
@@ -37,11 +37,24 @@
     "clientTheme": "none",
     "enableTranslation": true,
     "nativeLanguage": "en",
-    "packageFolder": "com/mycompany/myapp",
+    "packageFolder": "com/canyoncorp/canyonme",
     "jwtSecretKey": "YThkMzQwMjJmYmUwMDg1ZTg4ZWQ0MDcxM2MzMmViMjE5NDExZDY5YzE3YTExOWFmN2Y1ZjJhMGE1Y2M5NDU1ODRkMTJiMmFiMjY0ZjY3MmVkYTE3ZTM4ZDBiY2VkZjgwNWJlOTM1MmU2MDdjMDZiNWY2NTU4MTg0YmJhNTI3YzI=",
     "devServerPort": 4200,
     "clientPackageManager": "npm",
     "clientThemeVariant": "",
-    "languages": ["en", "fr"]
+    "languages": ["en", "fr"],
+    "entities": [
+      "ShippingFees",
+      "PaymentFees",
+      "Address",
+      "Person",
+      "Employee",
+      "PurchasedOrder",
+      "OrderLine",
+      "Product",
+      "Picture",
+      "Discount"
+    ],
+    "lastLiquibaseTimestamp": 1631360940000
   }
 }

@@ -35,10 +35,13 @@
           <th scope="col"><span jhiTranslate="canyonMeApp.person.id">Id</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.person.firstname">Firstname</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.person.lastname">Lastname</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.person.genderId">Gender Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.gender">Gender</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.birthDate">Birth Date</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.person.email">Email</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.person.password">Password</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.person.client">Client</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.billingAddress">Billing Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.shippingAddress">Shipping Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.user">User</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.person.employee">Employee</span></th>
           <th scope="col"></th>
         </tr>
@@ -50,13 +53,22 @@
           </td>
           <td>{{ person.firstname }}</td>
           <td>{{ person.lastname }}</td>
-          <td jhiTranslate="{{ 'canyonMeApp.Gender.' + person.genderId }}">{{ person.genderId }}</td>
+          <td jhiTranslate="{{ 'canyonMeApp.Gender.' + person.gender }}">{{ person.gender }}</td>
+          <td>{{ person.birthDate | formatMediumDatetime }}</td>
           <td>{{ person.email }}</td>
           <td>{{ person.password }}</td>
           <td>
-            <div *ngIf="person.client">
-              <a [routerLink]="['/client', person.client?.id, 'view']">{{ person.client?.id }}</a>
+            <div *ngIf="person.billingAddress">
+              <a [routerLink]="['/address', person.billingAddress?.id, 'view']">{{ person.billingAddress?.id }}</a>
             </div>
+          </td>
+          <td>
+            <div *ngIf="person.shippingAddress">
+              <a [routerLink]="['/address', person.shippingAddress?.id, 'view']">{{ person.shippingAddress?.id }}</a>
+            </div>
+          </td>
+          <td>
+            {{ person.user?.login }}
           </td>
           <td>
             <div *ngIf="person.employee">

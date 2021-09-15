@@ -28,6 +28,9 @@ public class Product implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "brand")
+    private String brand;
+
     @NotNull
     @Column(name = "description", nullable = false)
     private String description;
@@ -36,9 +39,9 @@ public class Product implements Serializable {
     @Column(name = "unit_price", nullable = false)
     private Float unitPrice;
 
-    @OneToMany(mappedBy = "productId")
+    @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "productId" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "product" }, allowSetters = true)
     private Set<Discount> discounts = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
@@ -66,6 +69,19 @@ public class Product implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBrand() {
+        return this.brand;
+    }
+
+    public Product brand(String brand) {
+        this.brand = brand;
+        return this;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getDescription() {
@@ -105,22 +121,22 @@ public class Product implements Serializable {
 
     public Product addDiscount(Discount discount) {
         this.discounts.add(discount);
-        discount.setProductId(this);
+        discount.setProduct(this);
         return this;
     }
 
     public Product removeDiscount(Discount discount) {
         this.discounts.remove(discount);
-        discount.setProductId(null);
+        discount.setProduct(null);
         return this;
     }
 
     public void setDiscounts(Set<Discount> discounts) {
         if (this.discounts != null) {
-            this.discounts.forEach(i -> i.setProductId(null));
+            this.discounts.forEach(i -> i.setProduct(null));
         }
         if (discounts != null) {
-            discounts.forEach(i -> i.setProductId(this));
+            discounts.forEach(i -> i.setProduct(this));
         }
         this.discounts = discounts;
     }
@@ -150,6 +166,7 @@ public class Product implements Serializable {
         return "Product{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", brand='" + getBrand() + "'" +
             ", description='" + getDescription() + "'" +
             ", unitPrice=" + getUnitPrice() +
             "}";

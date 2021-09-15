@@ -48,21 +48,18 @@ public class CacheConfiguration {
             createCache(cm, com.canyoncorp.canyonme.domain.User.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.Authority.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.User.class.getName() + ".authorities");
-            createCache(cm, com.canyoncorp.canyonme.domain.Client.class.getName());
-            createCache(cm, com.canyoncorp.canyonme.domain.Client.class.getName() + ".purchaseOrders");
-            createCache(cm, com.canyoncorp.canyonme.domain.PurchaseOrder.class.getName());
-            createCache(cm, com.canyoncorp.canyonme.domain.PurchaseOrder.class.getName() + ".orderLines");
-            createCache(cm, com.canyoncorp.canyonme.domain.OrderLine.class.getName());
-            createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName());
-            createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName() + ".orderLines");
-            createCache(cm, com.canyoncorp.canyonme.domain.Client.class.getName() + ".personIds");
-            createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName() + ".discounts");
             createCache(cm, com.canyoncorp.canyonme.domain.ShippingFees.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.PaymentFees.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.Address.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.Person.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Person.class.getName() + ".purchasedOrders");
             createCache(cm, com.canyoncorp.canyonme.domain.Employee.class.getName());
-            createCache(cm, com.canyoncorp.canyonme.domain.Employee.class.getName() + ".personIds");
+            createCache(cm, com.canyoncorp.canyonme.domain.Employee.class.getName() + ".people");
+            createCache(cm, com.canyoncorp.canyonme.domain.PurchasedOrder.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.PurchasedOrder.class.getName() + ".orderLines");
+            createCache(cm, com.canyoncorp.canyonme.domain.OrderLine.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName());
+            createCache(cm, com.canyoncorp.canyonme.domain.Product.class.getName() + ".discounts");
             createCache(cm, com.canyoncorp.canyonme.domain.Picture.class.getName());
             createCache(cm, com.canyoncorp.canyonme.domain.Discount.class.getName());
             // jhipster-needle-ehcache-add-entry

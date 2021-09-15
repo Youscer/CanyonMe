@@ -2,8 +2,11 @@ package com.canyoncorp.canyonme.service;
 
 import com.canyoncorp.canyonme.config.Constants;
 import com.canyoncorp.canyonme.domain.Authority;
+import com.canyoncorp.canyonme.domain.Person;
 import com.canyoncorp.canyonme.domain.User;
+import com.canyoncorp.canyonme.domain.enumeration.Gender;
 import com.canyoncorp.canyonme.repository.AuthorityRepository;
+import com.canyoncorp.canyonme.repository.PersonRepository;
 import com.canyoncorp.canyonme.repository.UserRepository;
 import com.canyoncorp.canyonme.security.AuthoritiesConstants;
 import com.canyoncorp.canyonme.security.SecurityUtils;
@@ -35,6 +38,8 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private PersonRepository personRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthorityRepository authorityRepository;
@@ -43,11 +48,13 @@ public class UserService {
 
     public UserService(
         UserRepository userRepository,
+        PersonRepository personRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
         CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
+        this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
@@ -101,16 +108,6 @@ public class UserService {
 
     public User registerUser(AdminUserDTO userDTO, String password) {
         userRepository
-            .findOneByLogin(userDTO.getLogin().toLowerCase())
-            .ifPresent(
-                existingUser -> {
-                    boolean removed = removeNonActivatedUser(existingUser);
-                    if (!removed) {
-                        throw new UsernameAlreadyUsedException();
-                    }
-                }
-            );
-        userRepository
             .findOneByEmailIgnoreCase(userDTO.getEmail())
             .ifPresent(
                 existingUser -> {
@@ -122,8 +119,9 @@ public class UserService {
             );
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
-        // new user gets initially a generated password
+        // newUser.setLogin(userDTO.getFirstName() + String.valueOf(newUser.getId()));
+        String uniqueID = UUID.randomUUID().toString();
+        newUser.setLogin(userDTO.getFirstName() + uniqueID.toLowerCase().replaceAll("-", "").substring(0, 8));
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(userDTO.getFirstName());
         newUser.setLastName(userDTO.getLastName());
@@ -140,6 +138,17 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
+
+        Person person = new Person();
+        person.setUser(newUser);
+        person.setFirstname(userDTO.getFirstName());
+        person.setLastname(userDTO.getLastName());
+        person.setEmail(userDTO.getEmail());
+        person.setBirthDate(Instant.now());
+        person.setGender(Gender.MISTER);
+        person.setPassword(encryptedPassword);
+        personRepository.save(person);
+
         this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;

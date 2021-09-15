@@ -1,4 +1,4 @@
-id;product_id;product_name;quantity;unit_price;discount
+id;product;product_name;quantity;unit_price;discount
 1;19690;dedicated;51476;91585;26193
 2;3638;Gorgeous system Assimilated;69176;48202;84491
 3;31867;Oregon Mali Hill;9131;10930;35084

@@ -4,7 +4,6 @@ import { Product } from 'app/product/product.model';
 import { ICart, Cart } from './../cart.model';
 import { CartService } from './../services/cart.service';
 
-
 @Component({
   selector: 'jhi-cart',
   templateUrl: './cart.component.html',
@@ -24,12 +23,10 @@ export class CartComponent implements OnInit {
 
   refreshCart(): void {
     this.isLoading = true;
-    this.cartService.refreshCartProducts().subscribe(
-      () => {
-        this.cart = this.cartService.getCart();
-        this.isLoading = false;
-      }
-    );
+    this.cartService.refreshCartProducts().subscribe(() => {
+      this.cart = this.cartService.getCart();
+      this.isLoading = false;
+    });
   }
 
   addQuantity(product : Product, quantity: number): void{
@@ -39,5 +36,4 @@ export class CartComponent implements OnInit {
   deleteItem(product : Product): void{
     this.cart.deleteProduct(product.id);
   }
-
 }
