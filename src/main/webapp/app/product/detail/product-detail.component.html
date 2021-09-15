@@ -27,9 +27,14 @@
           <span>{{ product.unitPrice }}</span>
         </dd>
       </dl>
-      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
-        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-      </button>
+
+      <div class="align-buttons">
+        <button mat-raised-button color="primary" type="submit" (click)="previousState()">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+        <!-- Bouton ajout Panier -->
+        <jhi-button-add-cart></jhi-button-add-cart>
+      </div>
     </div>
     <span>{{ errmsg }}</span>
   </div>
