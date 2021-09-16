@@ -1,15 +1,132 @@
-<h1>Pruchase Recap</h1>
+<mat-stepper #stepper>
+  <ng-template matStepperIcon="edit">
+    <mat-icon>done</mat-icon>
+  </ng-template>
+  <!-- Step 1 -->
+  <mat-step>
+    <ng-template matStepLabel>Récapitulatif Commande</ng-template>
+    <mat-label>Commande</mat-label>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="article">
+        <th mat-header-cell *matHeaderCellDef>Article</th>
+        <td mat-cell *matCellDef="let element">{{ element.article }}</td>
+      </ng-container>
+      <ng-container matColumnDef="prix">
+        <th mat-header-cell *matHeaderCellDef>Prix</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.prix }}
+          <mat-icon>euro</mat-icon>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <div>
+      <button mat-stroked-button color="primary" matStepperNext>Valider</button>
+    </div>
+  </mat-step>
+  <!-- Step 2 -->
+  <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Livraison / Facturation</ng-template>
+      <mat-label>Adresse de livraison</mat-label>
+      <table class="example-full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Prénom</mat-label>
+              <input matInput formControlName="secondCtrl" required />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Nom</mat-label>
+              <input matInput formControlName="secondCtrl" required />
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
 
-<h3>Current cart</h3>
+      <p>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Adresse</mat-label>
+          <textarea matInput placeholder="Ex. 100 Main St" formControlName="secondCtrl" required></textarea>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Complément</mat-label>
+          <textarea matInput></textarea>
+        </mat-form-field>
+      </p>
 
-<!-- <div *ngFor="let cartItem of cart">
-
-
-
-
-
-
-
-    </div> -->
-
-<button>Validate</button>
+      <table class="example-full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Ville</mat-label>
+              <input matInput placeholder="Ex. San Francisco" formControlName="secondCtrl" required />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Etat</mat-label>
+              <input matInput placeholder="Ex. California" formControlName="secondCtrl" required />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Code Postal</mat-label>
+              <input matInput #postalCode maxlength="5" placeholder="Ex. 94105" formControlName="secondCtrl" required />
+              <mat-hint align="end">{{ postalCode.value.length }} / 5</mat-hint>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <div>
+        <button mat-stroked-button color="primary" matStepperPrevious>Retour</button>
+        <button mat-stroked-button color="primary" matStepperNext>Suite</button>
+      </div>
+    </form>
+  </mat-step>
+  <!-- Step 3 -->
+  <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+    <form [formGroup]="thirdFormGroup">
+      <ng-template matStepLabel>Choix Livraison / Paiement</ng-template>
+      <p>
+        <mat-label>Mode Livraison :</mat-label>
+        <mat-radio-group formControlName="SelectShippingMode" [(ngModel)]="selectedShippingMode">
+          <mat-radio-button *ngFor="let ShippingMode of ShippingModes" [value]="ShippingMode">
+            {{ ShippingMode }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </p>
+      <p>
+        <mat-label>Mode Paiement :</mat-label>
+        <mat-radio-group formControlName="SelectPaymentMode" [(ngModel)]="selectedPaymentMode">
+          <mat-radio-button *ngFor="let PaymentMode of PaymentModes" [value]="PaymentMode">
+            {{ PaymentMode }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </p>
+      <div>
+        <button mat-stroked-button color="primary" matStepperPrevious>Retour</button>
+        <button mat-stroked-button color="primary" matStepperNext>Suite</button>
+      </div>
+    </form>
+  </mat-step>
+  <!-- Step 4 -->
+  <mat-step>
+    <ng-template matStepLabel>Validation Commande</ng-template>
+    <mat-label>Recapitulatif Commande</mat-label>
+    <p>
+      <mat-label>Mode Livraison :</mat-label>
+      {{ selectedShippingMode }}
+    </p>
+    <p>
+      <mat-label>Mode Paiement :</mat-label>
+      {{ selectedPaymentMode }}
+    </p>
+    <div>
+      <button mat-stroked-button color="primary" (click)="stepper.reset()">Confirmer et Payer</button>
+    </div>
+  </mat-step>
+</mat-stepper>
