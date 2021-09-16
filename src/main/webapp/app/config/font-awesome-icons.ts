@@ -38,6 +38,10 @@ import {
   faUsersCog,
   faWrench,
   faShoppingCart,
+  faClipboardList,
+  faCartPlus,
+  faPlusSquare,
+  faMinusSquare,
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -81,5 +85,10 @@ export const fontAwesomeIcons = [
   faUsersCog,
   faWrench,
   faShoppingCart,
+  faClipboardList,
+  faCartPlus,
+  faPlusSquare,
+  faMinusSquare,
+  faTrashAlt,	
   // jhipster-needle-add-icon-import
 ];

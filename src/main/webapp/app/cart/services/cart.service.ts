@@ -50,6 +50,10 @@ export class CartService {
     this.cart.changeQuantity(product, -quantity);
   }
 
+  deleteAllCart(): ICart{
+    return this.cart = new Cart();
+  }
+
   refreshCartProducts(): Observable<void> {
     return new Observable(observer => {
       let products: IProduct[] = [];
@@ -63,6 +67,12 @@ export class CartService {
         observer.next();
       });
     });
+  }
+
+  getTotalPrice(): number {
+    let totalPrice = 0;
+    this.cart.items.forEach( item => totalPrice += (item.product.unitPrice * item.quantity) );
+    return totalPrice;
   }
 
   private reconstructCart(products: IProduct[]): void {

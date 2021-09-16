@@ -1,3 +1,4 @@
+import { CartComponent } from './cart/list/cart.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -34,6 +35,10 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           path: 'catalog',
           data: { pageTitle: 'canyonMeApp.product.home.title' },
           loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
+        },
+        {
+          path: 'cart',
+          component: CartComponent
         },
         ...LAYOUT_ROUTES,
       ],
