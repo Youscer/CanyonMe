@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -61,6 +62,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
     MatSnackBarModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatCardModule
   ],
   providers: [
     Title,

@@ -42,9 +42,7 @@ export class Cart implements ICart {
    * @param quantity
    */
   setQuantity(cartItem: CartItem, quantity: number): void {
-    if (quantity <= 0) {
-      this.deleteProduct(cartItem.product.id);
-    } else {
+    if (quantity > 0) {
       cartItem.quantity = quantity;
     }
   }
