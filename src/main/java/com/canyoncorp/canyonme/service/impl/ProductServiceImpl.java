@@ -39,7 +39,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Transactional(readOnly = true)
+    public List<Product> getProductsByMinPrice(int price) {
+        if (price < 0) throw new IllegalArgumentException("minPrice should be always positive");
+
+        // creating specefications
+        ProductSpecification minPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", ">", Integer.toString(price)));
+
+        return productSearch.findAll(Specification.where(minPriceSpec));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Product> getProductsByMaxPrice(int price) {
+        if (price < 0) throw new IllegalArgumentException("maxPrice should be always positive");
+
+        // creating specefications
+        ProductSpecification maxPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", "<", Integer.toString(price)));
+
+        return productSearch.findAll(Specification.where(maxPriceSpec));
+    }
+
+    @Transactional(readOnly = true)
     public List<Product> searchBy(String name, int minPrice, int maxPrice) {
+        if (minPrice > maxPrice) throw new IllegalArgumentException("minPrice should not be greater than maxPrice");
+        if (minPrice < 0 || maxPrice < 0) throw new IllegalArgumentException("a price value should always be positive");
+
+        // creating specefications
         ProductSpecification nameSpec = new ProductSpecification(new SearchCriteria("name", ":", name));
         ProductSpecification minPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", ">", Integer.toString(minPrice)));
         ProductSpecification maxPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", "<", Integer.toString(maxPrice)));
