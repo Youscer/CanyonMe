@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -57,6 +57,8 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
         useFactory: missingTranslationHandler,
       },
     }),
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
     MatButtonModule,
