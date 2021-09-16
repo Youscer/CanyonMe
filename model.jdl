@@ -1,42 +1,89 @@
 
+
 // Entities
 
-entity Client {
+entity ShippingFees {
+	shippingMode ShippingMode required
+    fees Float required
+}
+
+entity PaymentFees {
+	paymentMode PaymentMode required
+    fees Float required
+}
+
+entity Address {
+	streetNumber String
+    street String required
+    compliment1 String
+    compliment2 String
+    zipCode Integer required
+    city String required
+    state String
+    country String required
+}
+
+entity Person {
 	id Long required
     firstname String required
     lastname String required
-    genderId Gender required
-    streetAddress String required
-    birthDate String required
+    gender Gender required
+    birthDate Instant required
     email String required
     password String required
 }
 
-entity PurchaseOrder {
+entity Employee {
+    id Long required
+    role Role required
+}
+
+entity PurchasedOrder {
 	id Long required
-    billingAddress String required
-    shippingAddress String required
-    orderStateId OrderState required
-    deliveryModeId DeliveryMode required
-    paymentModeId PaymentMode required
+    orderDate LocalDate required
+    orderState OrderState required
+    shippingMode String
+    shippingFees Float
+    paymentMode String
+    paymentFees Float
 }
 
 entity OrderLine {
 	id Long required
+    product Long required
+    productName String required
     quantity Long required
     unitPrice Float required
+    discount Float
 }
 
 entity Product {
 	id Long required
     name String required
+    brand String
     description String required
     unitPrice Float required
 }
 
+entity Picture {
+	link String required
+}
+
+entity Discount {
+	rate Float required
+    startDate LocalDate
+    endDate LocalDate
+}
+
 // Enumerations
 
-enum DeliveryMode {
+enum Role {
+	STOCK_MANAGER
+    ORDER_PREPARATOR
+    SELLER
+}
+
+enum ShippingMode {
 	DHL
 }
 
@@ -54,14 +101,31 @@ enum OrderState {
 
 // Relationships
 
-relationship OneToMany {
-	Client to PurchaseOrder{clientId}
+relationship ManyToOne {
+	Picture{product} to Product
+}
+
+relationship OneToOne {
+	Person{billingAddress} to Address
+    Person{shippingAddress} to Address
+}
+
+relationship OneToOne {
+	Person{user(login)} to User
 }
 
 relationship OneToMany {
-	PurchaseOrder to OrderLine{orderId}
+	Employee{person} to Person
 }
 
 relationship OneToMany {
-	Product to OrderLine{productId}
+	Person to PurchasedOrder{person}
+}
+
+relationship OneToMany {
+	PurchasedOrder to OrderLine{order}
+}
+
+relationship OneToMany {
+	Product to Discount{product}
 }

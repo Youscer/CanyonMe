@@ -22,7 +22,7 @@ export class PictureUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     link: [null, [Validators.required]],
-    productId: [],
+    product: [],
   });
 
   constructor(
@@ -81,10 +81,10 @@ export class PictureUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: picture.id,
       link: picture.link,
-      productId: picture.productId,
+      product: picture.product,
     });
 
-    this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(this.productsSharedCollection, picture.productId);
+    this.productsSharedCollection = this.productService.addProductToCollectionIfMissing(this.productsSharedCollection, picture.product);
   }
 
   protected loadRelationshipsOptions(): void {
@@ -92,7 +92,7 @@ export class PictureUpdateComponent implements OnInit {
       .query()
       .pipe(map((res: HttpResponse<IProduct[]>) => res.body ?? []))
       .pipe(
-        map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing(products, this.editForm.get('productId')!.value))
+        map((products: IProduct[]) => this.productService.addProductToCollectionIfMissing(products, this.editForm.get('product')!.value))
       )
       .subscribe((products: IProduct[]) => (this.productsSharedCollection = products));
   }
@@ -102,7 +102,7 @@ export class PictureUpdateComponent implements OnInit {
       ...new Picture(),
       id: this.editForm.get(['id'])!.value,
       link: this.editForm.get(['link'])!.value,
-      productId: this.editForm.get(['productId'])!.value,
+      product: this.editForm.get(['product'])!.value,
     };
   }
 }

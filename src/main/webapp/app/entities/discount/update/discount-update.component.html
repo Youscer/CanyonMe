@@ -67,11 +67,11 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.discount.productId" for="field_productId">Product Id</label>
-          <select class="form-control" id="field_productId" data-cy="productId" name="productId" formControlName="productId">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.discount.product" for="field_product">Product</label>
+          <select class="form-control" id="field_product" data-cy="product" name="product" formControlName="product">
             <option [ngValue]="null"></option>
             <option
-              [ngValue]="productOption.id === editForm.get('productId')!.value?.id ? editForm.get('productId')!.value : productOption"
+              [ngValue]="productOption.id === editForm.get('product')!.value?.id ? editForm.get('product')!.value : productOption"
               *ngFor="let productOption of productsSharedCollection; trackBy: trackProductById"
             >
               {{ productOption.id }}

@@ -50,20 +50,47 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.person.genderId" for="field_genderId">Gender Id</label>
-          <select class="form-control" name="genderId" formControlName="genderId" id="field_genderId" data-cy="genderId">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.person.gender" for="field_gender">Gender</label>
+          <select class="form-control" name="gender" formControlName="gender" id="field_gender" data-cy="gender">
             <option [ngValue]="null">{{ 'canyonMeApp.Gender.null' | translate }}</option>
             <option value="MISTER">{{ 'canyonMeApp.Gender.MISTER' | translate }}</option>
             <option value="MISS">{{ 'canyonMeApp.Gender.MISS' | translate }}</option>
             <option value="NON_BINARY">{{ 'canyonMeApp.Gender.NON_BINARY' | translate }}</option>
           </select>
-          <div *ngIf="editForm.get('genderId')!.invalid && (editForm.get('genderId')!.dirty || editForm.get('genderId')!.touched)">
+          <div *ngIf="editForm.get('gender')!.invalid && (editForm.get('gender')!.dirty || editForm.get('gender')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('gender')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.person.birthDate" for="field_birthDate">Birth Date</label>
+          <div class="d-flex">
+            <input
+              id="field_birthDate"
+              data-cy="birthDate"
+              type="datetime-local"
+              class="form-control"
+              name="birthDate"
+              formControlName="birthDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('birthDate')!.invalid && (editForm.get('birthDate')!.dirty || editForm.get('birthDate')!.touched)">
             <small
               class="form-text text-danger"
-              *ngIf="editForm.get('genderId')?.errors?.required"
+              *ngIf="editForm.get('birthDate')?.errors?.required"
               jhiTranslate="entity.validation.required"
             >
               This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('birthDate')?.errors?.ZonedDateTimelocal"
+              jhiTranslate="entity.validation.ZonedDateTimelocal"
+            >
+              This field should be a date and time.
             </small>
           </div>
         </div>
@@ -93,14 +120,60 @@
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.person.client" for="field_client">Client</label>
-          <select class="form-control" id="field_client" data-cy="client" name="client" formControlName="client">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.person.billingAddress" for="field_billingAddress"
+            >Billing Address</label
+          >
+          <select
+            class="form-control"
+            id="field_billingAddress"
+            data-cy="billingAddress"
+            name="billingAddress"
+            formControlName="billingAddress"
+          >
             <option [ngValue]="null"></option>
             <option
-              [ngValue]="clientOption.id === editForm.get('client')!.value?.id ? editForm.get('client')!.value : clientOption"
-              *ngFor="let clientOption of clientsSharedCollection; trackBy: trackClientById"
+              [ngValue]="
+                addressOption.id === editForm.get('billingAddress')!.value?.id ? editForm.get('billingAddress')!.value : addressOption
+              "
+              *ngFor="let addressOption of billingAddressesCollection; trackBy: trackAddressById"
             >
-              {{ clientOption.id }}
+              {{ addressOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.person.shippingAddress" for="field_shippingAddress"
+            >Shipping Address</label
+          >
+          <select
+            class="form-control"
+            id="field_shippingAddress"
+            data-cy="shippingAddress"
+            name="shippingAddress"
+            formControlName="shippingAddress"
+          >
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                addressOption.id === editForm.get('shippingAddress')!.value?.id ? editForm.get('shippingAddress')!.value : addressOption
+              "
+              *ngFor="let addressOption of shippingAddressesCollection; trackBy: trackAddressById"
+            >
+              {{ addressOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.person.user" for="field_user">User</label>
+          <select class="form-control" id="field_user" data-cy="user" name="user" formControlName="user">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userOption.id === editForm.get('user')!.value?.id ? editForm.get('user')!.value : userOption"
+              *ngFor="let userOption of usersSharedCollection; trackBy: trackUserById"
+            >
+              {{ userOption.login }}
             </option>
           </select>
         </div>

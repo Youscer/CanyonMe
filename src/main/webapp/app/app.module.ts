@@ -1,35 +1,37 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { TranslateModule, TranslateService, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
-import { NgxWebstorageModule, SessionStorageService } from 'ngx-webstorage';
-import * as dayjs from 'dayjs';
 import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
-
-import { SERVER_API_URL } from './app.constants';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ApplicationConfigService } from 'app/core/config/application-config.service';
-import './config/dayjs';
+import { httpInterceptorProviders } from 'app/core/interceptor/index';
 import { SharedModule } from 'app/shared/shared.module';
+import * as dayjs from 'dayjs';
+import { NgxWebstorageModule, SessionStorageService } from 'ngx-webstorage';
 import { AppRoutingModule } from './app-routing.module';
-import { HomeModule } from './home/home.module';
-import { EntityRoutingModule } from './entities/entity-routing.module';
+import { SERVER_API_URL } from './app.constants';
+import { CartComponent } from './cart/list/cart.component';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
+import './config/dayjs';
 import { fontAwesomeIcons } from './config/font-awesome-icons';
-import { httpInterceptorProviders } from 'app/core/interceptor/index';
-import { translatePartialLoader, missingTranslationHandler } from './config/translation.config';
-import { MainComponent } from './layouts/main/main.component';
-import { NavbarComponent } from './layouts/navbar/navbar.component';
-import { FooterComponent } from './layouts/footer/footer.component';
-import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
-import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
+import { missingTranslationHandler, translatePartialLoader } from './config/translation.config';
+import { EntityRoutingModule } from './entities/entity-routing.module';
+import { HomeModule } from './home/home.module';
 import { ErrorComponent } from './layouts/error/error.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { FooterComponent } from './layouts/footer/footer.component';
+import { MainComponent } from './layouts/main/main.component';
+import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
+import { NavbarComponent } from './layouts/navbar/navbar.component';
+import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
+
 
 @NgModule({
   imports: [
@@ -56,6 +58,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     }),
     BrowserAnimationsModule,
     NoopAnimationsModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
   ],
   providers: [
     Title,
@@ -63,7 +68,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, CartComponent],
   bootstrap: [MainComponent],
 })
 export class AppModule {

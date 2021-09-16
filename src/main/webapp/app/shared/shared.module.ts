@@ -1,3 +1,4 @@
+import { CartComponent } from './../cart/list/cart.component';
 import { NgModule } from '@angular/core';
 
 import { SharedLibsModule } from './shared-libs.module';

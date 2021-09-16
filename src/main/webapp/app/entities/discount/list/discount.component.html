@@ -36,7 +36,7 @@
           <th scope="col"><span jhiTranslate="canyonMeApp.discount.rate">Rate</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.discount.startDate">Start Date</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.discount.endDate">End Date</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.discount.productId">Product Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.discount.product">Product</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -49,8 +49,8 @@
           <td>{{ discount.startDate | formatMediumDate }}</td>
           <td>{{ discount.endDate | formatMediumDate }}</td>
           <td>
-            <div *ngIf="discount.productId">
-              <a [routerLink]="['/product', discount.productId?.id, 'view']">{{ discount.productId?.id }}</a>
+            <div *ngIf="discount.product">
+              <a [routerLink]="['/product', discount.product?.id, 'view']">{{ discount.product?.id }}</a>
             </div>
           </td>
           <td class="text-right">

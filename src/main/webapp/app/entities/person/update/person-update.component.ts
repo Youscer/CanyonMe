@@ -5,10 +5,15 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 
+import * as dayjs from 'dayjs';
+import { DATE_TIME_FORMAT } from 'app/config/input.constants';
+
 import { IPerson, Person } from '../person.model';
 import { PersonService } from '../service/person.service';
-import { IClient } from 'app/entities/client/client.model';
-import { ClientService } from 'app/entities/client/service/client.service';
+import { IAddress } from 'app/entities/address/address.model';
+import { AddressService } from 'app/entities/address/service/address.service';
+import { IUser } from 'app/entities/user/user.model';
+import { UserService } from 'app/entities/user/user.service';
 import { IEmployee } from 'app/entities/employee/employee.model';
 import { EmployeeService } from 'app/entities/employee/service/employee.service';
 
@@ -19,23 +24,29 @@ import { EmployeeService } from 'app/entities/employee/service/employee.service'
 export class PersonUpdateComponent implements OnInit {
   isSaving = false;
 
-  clientsSharedCollection: IClient[] = [];
+  billingAddressesCollection: IAddress[] = [];
+  shippingAddressesCollection: IAddress[] = [];
+  usersSharedCollection: IUser[] = [];
   employeesSharedCollection: IEmployee[] = [];
 
   editForm = this.fb.group({
     id: [null, [Validators.required]],
     firstname: [null, [Validators.required]],
     lastname: [null, [Validators.required]],
-    genderId: [null, [Validators.required]],
+    gender: [null, [Validators.required]],
+    birthDate: [null, [Validators.required]],
     email: [null, [Validators.required]],
     password: [null, [Validators.required]],
-    client: [],
+    billingAddress: [],
+    shippingAddress: [],
+    user: [],
     employee: [],
   });
 
   constructor(
     protected personService: PersonService,
-    protected clientService: ClientService,
+    protected addressService: AddressService,
+    protected userService: UserService,
     protected employeeService: EmployeeService,
     protected activatedRoute: ActivatedRoute,
     protected fb: FormBuilder
@@ -43,6 +54,11 @@ export class PersonUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ person }) => {
+      if (person.id === undefined) {
+        const today = dayjs().startOf('day');
+        person.birthDate = today;
+      }
+
       this.updateForm(person);
 
       this.loadRelationshipsOptions();
@@ -63,7 +79,11 @@ export class PersonUpdateComponent implements OnInit {
     }
   }
 
-  trackClientById(index: number, item: IClient): number {
+  trackAddressById(index: number, item: IAddress): number {
+    return item.id!;
+  }
+
+  trackUserById(index: number, item: IUser): number {
     return item.id!;
   }
 
@@ -95,23 +115,54 @@ export class PersonUpdateComponent implements OnInit {
       id: person.id,
       firstname: person.firstname,
       lastname: person.lastname,
-      genderId: person.genderId,
+      gender: person.gender,
+      birthDate: person.birthDate ? person.birthDate.format(DATE_TIME_FORMAT) : null,
       email: person.email,
       password: person.password,
-      client: person.client,
+      billingAddress: person.billingAddress,
+      shippingAddress: person.shippingAddress,
+      user: person.user,
       employee: person.employee,
     });
 
-    this.clientsSharedCollection = this.clientService.addClientToCollectionIfMissing(this.clientsSharedCollection, person.client);
+    this.billingAddressesCollection = this.addressService.addAddressToCollectionIfMissing(
+      this.billingAddressesCollection,
+      person.billingAddress
+    );
+    this.shippingAddressesCollection = this.addressService.addAddressToCollectionIfMissing(
+      this.shippingAddressesCollection,
+      person.shippingAddress
+    );
+    this.usersSharedCollection = this.userService.addUserToCollectionIfMissing(this.usersSharedCollection, person.user);
     this.employeesSharedCollection = this.employeeService.addEmployeeToCollectionIfMissing(this.employeesSharedCollection, person.employee);
   }
 
   protected loadRelationshipsOptions(): void {
-    this.clientService
+    this.addressService
+      .query({ filter: 'person-is-null' })
+      .pipe(map((res: HttpResponse<IAddress[]>) => res.body ?? []))
+      .pipe(
+        map((addresses: IAddress[]) =>
+          this.addressService.addAddressToCollectionIfMissing(addresses, this.editForm.get('billingAddress')!.value)
+        )
+      )
+      .subscribe((addresses: IAddress[]) => (this.billingAddressesCollection = addresses));
+
+    this.addressService
+      .query({ filter: 'person-is-null' })
+      .pipe(map((res: HttpResponse<IAddress[]>) => res.body ?? []))
+      .pipe(
+        map((addresses: IAddress[]) =>
+          this.addressService.addAddressToCollectionIfMissing(addresses, this.editForm.get('shippingAddress')!.value)
+        )
+      )
+      .subscribe((addresses: IAddress[]) => (this.shippingAddressesCollection = addresses));
+
+    this.userService
       .query()
-      .pipe(map((res: HttpResponse<IClient[]>) => res.body ?? []))
-      .pipe(map((clients: IClient[]) => this.clientService.addClientToCollectionIfMissing(clients, this.editForm.get('client')!.value)))
-      .subscribe((clients: IClient[]) => (this.clientsSharedCollection = clients));
+      .pipe(map((res: HttpResponse<IUser[]>) => res.body ?? []))
+      .pipe(map((users: IUser[]) => this.userService.addUserToCollectionIfMissing(users, this.editForm.get('user')!.value)))
+      .subscribe((users: IUser[]) => (this.usersSharedCollection = users));
 
     this.employeeService
       .query()
@@ -130,10 +181,13 @@ export class PersonUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       firstname: this.editForm.get(['firstname'])!.value,
       lastname: this.editForm.get(['lastname'])!.value,
-      genderId: this.editForm.get(['genderId'])!.value,
+      gender: this.editForm.get(['gender'])!.value,
+      birthDate: this.editForm.get(['birthDate'])!.value ? dayjs(this.editForm.get(['birthDate'])!.value, DATE_TIME_FORMAT) : undefined,
       email: this.editForm.get(['email'])!.value,
       password: this.editForm.get(['password'])!.value,
-      client: this.editForm.get(['client'])!.value,
+      billingAddress: this.editForm.get(['billingAddress'])!.value,
+      shippingAddress: this.editForm.get(['shippingAddress'])!.value,
+      user: this.editForm.get(['user'])!.value,
       employee: this.editForm.get(['employee'])!.value,
     };
   }

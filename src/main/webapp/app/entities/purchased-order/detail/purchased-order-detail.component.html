@@ -1,0 +1,58 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="purchasedOrder">
+      <h2 data-cy="purchasedOrderDetailsHeading"><span jhiTranslate="canyonMeApp.purchasedOrder.detail.title">Purchased Order</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.id">Id</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.orderDate">Order Date</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.orderDate | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.orderState">Order State</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'canyonMeApp.OrderState.' + purchasedOrder.orderState }}">{{ purchasedOrder.orderState }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.shippingMode">Shipping Mode</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.shippingMode }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.shippingFees">Shipping Fees</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.shippingFees }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.paymentMode">Payment Mode</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.paymentMode }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.paymentFees">Payment Fees</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.paymentFees }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.person">Person</span></dt>
+        <dd>
+          <div *ngIf="purchasedOrder.person">
+            <a [routerLink]="['/person', purchasedOrder.person?.id, 'view']">{{ purchasedOrder.person?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/purchased-order', purchasedOrder.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

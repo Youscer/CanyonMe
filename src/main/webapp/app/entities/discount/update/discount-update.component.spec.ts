@@ -42,12 +42,12 @@ describe('Component Tests', () => {
     describe('ngOnInit', () => {
       it('Should call Product query and add missing value', () => {
         const discount: IDiscount = { id: 456 };
-        const productId: IProduct = { id: 55457 };
-        discount.productId = productId;
+        const product: IProduct = { id: 55457 };
+        discount.product = product;
 
         const productCollection: IProduct[] = [{ id: 70692 }];
         jest.spyOn(productService, 'query').mockReturnValue(of(new HttpResponse({ body: productCollection })));
-        const additionalProducts = [productId];
+        const additionalProducts = [product];
         const expectedCollection: IProduct[] = [...additionalProducts, ...productCollection];
         jest.spyOn(productService, 'addProductToCollectionIfMissing').mockReturnValue(expectedCollection);
 
@@ -61,14 +61,14 @@ describe('Component Tests', () => {
 
       it('Should update editForm', () => {
         const discount: IDiscount = { id: 456 };
-        const productId: IProduct = { id: 26001 };
-        discount.productId = productId;
+        const product: IProduct = { id: 26001 };
+        discount.product = product;
 
         activatedRoute.data = of({ discount });
         comp.ngOnInit();
 
         expect(comp.editForm.value).toEqual(expect.objectContaining(discount));
-        expect(comp.productsSharedCollection).toContain(productId);
+        expect(comp.productsSharedCollection).toContain(product);
       });
     });
 

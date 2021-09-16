@@ -34,6 +34,11 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           path: 'purchase-validation',
           loadChildren: () => import('./purchase-validation/purchase-validation.module').then(m => m.PurchaseValidationModule),
         },
+        {
+          path: 'catalog',
+          data: { pageTitle: 'canyonMeApp.product.home.title' },
+          loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
+        },
         ...LAYOUT_ROUTES,
       ],
       { enableTracing: DEBUG_INFO_ENABLED }
