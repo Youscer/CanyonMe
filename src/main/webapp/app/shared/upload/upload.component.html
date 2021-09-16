@@ -1,0 +1,9 @@
+<div>
+  <h3>Upload file</h3>
+  <input type="file" (change)="uploadFile($event)" />
+  <div>{{ progress$ | async }}</div>
+  <a [href]="url$ | async">{{ url$ | async }}</a>
+</div>
+<!-- <mat-progress-bar mode="determinate" value="40"></mat-progress-bar> -->
+<!-- <button mat-raised-button color="primary">Primary</button>
+<mat-slider min="1" max="100" step="1" value="50"></mat-slider> -->
