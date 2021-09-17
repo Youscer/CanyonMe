@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
  */
 public class ProductDTO implements Serializable {
 
-    @NotNull
+    // @NotNull
     private Long id;
 
     @NotNull
