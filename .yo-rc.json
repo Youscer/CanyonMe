@@ -55,6 +55,9 @@
       "Picture",
       "Discount"
     ],
-    "lastLiquibaseTimestamp": 1631360940000
+    "lastLiquibaseTimestamp": 1631360940000,
+    "herokuAppName": "canyon-me",
+    "herokuDeployType": "git",
+    "herokuJavaVersion": "11"
   }
 }
