@@ -41,6 +41,9 @@ class ProductResourceIT {
     private static final Float DEFAULT_UNIT_PRICE = 1F;
     private static final Float UPDATED_UNIT_PRICE = 2F;
 
+    private static final Integer DEFAULT_QUANTITY = 1;
+    private static final Integer UPDATED_QUANTITY = 2;
+
     private static final String ENTITY_API_URL = "/api/products";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -69,7 +72,8 @@ class ProductResourceIT {
             .name(DEFAULT_NAME)
             .brand(DEFAULT_BRAND)
             .description(DEFAULT_DESCRIPTION)
-            .unitPrice(DEFAULT_UNIT_PRICE);
+            .unitPrice(DEFAULT_UNIT_PRICE)
+            .quantity(DEFAULT_QUANTITY);
         return product;
     }
 
@@ -84,7 +88,8 @@ class ProductResourceIT {
             .name(UPDATED_NAME)
             .brand(UPDATED_BRAND)
             .description(UPDATED_DESCRIPTION)
-            .unitPrice(UPDATED_UNIT_PRICE);
+            .unitPrice(UPDATED_UNIT_PRICE)
+            .quantity(UPDATED_QUANTITY);
         return product;
     }
 
@@ -110,6 +115,7 @@ class ProductResourceIT {
         assertThat(testProduct.getBrand()).isEqualTo(DEFAULT_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
+        assertThat(testProduct.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
     }
 
     @Test
@@ -196,7 +202,8 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
-            .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.doubleValue())));
+            .andExpect(jsonPath("$.[*].unitPrice").value(hasItem(DEFAULT_UNIT_PRICE.doubleValue())))
+            .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)));
     }
 
     @Test
@@ -214,7 +221,8 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
-            .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()));
+            .andExpect(jsonPath("$.unitPrice").value(DEFAULT_UNIT_PRICE.doubleValue()))
+            .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY));
     }
 
     @Test
@@ -236,7 +244,12 @@ class ProductResourceIT {
         Product updatedProduct = productRepository.findById(product.getId()).get();
         // Disconnect from session so that the updates on updatedProduct are not directly saved in db
         em.detach(updatedProduct);
-        updatedProduct.name(UPDATED_NAME).brand(UPDATED_BRAND).description(UPDATED_DESCRIPTION).unitPrice(UPDATED_UNIT_PRICE);
+        updatedProduct
+            .name(UPDATED_NAME)
+            .brand(UPDATED_BRAND)
+            .description(UPDATED_DESCRIPTION)
+            .unitPrice(UPDATED_UNIT_PRICE)
+            .quantity(UPDATED_QUANTITY);
 
         restProductMockMvc
             .perform(
@@ -254,6 +267,7 @@ class ProductResourceIT {
         assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
+        assertThat(testProduct.getQuantity()).isEqualTo(UPDATED_QUANTITY);
     }
 
     @Test
@@ -324,6 +338,8 @@ class ProductResourceIT {
         Product partialUpdatedProduct = new Product();
         partialUpdatedProduct.setId(product.getId());
 
+        partialUpdatedProduct.quantity(UPDATED_QUANTITY);
+
         restProductMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedProduct.getId())
@@ -340,6 +356,7 @@ class ProductResourceIT {
         assertThat(testProduct.getBrand()).isEqualTo(DEFAULT_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(DEFAULT_UNIT_PRICE);
+        assertThat(testProduct.getQuantity()).isEqualTo(UPDATED_QUANTITY);
     }
 
     @Test
@@ -354,7 +371,12 @@ class ProductResourceIT {
         Product partialUpdatedProduct = new Product();
         partialUpdatedProduct.setId(product.getId());
 
-        partialUpdatedProduct.name(UPDATED_NAME).brand(UPDATED_BRAND).description(UPDATED_DESCRIPTION).unitPrice(UPDATED_UNIT_PRICE);
+        partialUpdatedProduct
+            .name(UPDATED_NAME)
+            .brand(UPDATED_BRAND)
+            .description(UPDATED_DESCRIPTION)
+            .unitPrice(UPDATED_UNIT_PRICE)
+            .quantity(UPDATED_QUANTITY);
 
         restProductMockMvc
             .perform(
@@ -372,6 +394,7 @@ class ProductResourceIT {
         assertThat(testProduct.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testProduct.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testProduct.getUnitPrice()).isEqualTo(UPDATED_UNIT_PRICE);
+        assertThat(testProduct.getQuantity()).isEqualTo(UPDATED_QUANTITY);
     }
 
     @Test

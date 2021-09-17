@@ -22,6 +22,7 @@
       "brand": "Brand",
       "description": "Description",
       "unitPrice": "Unit Price",
+      "quantity": "Quantity",
       "discount": "Discount"
     }
   }

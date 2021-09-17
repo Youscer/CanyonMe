@@ -30,6 +30,10 @@
         <dd>
           <span>{{ product.unitPrice }}</span>
         </dd>
+        <dt><span jhiTranslate="canyonMeApp.product.quantity">Quantity</span></dt>
+        <dd>
+          <span>{{ product.quantity }}</span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

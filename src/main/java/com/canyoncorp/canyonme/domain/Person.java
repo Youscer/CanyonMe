@@ -26,24 +26,28 @@ public class Person implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    //@NotNull
+    @NotNull
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
-    //@NotNull
+    @NotNull
     @Column(name = "lastname", nullable = false)
     private String lastname;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private Gender gender;
 
+    @NotNull
     @Column(name = "birth_date", nullable = false)
     private Instant birthDate;
 
+    @NotNull
     @Column(name = "email", nullable = false)
     private String email;
 
+    @NotNull
     @Column(name = "password", nullable = false)
     private String password;
 

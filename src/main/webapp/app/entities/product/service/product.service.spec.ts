@@ -26,6 +26,7 @@ describe('Service Tests', () => {
         brand: 'AAAAAAA',
         description: 'AAAAAAA',
         unitPrice: 0,
+        quantity: 0,
       };
     });
 
@@ -65,6 +66,7 @@ describe('Service Tests', () => {
             brand: 'BBBBBB',
             description: 'BBBBBB',
             unitPrice: 1,
+            quantity: 1,
           },
           elemDefault
         );
@@ -83,6 +85,7 @@ describe('Service Tests', () => {
           {
             name: 'BBBBBB',
             description: 'BBBBBB',
+            quantity: 1,
           },
           new Product()
         );
@@ -106,6 +109,7 @@ describe('Service Tests', () => {
             brand: 'BBBBBB',
             description: 'BBBBBB',
             unitPrice: 1,
+            quantity: 1,
           },
           elemDefault
         );
@@ -157,7 +161,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique Product to an array', () => {
-          const productArray: IProduct[] = [{ id: 123 }, { id: 456 }, { id: 91946 }];
+          const productArray: IProduct[] = [{ id: 123 }, { id: 456 }, { id: 90524 }];
           const productCollection: IProduct[] = [{ id: 123 }];
           expectedResult = service.addProductToCollectionIfMissing(productCollection, ...productArray);
           expect(expectedResult).toHaveLength(3);

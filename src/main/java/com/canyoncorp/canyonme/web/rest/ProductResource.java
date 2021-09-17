@@ -2,22 +2,18 @@ package com.canyoncorp.canyonme.web.rest;
 
 import com.canyoncorp.canyonme.domain.Product;
 import com.canyoncorp.canyonme.repository.ProductRepository;
-import com.canyoncorp.canyonme.security.AuthoritiesConstants;
-import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
@@ -39,11 +35,9 @@ public class ProductResource {
     private String applicationName;
 
     private final ProductRepository productRepository;
-    private final ProductService productService;
 
-    public ProductResource(ProductRepository productRepository, ProductService productService) {
+    public ProductResource(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.productService = productService;
     }
 
     /**
@@ -53,9 +47,7 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new product, or with status {@code 400 (Bad Request)} if the product has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-
     @PostMapping("/products")
-    @RolesAllowed({ AuthoritiesConstants.ADMIN })
     public ResponseEntity<Product> createProduct(@Valid @RequestBody Product product) throws URISyntaxException {
         log.debug("REST request to save Product : {}", product);
         if (product.getId() != null) {
@@ -79,7 +71,6 @@ public class ProductResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/products/{id}")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Product> updateProduct(
         @PathVariable(value = "id", required = false) final Long id,
         @Valid @RequestBody Product product
@@ -114,9 +105,7 @@ public class ProductResource {
      * or with status {@code 500 (Internal Server Error)} if the product couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-
     @PatchMapping(value = "/products/{id}", consumes = "application/merge-patch+json")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Product> partialUpdateProduct(
         @PathVariable(value = "id", required = false) final Long id,
         @NotNull @RequestBody Product product
@@ -149,6 +138,9 @@ public class ProductResource {
                     if (product.getUnitPrice() != null) {
                         existingProduct.setUnitPrice(product.getUnitPrice());
                     }
+                    if (product.getQuantity() != null) {
+                        existingProduct.setQuantity(product.getQuantity());
+                    }
 
                     return existingProduct;
                 }
@@ -167,15 +159,9 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
     @GetMapping("/products")
-    public List<Product> getAllProducts(
-        @RequestParam(value = "name", defaultValue = "") String name,
-        @RequestParam(value = "min", defaultValue = "0") int min,
-        @RequestParam(value = "max", defaultValue = "2147483647") int max
-    ) {
+    public List<Product> getAllProducts() {
         log.debug("REST request to get all Products");
-        // return productsService.getAllProducts();
-        //return productService.getProductsByName(name);
-        return productService.searchBy(name, min, max);
+        return productRepository.findAll();
     }
 
     /**
@@ -198,7 +184,6 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/products/{id}")
-    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         log.debug("REST request to delete Product : {}", id);
         productRepository.deleteById(id);

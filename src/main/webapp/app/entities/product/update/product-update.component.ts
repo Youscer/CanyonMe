@@ -21,6 +21,7 @@ export class ProductUpdateComponent implements OnInit {
     brand: [],
     description: [null, [Validators.required]],
     unitPrice: [null, [Validators.required]],
+    quantity: [],
   });
 
   constructor(protected productService: ProductService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -71,6 +72,7 @@ export class ProductUpdateComponent implements OnInit {
       brand: product.brand,
       description: product.description,
       unitPrice: product.unitPrice,
+      quantity: product.quantity,
     });
   }
 
@@ -82,6 +84,7 @@ export class ProductUpdateComponent implements OnInit {
       brand: this.editForm.get(['brand'])!.value,
       description: this.editForm.get(['description'])!.value,
       unitPrice: this.editForm.get(['unitPrice'])!.value,
+      quantity: this.editForm.get(['quantity'])!.value,
     };
   }
 }

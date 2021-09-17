@@ -6,6 +6,7 @@ export interface IProduct {
   brand?: string | null;
   description?: string;
   unitPrice?: number;
+  quantity?: number | null;
   discounts?: IDiscount[] | null;
 }
 
@@ -16,6 +17,7 @@ export class Product implements IProduct {
     public brand?: string | null,
     public description?: string,
     public unitPrice?: number,
+    public quantity?: number | null,
     public discounts?: IDiscount[] | null
   ) {}
 }
