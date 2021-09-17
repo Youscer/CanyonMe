@@ -9,6 +9,8 @@ import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.PurchasedOrder;
 import com.canyoncorp.canyonme.domain.enumeration.OrderState;
 import com.canyoncorp.canyonme.repository.PurchasedOrderRepository;
+import com.canyoncorp.canyonme.service.dto.PurchasedOrderDTO;
+import com.canyoncorp.canyonme.service.mapper.PurchasedOrderMapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -58,6 +60,9 @@ class PurchasedOrderResourceIT {
 
     @Autowired
     private PurchasedOrderRepository purchasedOrderRepository;
+
+    @Autowired
+    private PurchasedOrderMapper purchasedOrderMapper;
 
     @Autowired
     private EntityManager em;
@@ -111,9 +116,10 @@ class PurchasedOrderResourceIT {
     void createPurchasedOrder() throws Exception {
         int databaseSizeBeforeCreate = purchasedOrderRepository.findAll().size();
         // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isCreated());
 
@@ -134,13 +140,14 @@ class PurchasedOrderResourceIT {
     void createPurchasedOrderWithExistingId() throws Exception {
         // Create the PurchasedOrder with an existing ID
         purchasedOrder.setId(1L);
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
 
         int databaseSizeBeforeCreate = purchasedOrderRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -157,10 +164,11 @@ class PurchasedOrderResourceIT {
         purchasedOrder.setOrderDate(null);
 
         // Create the PurchasedOrder, which fails.
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
 
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -176,10 +184,11 @@ class PurchasedOrderResourceIT {
         purchasedOrder.setOrderState(null);
 
         // Create the PurchasedOrder, which fails.
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
 
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -253,12 +262,13 @@ class PurchasedOrderResourceIT {
             .shippingFees(UPDATED_SHIPPING_FEES)
             .paymentMode(UPDATED_PAYMENT_MODE)
             .paymentFees(UPDATED_PAYMENT_FEES);
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(updatedPurchasedOrder);
 
         restPurchasedOrderMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedPurchasedOrder.getId())
+                put(ENTITY_API_URL_ID, purchasedOrderDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedPurchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isOk());
 
@@ -280,12 +290,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, purchasedOrder.getId())
+                put(ENTITY_API_URL_ID, purchasedOrderDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -300,12 +313,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -320,9 +336,14 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder)))
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the PurchasedOrder in the database
@@ -414,12 +435,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, purchasedOrder.getId())
+                patch(ENTITY_API_URL_ID, purchasedOrderDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -434,12 +458,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -454,10 +481,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 
