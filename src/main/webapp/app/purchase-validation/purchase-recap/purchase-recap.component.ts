@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ShippingInformationsUpdateService } from '../shipping-informations/shipping-informations-update.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CartService } from 'app/cart/services/cart.service';
+import { OrderService } from './../service/order.service';
 
 // Colonnes Tableau
 export interface PeriodicElement {
@@ -44,9 +45,20 @@ export class PurchaseRecapComponent implements OnInit {
   selectedPaymentMode = this.thirdFormGroup.get('SelectPaymentMode')!.value;
   PaymentModes: string[] = ['Carte Bancaire', 'Paypal'];
 
-  constructor(private cartService: ShippingInformationsUpdateService, private _formBuilder: FormBuilder) {}
+  constructor(private cartService: CartService, private _formBuilder: FormBuilder, public orderService: OrderService) { }
 
   ngOnInit(): void {
     return;
+  }
+
+  postCartOrder(): void {
+    this.orderService.postCartOrder(this.cartService.getCart(), 'UPS', 'PAYPAL').subscribe(
+      () => {
+        alert('OrderPosted');
+      },
+      (error) => {
+        alert(error.message);
+      }
+    );
   }
 }
