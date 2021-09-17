@@ -1,3 +1,5 @@
+import { MatIconModule } from '@angular/material/icon';
+import { ToolBarComponent } from './layouts/toolbar/toolbar.component';
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
@@ -5,6 +7,8 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatBadgeModule } from '@angular/material/badge';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -62,7 +66,10 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
     MatSnackBarModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatBadgeModule
   ],
   providers: [
     Title,
@@ -70,7 +77,7 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, CartComponent],
+  declarations: [MainComponent, NavbarComponent, ToolBarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, CartComponent],
   bootstrap: [MainComponent],
 })
 export class AppModule {

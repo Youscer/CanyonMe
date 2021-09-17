@@ -1,13 +1,26 @@
-<mat-toolbar>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>My App</span>
-  <span class="example-spacer"></span>
-  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
-    <mat-icon>favorite</mat-icon>
-  </button>
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
+<mat-toolbar color="primary">
+
+  <!-- Logo -->
+  <a routerLink="/" class="tool-item" (click)=resetSearch()>
+    <mat-icon>panorama_fish_eye</mat-icon>
+    <span class="site-title">CanyonMe</span>
+  </a>
+
+  <!-- Search Bar -->
+  <form [formGroup]="angForm" class="toolbar-spacer tool-item" (ngSubmit)="searchThis()">
+    <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
+    <mat-icon color="primary" class="inside-icon" type="submit">search</mat-icon>
+  </form>
+
+
+  <!-- Login and Cart -->
+  <a routerLink="/login" class="tool-item" (click)=resetSearch()>
+    <mat-icon>person</mat-icon>
+    <span>Login</span>
+    <mat-icon class="arrow-drop-down">arrow_drop_down</mat-icon>
+  </a>
+  <a routerLink="/cart" class="tool-item" (click)=resetSearch()>
+    <mat-icon matBadgeSize="small" [matBadge]="getCartItemCount()" [matBadgeHidden]="hideBadge" matBadgeColor="warn">shopping_cart</mat-icon>
+    <span>Cart</span>
+  </a>
 </mat-toolbar>
