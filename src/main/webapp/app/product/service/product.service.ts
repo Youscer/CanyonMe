@@ -24,6 +24,11 @@ export class ProductService {
     return this.http.get<IProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
+  getAll(req?: any): Observable<IProduct[]> {
+    const options = createRequestOption(req);
+    return this.http.get<IProduct[]>(this.resourceUrl, { params: options } );
+  }
+
   /**
    * Get one Product from Product API
    * @param id - id number of the product
