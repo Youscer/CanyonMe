@@ -58,6 +58,11 @@ export class PurchaseRecapComponent implements OnInit {
       },
       (error) => {
         alert(error.message);
+        switch (error.status) {
+          case 500:
+            
+            break;
+        }
       }
     );
   }
