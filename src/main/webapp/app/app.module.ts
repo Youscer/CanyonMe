@@ -25,13 +25,25 @@ import { translatePartialLoader, missingTranslationHandler } from './config/tran
 import { MainComponent } from './layouts/main/main.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
+import { UploadComponent } from './shared/upload/upload.component';
+import { HomeComponent } from './home/home.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
 import { CartComponent } from './cart/list/cart.component';
+
+// firebase
+import { firebaseConfig } from './environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 
 @NgModule({
   imports: [
@@ -59,14 +71,34 @@ import { CartComponent } from './cart/list/cart.component';
     MatSnackBarModule,
     BrowserAnimationsModule,
     MatButtonModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSliderModule,
+    MatFormFieldModule,
+    MatCardModule,
+    // firebase
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp(firebaseConfig),
   ],
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'en' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
+    // firebase bucket
+    { provide: BUCKET, useValue: firebaseConfig.storageBucket },
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, CartComponent],
+  declarations: [
+    HomeComponent,
+    MainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent,
+    CartComponent,
+    UploadComponent,
+  ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
