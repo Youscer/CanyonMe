@@ -17,7 +17,13 @@ export class ProductService {
   constructor(protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
   create(product: IProduct): Observable<EntityResponseType> {
-    return this.http.post<IProduct>(this.resourceUrl, product, { observe: 'response' });
+    return this.http.post<IProduct>(this.resourceUrl, 
+      {
+        name: product.name,
+        brand: product.brand,
+        description: product.description,
+        unitPrice: product.unitPrice
+      }, { observe: 'response' });
   }
 
   update(product: IProduct): Observable<EntityResponseType> {
