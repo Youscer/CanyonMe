@@ -61,7 +61,7 @@ export class PurchaseRecapComponent implements OnInit {
         alert(error.message);
         switch (error.status) {
           case 409:
-            
+            this.cartService.adjustQuantity(error.conflict);
             break;
         }
       }
