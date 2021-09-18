@@ -1,4 +1,5 @@
 .toolbar{
+  z-index: 100;
 }
 
 .canyonme {
@@ -10,8 +11,6 @@
   margin-right: 10px;
   margin-left: 10px; */
   display: block;
-  padding-left: 10px;
-  padding-right: 10px;
   height: 50%;
 }
 
@@ -52,6 +51,8 @@ a{
   justify-content: center;
   align-items: center;
   height: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .center-inside{
@@ -62,13 +63,11 @@ a{
 
 .tool-item span{
   color: inherit;
-  margin-right: 20px;
 }
 
-mat-icon{
+.tool-item mat-icon{
   transform: scale(1.5);
   margin-right: 10px;
-  margin-left: 20px;
 }
 
 .site-title{
@@ -76,6 +75,20 @@ mat-icon{
 }
 
 .arrow-drop-down{
-  margin-left: -20px;
-  margin-right: 20px;
+  margin-left: 0px;
+}
+
+@media screen and (max-width: 1000px) {
+  .tool-item span{
+    display: none;
+  }
+  .toolbar-spacer input{
+    width: 90%;
+  }
+  .arrow-drop-down{
+    margin-left: -10px;
+  }
+  .tool-item mat-icon{
+    margin-right: 0px;
+  }
 }
