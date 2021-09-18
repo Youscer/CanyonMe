@@ -22,7 +22,7 @@ export class CartService {
    * Ajoute un produit au panier
    * @param product
    */
-   addProduct(product: Product, quantity: number = 1): void {
+  addProduct(product: Product, quantity: number = 1): void {
     this.cart.changeQuantity(product, quantity);
   }
 
@@ -52,7 +52,7 @@ export class CartService {
     this.cart.changeQuantity(product, -quantity);
   }
 
-  deleteAllCart(): ICart{
+  deleteAllCart(): ICart {
     return this.cart = new Cart();
   }
 
@@ -73,8 +73,22 @@ export class CartService {
 
   getTotalPrice(): number {
     let totalPrice = 0;
-    this.cart.items.forEach( item => totalPrice += (item.product.unitPrice * item.quantity) );
+    this.cart.items.forEach(item => totalPrice += (item.product.unitPrice * item.quantity));
     return totalPrice;
+  }
+
+  adjustQuantity(conflict: any) : void {
+    if (conflict instanceof Array) {
+      conflict.forEach(productConflict => {
+        if (productConflict instanceof Product) {
+          if( productConflict.quantity > 0 ){
+            this.cart.changeQuantity(productConflict, productConflict.quantity);
+          }else{
+            this.cart.deleteProduct(productConflict.id);
+          }
+        }
+      });
+    }
   }
 
   private reconstructCart(products: IProduct[]): void {

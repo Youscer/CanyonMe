@@ -3,10 +3,11 @@ export interface IProduct {
   name: string;
   description: string;
   unitPrice: number;
+  quantity: number;
 }
 
 export class Product implements IProduct {
-  constructor(public id: number, public name: string, public description: string, public unitPrice: number) {}
+  constructor(public id: number, public name: string, public description: string, public unitPrice: number, public quantity: number) {}
 }
 
 export function getProductIdentifier(product: IProduct): number | undefined {
