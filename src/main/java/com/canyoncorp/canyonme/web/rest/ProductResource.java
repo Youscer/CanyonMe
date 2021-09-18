@@ -3,6 +3,7 @@ package com.canyoncorp.canyonme.web.rest;
 import com.canyoncorp.canyonme.domain.OrderLine;
 import com.canyoncorp.canyonme.domain.Product;
 import com.canyoncorp.canyonme.repository.ProductRepository;
+import com.canyoncorp.canyonme.security.AuthoritiesConstants;
 import com.canyoncorp.canyonme.service.OrderService;
 import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.service.UnavailableProductException;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -73,6 +75,7 @@ public class ProductResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/products")
+    @PreAuthorize("hasRole(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) throws URISyntaxException {
         log.debug("REST request to save Product : {}", productDTO);
         if (productDTO.getId() != null) {
@@ -184,12 +187,20 @@ public class ProductResource {
         return productService.searchBy(name, min, max);
     }
 
+    @GetMapping("/products/{id}")
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
+        log.debug("REST request to get Product : {}", id);
+        Optional<ProductDTO> productDTO = productRepository.findById(id).map(productMapper::toDto);
+        return ResponseUtil.wrapOrNotFound(productDTO);
+    }
+
     /**
      * {@code GET  /purchase} purches an order, o
      * @param orderLinesJSON Json object of List of orderLineVM
      * @return List of ProductDTO, and http status: OK/CONFLICT on success/failure
      */
     @PostMapping("/purchase")
+    //@PreAuthorize("hasRole(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<List<ProductDTO>> purchase(@RequestBody String orderLinesJSON) {
         ObjectMapper objectMapper = new ObjectMapper();
         List<ProductDTO> productDTOS;
