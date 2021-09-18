@@ -77,18 +77,14 @@ export class CartService {
     return totalPrice;
   }
 
-  adjustQuantity(conflict: any) : void {
-    if (conflict instanceof Array) {
-      conflict.forEach(productConflict => {
-        if (productConflict instanceof Product) {
-          if( productConflict.quantity > 0 ){
-            this.cart.changeQuantity(productConflict, productConflict.quantity);
-          }else{
-            this.cart.deleteProduct(productConflict.id);
-          }
-        }
-      });
-    }
+  adjustQuantity(conflict: IProduct[]): void {
+    conflict.forEach(productConflict => {
+      if (productConflict.quantity > 0) {
+        this.cart.changeQuantitySet(productConflict, productConflict.quantity);
+      } else {
+        this.cart.deleteProduct(productConflict.id);
+      }
+    });
   }
 
   private reconstructCart(products: IProduct[]): void {

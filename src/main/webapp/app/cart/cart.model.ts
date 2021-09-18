@@ -60,4 +60,15 @@ export class Cart implements ICart {
       }
     }
   }
+
+  changeQuantitySet(product: Product, quantity: number): void {
+    const cartItem = this.items.find(ci => ci.product.id === product.id);
+    if (cartItem !== undefined) {
+      this.setQuantity(cartItem, quantity);
+    } else {
+      if (quantity > 0) {
+        this.items.push(new CartItem(product, quantity));
+      }
+    }
+  }
 }

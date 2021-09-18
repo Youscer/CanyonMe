@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CartService } from 'app/cart/services/cart.service';
+import { IProduct } from 'app/product/product.model';
 import { OrderService } from './../service/order.service';
 
 // Colonnes Tableau
@@ -54,14 +55,14 @@ export class PurchaseRecapComponent implements OnInit {
   postCartOrder(): void {
     this.orderService.postCartOrder(this.cartService.getCart(), 'UPS', 'PAYPAL').subscribe(
       () => {
-        alert('OrderPosted');
         this.cartService.deleteAllCart();
+        alert('Commande OK');
       },
       (error) => {
-        alert(error.message);
         switch (error.status) {
           case 409:
-            this.cartService.adjustQuantity(error.conflict);
+            this.cartService.adjustQuantity(error.error as IProduct[]);
+            alert('Probleme stock, panier ajusté');
             break;
         }
       }
