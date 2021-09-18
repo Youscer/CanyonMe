@@ -1,12 +1,22 @@
 package com.canyoncorp.canyonme.web.rest;
 
+import com.canyoncorp.canyonme.domain.OrderLine;
 import com.canyoncorp.canyonme.domain.Product;
 import com.canyoncorp.canyonme.repository.ProductRepository;
+import com.canyoncorp.canyonme.service.OrderService;
+import com.canyoncorp.canyonme.service.ProductService;
+import com.canyoncorp.canyonme.service.UnavailableProductException;
+import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
 import com.canyoncorp.canyonme.service.dto.ProductDTO;
 import com.canyoncorp.canyonme.service.mapper.ProductMapper;
 import com.canyoncorp.canyonme.web.rest.errors.BadRequestAlertException;
+import com.canyoncorp.canyonme.web.rest.vm.OrderLineVM;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,9 +25,11 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
 
@@ -36,12 +48,20 @@ public class ProductResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ProductService productService;
     private final ProductRepository productRepository;
-
+    private final OrderService orderService;
     private final ProductMapper productMapper;
 
-    public ProductResource(ProductRepository productRepository, ProductMapper productMapper) {
+    public ProductResource(
+        ProductRepository productRepository,
+        ProductService productService,
+        OrderService orderService,
+        ProductMapper productMapper
+    ) {
         this.productRepository = productRepository;
+        this.productService = productService;
+        this.orderService = orderService;
         this.productMapper = productMapper;
     }
 
@@ -155,23 +175,56 @@ public class ProductResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of products in body.
      */
     @GetMapping("/products")
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductDTO> getAllProducts(
+        @RequestParam(value = "name", defaultValue = "") String name,
+        @RequestParam(value = "min", defaultValue = "0") int min,
+        @RequestParam(value = "max", defaultValue = "2147483647") int max
+    ) {
         log.debug("REST request to get all Products");
-        List<Product> products = productRepository.findAll();
-        return productMapper.toDto(products);
+        return productService.searchBy(name, min, max);
     }
 
     /**
-     * {@code GET  /products/:id} : get the "id" product.
-     *
-     * @param id the id of the productDTO to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productDTO, or with status {@code 404 (Not Found)}.
+     * {@code GET  /purchase} purches an order, o
+     * @param orderLinesJSON Json object of List of orderLineVM
+     * @return List of ProductDTO, and http status: OK/CONFLICT on success/failure
      */
-    @GetMapping("/products/{id}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
-        log.debug("REST request to get Product : {}", id);
-        Optional<ProductDTO> productDTO = productRepository.findById(id).map(productMapper::toDto);
-        return ResponseUtil.wrapOrNotFound(productDTO);
+    @PostMapping("/purchase")
+    public ResponseEntity<List<ProductDTO>> purchase(@RequestBody String orderLinesJSON) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<ProductDTO> productDTOS;
+        List<OrderLineDTO> orderLineDTOS = new ArrayList<OrderLineDTO>();
+
+        // Converting json object to java object
+        List<OrderLineVM> orderLines = new ArrayList<>();
+        try {
+            orderLines = objectMapper.readValue(orderLinesJSON, new TypeReference<List<OrderLineVM>>() {});
+        } catch (JsonProcessingException e) {
+            //List<OrderLineVM> list = new ArrayList<>();
+            //list.add(new OrderLineVM(0, 100));
+            //objectMapper.toString(list);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, orderLinesJSON + " Bad json string passed \n" + e.getMessage(), e);
+        }
+
+        // mapping OrderLineVM to OderLineDTO
+        for (OrderLineVM orderLineVM : orderLines) {
+            OrderLineDTO orderLineDTO = new OrderLineDTO();
+            orderLineDTO.setProduct(orderLineVM.getProductId());
+            orderLineDTO.setQuantity(orderLineVM.getQuantity());
+            orderLineDTOS.add(orderLineDTO);
+        }
+        try {
+            productDTOS = orderService.purchaseOrder(orderLineDTOS);
+        } catch (UnavailableProductException e) {
+            return new ResponseEntity<List<ProductDTO>>(orderService.getBadOrderLinesProducts(orderLineDTOS), HttpStatus.CONFLICT);
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                HttpStatus.CONFLICT,
+                "Unknown exception caught \n" + orderLines.toString() + e.getMessage(),
+                e
+            );
+        }
+        return new ResponseEntity<List<ProductDTO>>(productDTOS, HttpStatus.OK);
     }
 
     /**
