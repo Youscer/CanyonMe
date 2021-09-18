@@ -19,7 +19,7 @@ export class OrderService {
             cartItem => new OrderReqItem(cartItem.product.id, cartItem.quantity)
         );
 
-        const reqParam = new OrderReq(items, shippingMode, paymentMode);
+        const reqParam = items;//new OrderReq(items, shippingMode, paymentMode);
 
         return this.http.post<IOrderResponse[]>(url, reqParam);
     }
