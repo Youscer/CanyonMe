@@ -2,14 +2,15 @@
 
   <!-- Logo -->
   <a routerLink="/" class="tool-item" (click)=resetSearch()>
-    <mat-icon>panorama_fish_eye</mat-icon>
+    <!-- <mat-icon>panorama_fish_eye</mat-icon> -->
+    <img src="../../../content/images/CanyonMe_indigo_montagnes.png" alt="CanyonMe Logo" class="canyonme" />
     <span class="site-title">CanyonMe</span>
   </a>
 
   <!-- Search Bar -->
-  <form [formGroup]="angForm" class="toolbar-spacer tool-item" (ngSubmit)="searchThis()">
+  <form [formGroup]="searchForm" class="toolbar-spacer tool-item" (ngSubmit)="searchThis()">
     <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
-    <mat-icon color="primary" class="inside-icon" type="submit">search</mat-icon>
+    <button mat-icon-button type="submit" class="inside-icon"><mat-icon color="primary">search</mat-icon></button>
   </form>
 
 

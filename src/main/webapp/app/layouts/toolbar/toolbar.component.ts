@@ -26,7 +26,7 @@ export class ToolBarComponent implements OnInit {
   account: Account | null = null;
 
   searchword: string = "";
-  angForm: FormGroup;
+  searchForm: FormGroup;
 
   hideBadge: boolean = false;
 
@@ -43,7 +43,7 @@ export class ToolBarComponent implements OnInit {
     if (VERSION) {
       this.version = VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION;
     }
-    this.angForm = this.fb.group({ name: [''] });
+    this.searchForm = this.fb.group({ name: [''] });
   }
 
   ngOnInit(): void {

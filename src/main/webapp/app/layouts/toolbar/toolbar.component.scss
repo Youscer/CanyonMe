@@ -1,6 +1,20 @@
 .toolbar{
 }
 
+.canyonme {
+/*   background: url('../../../content/images/CanyonMe_indigo_montagnes.png') no-repeat center top;
+  background-size: contain;
+  width: 50px; 
+  height: 50px; 
+  display: block; 
+  margin-right: 10px;
+  margin-left: 10px; */
+  display: block;
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 50%;
+}
+
 .toolbar-spacer {
   flex: 1 1 auto;
   display: flex;
@@ -8,7 +22,7 @@
 
 
 .toolbar-spacer .inside-icon{
-  margin-left: -30px;
+  margin-left: -50px;
   z-index: 1;
 }
 
@@ -46,15 +60,15 @@ a{
   align-items: center;
 }
 
-span{
+.tool-item span{
   color: inherit;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 mat-icon{
   transform: scale(1.5);
   margin-right: 10px;
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 .site-title{
@@ -62,5 +76,6 @@ mat-icon{
 }
 
 .arrow-drop-down{
-  margin-left: -10px;
+  margin-left: -20px;
+  margin-right: 20px;
 }
