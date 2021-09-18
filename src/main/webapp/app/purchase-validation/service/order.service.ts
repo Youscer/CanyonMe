@@ -9,7 +9,7 @@ import { ICart } from './../../cart/cart.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-    protected resourceUrl = this.applicationConfigService.getEndpointFor('api/order');
+    protected resourceUrl = this.applicationConfigService.getEndpointFor('api/purchase');
 
     constructor(protected cartService: CartService, protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
@@ -19,7 +19,7 @@ export class OrderService {
             cartItem => new OrderReqItem(cartItem.product.id, cartItem.quantity)
         );
 
-        const reqParam = new OrderReq(items, shippingMode, paymentMode);
+        const reqParam = items;//new OrderReq(items, shippingMode, paymentMode);
 
         return this.http.post<IOrderResponse[]>(url, reqParam);
     }

@@ -55,11 +55,12 @@ export class PurchaseRecapComponent implements OnInit {
     this.orderService.postCartOrder(this.cartService.getCart(), 'UPS', 'PAYPAL').subscribe(
       () => {
         alert('OrderPosted');
+        this.cartService.deleteAllCart();
       },
       (error) => {
         alert(error.message);
         switch (error.status) {
-          case 500:
+          case 409:
             
             break;
         }

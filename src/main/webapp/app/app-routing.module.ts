@@ -33,6 +33,7 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
         },
         {
           path: 'purchase-validation',
+          canActivate: [UserRouteAccessService],
           loadChildren: () => import('./purchase-validation/purchase-validation.module').then(m => m.PurchaseValidationModule),
         },
         {

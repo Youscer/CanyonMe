@@ -9,12 +9,10 @@ const productRoute: Routes = [
   {
     path: '',
     component: ProductComponent,
-    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id',
     component: ProductDetailComponent,
-    canActivate: [UserRouteAccessService],
   },
 ];
 
