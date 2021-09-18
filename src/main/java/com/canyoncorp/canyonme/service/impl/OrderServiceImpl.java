@@ -14,23 +14,23 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = { UnavailableProductException.class })
 public class OrderServiceImpl implements OrderService {
 
     private ProductService productService;
     private ProductMapper productMapper;
+    private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(ProductService productService, ProductMapper productMapper) {
         this.productService = productService;
         this.productMapper = productMapper;
     }
 
-    private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
-
-    @Override
+    @Transactional
     public List<ProductDTO> purchaseOrder(List<OrderLineDTO> orders) {
         List<ProductDTO> remainingItems = new ArrayList<ProductDTO>();
         try {
@@ -49,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
         return remainingItems;
     }
 
+    @Transactional(readOnly = true)
     public List<ProductDTO> getBadOrderLinesProducts(List<OrderLineDTO> orders) {
         List<ProductDTO> products = new ArrayList<ProductDTO>();
         for (OrderLineDTO orderLine : orders) {

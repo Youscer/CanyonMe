@@ -16,10 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = { UnavailableProductException.class })
 public class ProductServiceImpl implements ProductService {
 
     private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -78,7 +79,6 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toDto(productSearch.findAll(Specification.where(nameSpec).and(minPriceSpec).and(maxPriceSpec)));
     }
 
-    @Transactional(rollbackFor = { UnavailableProductException.class, Error.class })
     public Optional<ProductDTO> purchase(OrderLineDTO orderLineDTO) {
         Optional<ProductDTO> product = getProduct(orderLineDTO);
 

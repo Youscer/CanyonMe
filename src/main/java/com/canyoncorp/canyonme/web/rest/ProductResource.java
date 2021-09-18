@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -211,10 +212,7 @@ public class ProductResource {
         try {
             orderLines = objectMapper.readValue(orderLinesJSON, new TypeReference<List<OrderLineVM>>() {});
         } catch (JsonProcessingException e) {
-            //List<OrderLineVM> list = new ArrayList<>();
-            //list.add(new OrderLineVM(0, 100));
-            //objectMapper.toString(list);
-            throw new ResponseStatusException(HttpStatus.CONFLICT, orderLinesJSON + " Bad json string passed \n" + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Bad json string passed\n msg: " + e.getMessage(), e);
         }
 
         // mapping OrderLineVM to OderLineDTO
@@ -224,16 +222,18 @@ public class ProductResource {
             orderLineDTO.setQuantity(orderLineVM.getQuantity());
             orderLineDTOS.add(orderLineDTO);
         }
+
+        productDTOS = orderService.getBadOrderLinesProducts(orderLineDTOS);
+        if (!productDTOS.isEmpty()) return new ResponseEntity<List<ProductDTO>>(productDTOS, HttpStatus.CONFLICT);
+
         try {
             productDTOS = orderService.purchaseOrder(orderLineDTOS);
         } catch (UnavailableProductException e) {
             return new ResponseEntity<List<ProductDTO>>(orderService.getBadOrderLinesProducts(orderLineDTOS), HttpStatus.CONFLICT);
+        } catch (UnexpectedRollbackException e) {
+            return new ResponseEntity<List<ProductDTO>>(orderService.getBadOrderLinesProducts(orderLineDTOS), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            throw new ResponseStatusException(
-                HttpStatus.CONFLICT,
-                "Unknown exception caught \n" + orderLines.toString() + e.getMessage(),
-                e
-            );
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Unknown exception caught \n" + e.getMessage(), e);
         }
         return new ResponseEntity<List<ProductDTO>>(productDTOS, HttpStatus.OK);
     }
