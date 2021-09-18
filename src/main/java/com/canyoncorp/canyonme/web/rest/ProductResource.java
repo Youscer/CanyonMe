@@ -230,11 +230,10 @@ public class ProductResource {
             productDTOS = orderService.purchaseOrder(orderLineDTOS);
         } catch (UnavailableProductException e) {
             return new ResponseEntity<List<ProductDTO>>(orderService.getBadOrderLinesProducts(orderLineDTOS), HttpStatus.CONFLICT);
-        } catch (UnexpectedRollbackException e) {
-            return new ResponseEntity<List<ProductDTO>>(orderService.getBadOrderLinesProducts(orderLineDTOS), HttpStatus.CONFLICT);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Unknown exception caught \n" + e.getMessage(), e);
         }
+
         return new ResponseEntity<List<ProductDTO>>(productDTOS, HttpStatus.OK);
     }
 

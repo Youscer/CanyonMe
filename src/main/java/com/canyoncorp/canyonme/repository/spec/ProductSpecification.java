@@ -23,7 +23,10 @@ public class ProductSpecification implements Specification<Product> {
             return criteriaBuilder.lessThanOrEqualTo(root.<String>get(criteria.getKey()), criteria.getValue().toString());
         } else if (criteria.getOperation().equalsIgnoreCase(":")) {
             if (root.get(criteria.getKey()).getJavaType() == String.class) {
-                return criteriaBuilder.like(root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+                return criteriaBuilder.like(
+                    criteriaBuilder.lower(root.<String>get(criteria.getKey())),
+                    "%" + criteria.getValue().toString().toLowerCase() + "%"
+                );
             } else {
                 return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
             }
