@@ -9,7 +9,7 @@ import { ICart } from './../../cart/cart.model';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-    protected resourceUrl = this.applicationConfigService.getEndpointFor('api/order');
+    protected resourceUrl = this.applicationConfigService.getEndpointFor('api/purchase');
 
     constructor(protected cartService: CartService, protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
