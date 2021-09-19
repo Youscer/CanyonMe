@@ -1,6 +1,7 @@
 package com.canyoncorp.canyonme.service.impl;
 
 import com.canyoncorp.canyonme.domain.Product;
+import com.canyoncorp.canyonme.repository.PictureRepository;
 import com.canyoncorp.canyonme.repository.ProductRepository;
 import com.canyoncorp.canyonme.repository.ProductSearchRepository;
 import com.canyoncorp.canyonme.repository.spec.ProductSpecification;
@@ -26,11 +27,18 @@ public class ProductServiceImpl implements ProductService {
     private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private ProductRepository productRepository;
+    private PictureRepository pictureRepository;
     private ProductSearchRepository productSearch;
     private ProductMapper productMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, ProductSearchRepository productSearch, ProductMapper productMapper) {
+    public ProductServiceImpl(
+        ProductRepository productRepository,
+        ProductSearchRepository productSearch,
+        ProductMapper productMapper,
+        PictureRepository pictureRepository
+    ) {
         this.productRepository = productRepository;
+        this.pictureRepository = pictureRepository;
         this.productSearch = productSearch;
         this.productMapper = productMapper;
     }

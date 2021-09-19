@@ -1,6 +1,8 @@
 package com.canyoncorp.canyonme.service.dto;
 
+import com.canyoncorp.canyonme.domain.Picture;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.*;
 
@@ -24,6 +26,8 @@ public class ProductDTO implements Serializable {
     private Float unitPrice;
 
     private Integer quantity;
+
+    private List<Picture> pictures;
 
     public Long getId() {
         return id;
@@ -71,6 +75,14 @@ public class ProductDTO implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public List<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(List<Picture> pictures) {
+        this.pictures = pictures;
     }
 
     @Override
