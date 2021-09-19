@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface ProductService {
     // search opearations
 
-    List<Product> getAllProducts();
+    List<ProductDTO> getAllProducts();
 
     public List<ProductDTO> getProductsByName(String name);
 

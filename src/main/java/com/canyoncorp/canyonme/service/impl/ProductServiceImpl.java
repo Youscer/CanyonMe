@@ -6,6 +6,7 @@ import com.canyoncorp.canyonme.repository.ProductRepository;
 import com.canyoncorp.canyonme.repository.ProductSearchRepository;
 import com.canyoncorp.canyonme.repository.spec.ProductSpecification;
 import com.canyoncorp.canyonme.repository.spec.SearchCriteria;
+import com.canyoncorp.canyonme.service.PictureService;
 import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.service.UnavailableProductException;
 import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
@@ -27,31 +28,35 @@ public class ProductServiceImpl implements ProductService {
     private final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private ProductRepository productRepository;
-    private PictureRepository pictureRepository;
     private ProductSearchRepository productSearch;
+    private PictureService pictureService;
     private ProductMapper productMapper;
 
     public ProductServiceImpl(
         ProductRepository productRepository,
         ProductSearchRepository productSearch,
         ProductMapper productMapper,
-        PictureRepository pictureRepository
+        PictureService pictureService
     ) {
         this.productRepository = productRepository;
-        this.pictureRepository = pictureRepository;
+        this.pictureService = pictureService;
         this.productSearch = productSearch;
         this.productMapper = productMapper;
     }
 
     @Transactional(readOnly = true)
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        List<ProductDTO> productDTOS = productMapper.toDto(productRepository.findAll());
+        setPictures(productDTOS);
+        return productDTOS;
     }
 
     @Transactional(readOnly = true)
     public List<ProductDTO> getProductsByName(String name) {
         ProductSpecification nameSpec = new ProductSpecification(new SearchCriteria("name", ":", name));
-        return productMapper.toDto(productSearch.findAll(Specification.where(nameSpec)));
+        List<ProductDTO> productDTOS = productMapper.toDto(productSearch.findAll(Specification.where(nameSpec)));
+        setPictures(productDTOS);
+        return productDTOS;
     }
 
     @Transactional(readOnly = true)
@@ -61,7 +66,9 @@ public class ProductServiceImpl implements ProductService {
         // creating specefications
         ProductSpecification minPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", ">", Integer.toString(price)));
 
-        return productMapper.toDto(productSearch.findAll(Specification.where(minPriceSpec)));
+        List<ProductDTO> productDTOS = productMapper.toDto(productSearch.findAll(Specification.where(minPriceSpec)));
+        setPictures(productDTOS);
+        return productDTOS;
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +78,9 @@ public class ProductServiceImpl implements ProductService {
         // creating specefications
         ProductSpecification maxPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", "<", Integer.toString(price)));
 
-        return productMapper.toDto(productSearch.findAll(Specification.where(maxPriceSpec)));
+        List<ProductDTO> productDTOS = productMapper.toDto(productSearch.findAll(Specification.where(maxPriceSpec)));
+        setPictures(productDTOS);
+        return productDTOS;
     }
 
     @Transactional(readOnly = true)
@@ -84,7 +93,11 @@ public class ProductServiceImpl implements ProductService {
         ProductSpecification minPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", ">", Integer.toString(minPrice)));
         ProductSpecification maxPriceSpec = new ProductSpecification(new SearchCriteria("unitPrice", "<", Integer.toString(maxPrice)));
 
-        return productMapper.toDto(productSearch.findAll(Specification.where(nameSpec).and(minPriceSpec).and(maxPriceSpec)));
+        List<ProductDTO> productDTOS = productMapper.toDto(
+            productSearch.findAll(Specification.where(nameSpec).and(minPriceSpec).and(maxPriceSpec))
+        );
+        setPictures(productDTOS);
+        return productDTOS;
     }
 
     public Optional<ProductDTO> purchase(OrderLineDTO orderLineDTO) {
@@ -107,5 +120,13 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public Optional<ProductDTO> getProduct(OrderLineDTO orderLineDTO) {
         return productRepository.findById(orderLineDTO.getProduct()).map(productMapper::toDto);
+    }
+
+    private void setPictures(ProductDTO productDTO) {
+        productDTO.setPictures(pictureService.getProductPictures(productDTO));
+    }
+
+    private void setPictures(List<ProductDTO> productDTOS) {
+        for (ProductDTO productDTO : productDTOS) setPictures(productDTO);
     }
 }
