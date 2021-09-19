@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.Picture;
 import com.canyoncorp.canyonme.repository.PictureRepository;
+import com.canyoncorp.canyonme.service.dto.PictureDTO;
+import com.canyoncorp.canyonme.service.mapper.PictureMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -40,6 +42,9 @@ class PictureResourceIT {
 
     @Autowired
     private PictureRepository pictureRepository;
+
+    @Autowired
+    private PictureMapper pictureMapper;
 
     @Autowired
     private EntityManager em;
@@ -81,8 +86,9 @@ class PictureResourceIT {
     void createPicture() throws Exception {
         int databaseSizeBeforeCreate = pictureRepository.findAll().size();
         // Create the Picture
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
         restPictureMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(picture)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(pictureDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Picture in the database
@@ -97,12 +103,13 @@ class PictureResourceIT {
     void createPictureWithExistingId() throws Exception {
         // Create the Picture with an existing ID
         picture.setId(1L);
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
 
         int databaseSizeBeforeCreate = pictureRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPictureMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(picture)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(pictureDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Picture in the database
@@ -118,9 +125,10 @@ class PictureResourceIT {
         picture.setLink(null);
 
         // Create the Picture, which fails.
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
 
         restPictureMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(picture)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(pictureDTO)))
             .andExpect(status().isBadRequest());
 
         List<Picture> pictureList = pictureRepository.findAll();
@@ -177,12 +185,13 @@ class PictureResourceIT {
         // Disconnect from session so that the updates on updatedPicture are not directly saved in db
         em.detach(updatedPicture);
         updatedPicture.link(UPDATED_LINK);
+        PictureDTO pictureDTO = pictureMapper.toDto(updatedPicture);
 
         restPictureMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedPicture.getId())
+                put(ENTITY_API_URL_ID, pictureDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedPicture))
+                    .content(TestUtil.convertObjectToJsonBytes(pictureDTO))
             )
             .andExpect(status().isOk());
 
@@ -199,12 +208,15 @@ class PictureResourceIT {
         int databaseSizeBeforeUpdate = pictureRepository.findAll().size();
         picture.setId(count.incrementAndGet());
 
+        // Create the Picture
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPictureMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, picture.getId())
+                put(ENTITY_API_URL_ID, pictureDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(picture))
+                    .content(TestUtil.convertObjectToJsonBytes(pictureDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -219,12 +231,15 @@ class PictureResourceIT {
         int databaseSizeBeforeUpdate = pictureRepository.findAll().size();
         picture.setId(count.incrementAndGet());
 
+        // Create the Picture
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPictureMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(picture))
+                    .content(TestUtil.convertObjectToJsonBytes(pictureDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -239,9 +254,12 @@ class PictureResourceIT {
         int databaseSizeBeforeUpdate = pictureRepository.findAll().size();
         picture.setId(count.incrementAndGet());
 
+        // Create the Picture
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPictureMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(picture)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(pictureDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Picture in the database
@@ -311,12 +329,15 @@ class PictureResourceIT {
         int databaseSizeBeforeUpdate = pictureRepository.findAll().size();
         picture.setId(count.incrementAndGet());
 
+        // Create the Picture
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPictureMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, picture.getId())
+                patch(ENTITY_API_URL_ID, pictureDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(picture))
+                    .content(TestUtil.convertObjectToJsonBytes(pictureDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -331,12 +352,15 @@ class PictureResourceIT {
         int databaseSizeBeforeUpdate = pictureRepository.findAll().size();
         picture.setId(count.incrementAndGet());
 
+        // Create the Picture
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPictureMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(picture))
+                    .content(TestUtil.convertObjectToJsonBytes(pictureDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -351,9 +375,14 @@ class PictureResourceIT {
         int databaseSizeBeforeUpdate = pictureRepository.findAll().size();
         picture.setId(count.incrementAndGet());
 
+        // Create the Picture
+        PictureDTO pictureDTO = pictureMapper.toDto(picture);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPictureMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(picture)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(pictureDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Picture in the database
