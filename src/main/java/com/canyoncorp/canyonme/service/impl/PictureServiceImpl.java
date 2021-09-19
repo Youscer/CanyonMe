@@ -22,13 +22,11 @@ public class PictureServiceImpl implements PictureService {
 
     private final Logger log = LoggerFactory.getLogger(PictureServiceImpl.class);
     private PictureRepository pictureRepository;
-    private ProductService productService;
     private PictureMapper pictureMapper;
 
-    public PictureServiceImpl(PictureRepository pictureRepository, ProductService productService, PictureMapper pictureMapper) {
+    public PictureServiceImpl(PictureRepository pictureRepository, PictureMapper pictureMapper) {
         this.pictureRepository = pictureRepository;
         this.pictureMapper = pictureMapper;
-        this.productService = productService;
     }
 
     @Transactional(readOnly = true)
@@ -36,11 +34,7 @@ public class PictureServiceImpl implements PictureService {
         return pictureMapper.toDto(pictureRepository.findByProduct(product.getId()));
     }
 
-    @Override
-    public PictureDTO creatPicture(PictureVM pictureVM) {
-        ProductDTO productDTO = productService.getProduct(pictureVM.getProductId());
-        if (productDTO == null) return null;
-
+    public PictureDTO creatPicture(PictureVM pictureVM, ProductDTO productDTO) {
         // filling DTO
         PictureDTO pictureDTO = new PictureDTO();
         pictureDTO.setLink(pictureVM.getLink());

@@ -10,9 +10,12 @@ import com.canyoncorp.canyonme.service.PictureService;
 import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.service.UnavailableProductException;
 import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
+import com.canyoncorp.canyonme.service.dto.PictureDTO;
 import com.canyoncorp.canyonme.service.dto.ProductDTO;
 import com.canyoncorp.canyonme.service.mapper.PictureVMMapper;
 import com.canyoncorp.canyonme.service.mapper.ProductMapper;
+import com.canyoncorp.canyonme.web.rest.vm.PictureVM;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
@@ -45,7 +48,12 @@ public class ProductServiceImpl implements ProductService {
         this.productMapper = productMapper;
     }
 
-    @Override
+    @Transactional(readOnly = true)
+    public Optional<ProductDTO> getProduct(OrderLineDTO orderLineDTO) {
+        return productRepository.findById(orderLineDTO.getProduct()).map(productMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
     public ProductDTO getProduct(Long id) {
         return productMapper.toDto(productRepository.getOne(id));
     }
@@ -106,6 +114,8 @@ public class ProductServiceImpl implements ProductService {
         return productDTOS;
     }
 
+    /* Methodes to purchase and creat a product */
+
     public Optional<ProductDTO> purchase(OrderLineDTO orderLineDTO) {
         Optional<ProductDTO> product = getProduct(orderLineDTO);
 
@@ -123,9 +133,21 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
-    @Transactional(readOnly = true)
-    public Optional<ProductDTO> getProduct(OrderLineDTO orderLineDTO) {
-        return productRepository.findById(orderLineDTO.getProduct()).map(productMapper::toDto);
+    @Override
+    public ProductDTO addProduct(ProductDTO productDTO) {
+        // creating product
+        Product product = productRepository.save(productMapper.toEntity(productDTO));
+        ProductDTO newProductDTO = productMapper.toDto(product);
+
+        if (newProductDTO == null) return null;
+
+        // creating pictures
+        List<PictureDTO> pictureDTOS = new ArrayList<>();
+        for (PictureVM pictureVM : productDTO.getPictures()) {
+            pictureDTOS.add(pictureService.creatPicture(pictureVM, newProductDTO));
+        }
+        newProductDTO.setPictures(pictureDTOS);
+        return newProductDTO;
     }
 
     private void setPictures(ProductDTO productDTO) {

@@ -8,5 +8,5 @@ import java.util.List;
 public interface PictureService {
     List<PictureDTO> getProductPictures(ProductDTO product);
 
-    PictureDTO creatPicture(PictureVM pictureVM);
+    PictureDTO creatPicture(PictureVM pictureVM, ProductDTO productDTO);
 }

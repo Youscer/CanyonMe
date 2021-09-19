@@ -21,7 +21,12 @@ public interface ProductService {
 
     public List<ProductDTO> searchBy(String name, int minPrice, int maxPrice);
 
+    // create remove operations
+
+    public ProductDTO addProduct(ProductDTO productDTO);
+
     // purchase operations
+
     public Optional<ProductDTO> purchase(OrderLineDTO orderLineDTO);
 
     public Optional<ProductDTO> getProduct(OrderLineDTO orderLineDTO);
