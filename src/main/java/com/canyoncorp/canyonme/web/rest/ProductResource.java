@@ -82,13 +82,13 @@ public class ProductResource {
         if (productDTO.getId() != null) {
             throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Product product = productMapper.toEntity(productDTO);
-        product = productRepository.save(product);
-        ProductDTO result = productMapper.toDto(product);
+
+        ProductDTO newProductDTO = productService.addProduct(productDTO);
+
         return ResponseEntity
-            .created(new URI("/api/products/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .created(new URI("/api/products/" + newProductDTO.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, newProductDTO.getId().toString()))
+            .body(newProductDTO);
     }
 
     /**
