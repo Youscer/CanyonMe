@@ -27,7 +27,7 @@ public class ProductDTO implements Serializable {
 
     private Integer quantity;
 
-    private List<Picture> pictures;
+    private List<PictureDTO> pictures;
 
     public Long getId() {
         return id;
@@ -77,11 +77,11 @@ public class ProductDTO implements Serializable {
         this.quantity = quantity;
     }
 
-    public List<Picture> getPictures() {
+    public List<PictureDTO> getPictures() {
         return pictures;
     }
 
-    public void setPictures(List<Picture> pictures) {
+    public void setPictures(List<PictureDTO> pictures) {
         this.pictures = pictures;
     }
 
