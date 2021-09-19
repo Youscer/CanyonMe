@@ -45,6 +45,11 @@ public class ProductServiceImpl implements ProductService {
         this.productMapper = productMapper;
     }
 
+    @Override
+    public ProductDTO getProduct(Long id) {
+        return productMapper.toDto(productRepository.getOne(id));
+    }
+
     @Transactional(readOnly = true)
     public List<ProductDTO> getAllProducts() {
         List<ProductDTO> productDTOS = productMapper.toDto(productRepository.findAll());

@@ -9,7 +9,9 @@ import java.util.Optional;
 public interface ProductService {
     // search opearations
 
-    List<ProductDTO> getAllProducts();
+    public ProductDTO getProduct(Long id);
+
+    public List<ProductDTO> getAllProducts();
 
     public List<ProductDTO> getProductsByName(String name);
 
