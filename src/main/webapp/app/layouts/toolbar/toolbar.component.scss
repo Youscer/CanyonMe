@@ -20,13 +20,13 @@
 }
 
 
-.toolbar-spacer .inside-icon{
-  margin-left: -50px;
+form .inside-icon{
+  margin-left: -40px;
   z-index: 1;
 }
 
-.toolbar-spacer input{
-  width: 80%;
+form input{
+  width: 85%;
 }
 
 .profile-image {
@@ -78,17 +78,46 @@ a{
   margin-left: 0px;
 }
 
+.responsive-search{
+  display: none;
+}
+
+.resp-spacer{
+  display: none;
+}
+
 @media screen and (max-width: 1000px) {
   .tool-item span{
     display: none;
   }
-  .toolbar-spacer input{
-    width: 90%;
+  form input{
+    width: 95%;
   }
   .arrow-drop-down{
     margin-left: -10px;
   }
   .tool-item mat-icon{
     margin-right: 0px;
+  }
+
+}
+@media screen and (max-width: 599px) {
+  .responsive-search{
+    display: inherit;
+    margin: 0px;
+    padding: 0px;
+  }
+  .responsive-search form{
+    width: 100%;
+  }
+  .responsive-search input{
+    width: 100%;
+  }
+  .classic-search{
+    display: none;
+  }
+  .resp-spacer{
+    display: inherit;
+    width: 100%;
   }
 }

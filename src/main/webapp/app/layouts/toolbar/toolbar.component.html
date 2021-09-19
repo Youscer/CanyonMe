@@ -1,27 +1,43 @@
 <mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar-row>
+    <!-- Logo -->
+    <a routerLink="/" class="tool-item" (click)=resetSearch()>
+      <!-- <mat-icon>panorama_fish_eye</mat-icon> -->
+      <img src="../../../content/images/CanyonMe_indigo_montagnes.png" alt="CanyonMe Logo" class="canyonme" />
+      <span class="site-title">CanyonMe</span>
+    </a>
 
-  <!-- Logo -->
-  <a routerLink="/" class="tool-item" (click)=resetSearch()>
-    <!-- <mat-icon>panorama_fish_eye</mat-icon> -->
-    <img src="../../../content/images/CanyonMe_indigo_montagnes.png" alt="CanyonMe Logo" class="canyonme" />
-    <span class="site-title">CanyonMe</span>
-  </a>
-
-  <!-- Search Bar -->
-  <form [formGroup]="searchForm" class="toolbar-spacer tool-item" (ngSubmit)="searchThis()">
-    <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
-    <button mat-icon-button type="submit" class="inside-icon"><mat-icon color="primary">search</mat-icon></button>
-  </form>
+    <div class="resp-spacer"></div>
+    <!-- Search Bar -->
+    <form [formGroup]="searchForm" class="toolbar-spacer tool-item classic-search" (ngSubmit)="searchThis()">
+      <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
+      <button mat-icon-button type="submit" class="inside-icon">
+        <mat-icon color="primary">search</mat-icon>
+      </button>
+    </form>
 
 
-  <!-- Login and Cart -->
-  <a routerLink="/login" class="tool-item" (click)=resetSearch()>
-    <mat-icon>person</mat-icon>
-    <span>Login</span>
-    <mat-icon class="arrow-drop-down">arrow_drop_down</mat-icon>
-  </a>
-  <a routerLink="/cart" class="tool-item" (click)=resetSearch()>
-    <mat-icon matBadgeSize="small" [matBadge]="getCartItemCount()" [matBadgeHidden]="hideBadge" matBadgeColor="warn">shopping_cart</mat-icon>
-    <span>Cart</span>
-  </a>
+    <!-- Login and Cart -->
+    <a routerLink="/login" class="tool-item" (click)=resetSearch()>
+      <mat-icon>person</mat-icon>
+      <span>Login</span>
+      <mat-icon class="arrow-drop-down">arrow_drop_down</mat-icon>
+    </a>
+    <a routerLink="/cart" class="tool-item" (click)=resetSearch()>
+      <mat-icon matBadgeSize="small" [matBadge]="getCartItemCount()" [matBadgeHidden]="hideBadge" matBadgeColor="warn">
+        shopping_cart</mat-icon>
+      <span>Cart</span>
+    </a>
+  </mat-toolbar-row>
+
+  <!-- Responsive search bar -->
+  <mat-toolbar-row class="responsive-search">
+    <form [formGroup]="searchForm" (ngSubmit)="searchThis()">
+      <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
+      <button mat-icon-button type="submit" class="inside-icon">
+        <mat-icon color="primary">search</mat-icon>
+      </button>
+    </form>
+  </mat-toolbar-row>
+
 </mat-toolbar>
