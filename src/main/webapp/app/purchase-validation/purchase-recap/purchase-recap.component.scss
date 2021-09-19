@@ -1,0 +1,18 @@
+@use '~@angular/material' as mat;
+.required::after {
+  content: ' *';
+  color: red;
+}
+
+.form-control.ng-invalid ~ label.checkbox-inline::after {
+  content: ' *';
+  color: red;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-radio-button {
+  margin: 0 12px;
+}
