@@ -70,4 +70,10 @@ export class ToolBarComponent implements OnInit {
     }
     return totalQuantity;
   }
+
+  logout(): void {
+    this.resetSearch();
+    this.loginService.logout();
+    this.router.navigate(['']);
+  }
 }

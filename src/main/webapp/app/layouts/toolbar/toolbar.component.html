@@ -1,9 +1,11 @@
 <mat-toolbar color="primary" class="toolbar">
+
   <mat-toolbar-row>
+
     <!-- Logo -->
     <a routerLink="/" class="tool-item" (click)=resetSearch()>
       <!-- <mat-icon>panorama_fish_eye</mat-icon> -->
-      <img src="../../../content/images/CanyonMe_indigo_montagnes.png" alt="CanyonMe Logo" class="canyonme" />
+      <img src="../../../content/images/CanyonMe_montagnes.png" alt="CanyonMe Logo" class="canyonme" />
       <span class="site-title">CanyonMe</span>
     </a>
 
@@ -18,20 +20,47 @@
 
 
     <!-- Login and Cart -->
-    <a routerLink="/login" class="tool-item" (click)=resetSearch()>
+    <a [matMenuTriggerFor]="account" class="tool-item">
       <mat-icon>person</mat-icon>
-      <span>Login</span>
+      <span>Account</span>
       <mat-icon class="arrow-drop-down">arrow_drop_down</mat-icon>
     </a>
+
+    <mat-menu #account="matMenu" class="toolbar-menu">
+      <button mat-menu-item routerLink="/login" (click)=resetSearch()>
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Login</span>
+      </button>
+      <button mat-menu-item routerLink="account/register" (click)=resetSearch()>
+        <mat-icon>person_add</mat-icon>
+        <span>Register</span>
+      </button>
+      <button mat-menu-item routerLink="account/settings" (click)=resetSearch()>
+        <mat-icon>settings</mat-icon>
+        <span>Settings</span>
+      </button>
+      <button mat-menu-item routerLink="account/password" (click)=resetSearch()>
+        <mat-icon>lock</mat-icon>
+        <span>Password</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>close</mat-icon>
+        <span>Disconnect</span>
+      </button>
+    </mat-menu>
+
+
+
     <a routerLink="/cart" class="tool-item" (click)=resetSearch()>
       <mat-icon matBadgeSize="small" [matBadge]="getCartItemCount()" [matBadgeHidden]="hideBadge" matBadgeColor="warn">
         shopping_cart</mat-icon>
       <span>Cart</span>
     </a>
+
   </mat-toolbar-row>
 
   <!-- Responsive search bar -->
-  <mat-toolbar-row class="responsive-search">
+  <mat-toolbar-row class="responsive-search" style="z-index: 1;">
     <form [formGroup]="searchForm" (ngSubmit)="searchThis()">
       <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
       <button mat-icon-button type="submit" class="inside-icon">

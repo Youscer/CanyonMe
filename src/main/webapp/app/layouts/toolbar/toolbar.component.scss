@@ -1,9 +1,8 @@
 .toolbar{
-  z-index: 100;
 }
 
 .canyonme {
-/*   background: url('../../../content/images/CanyonMe_indigo_montagnes.png') no-repeat center top;
+/*   background: url('../../../content/images/CanyonMe_montagnes.png') no-repeat center top;
   background-size: contain;
   width: 50px; 
   height: 50px; 
@@ -53,6 +52,7 @@ a{
   height: 100%;
   padding-left: 20px;
   padding-right: 20px;
+  user-select: none;
 }
 
 .center-inside{
@@ -84,6 +84,11 @@ a{
 
 .resp-spacer{
   display: none;
+}
+
+::ng-deep .toolbar-menu{
+  width: 500px;
+  z-index: 10000000;
 }
 
 @media screen and (max-width: 1000px) {
