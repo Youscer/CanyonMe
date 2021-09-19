@@ -1,7 +1,10 @@
 package com.canyoncorp.canyonme.service.dto;
 
 import com.canyoncorp.canyonme.domain.Picture;
+import com.canyoncorp.canyonme.service.mapper.PictureVMMapper;
+import com.canyoncorp.canyonme.web.rest.vm.PictureVM;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.*;
@@ -27,7 +30,7 @@ public class ProductDTO implements Serializable {
 
     private Integer quantity;
 
-    private List<PictureDTO> pictures;
+    private List<PictureVM> pictures;
 
     public Long getId() {
         return id;
@@ -77,12 +80,14 @@ public class ProductDTO implements Serializable {
         this.quantity = quantity;
     }
 
-    public List<PictureDTO> getPictures() {
+    public List<PictureVM> getPictures() {
         return pictures;
     }
 
     public void setPictures(List<PictureDTO> pictures) {
-        this.pictures = pictures;
+        List<PictureVM> pictureVMS = new ArrayList<>();
+        for (PictureDTO pictureDTO : pictures) pictureVMS.add(PictureVMMapper.INSTANCE.DTOtoVM(pictureDTO));
+        this.pictures = pictureVMS;
     }
 
     @Override

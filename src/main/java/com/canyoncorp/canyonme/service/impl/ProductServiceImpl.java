@@ -11,6 +11,7 @@ import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.service.UnavailableProductException;
 import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
 import com.canyoncorp.canyonme.service.dto.ProductDTO;
+import com.canyoncorp.canyonme.service.mapper.PictureVMMapper;
 import com.canyoncorp.canyonme.service.mapper.ProductMapper;
 import java.util.List;
 import java.util.Optional;

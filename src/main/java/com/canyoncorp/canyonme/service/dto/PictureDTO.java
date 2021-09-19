@@ -14,7 +14,7 @@ public class PictureDTO implements Serializable {
     @NotNull
     private String link;
 
-    // private ProductDTO product;
+    private ProductDTO product;
 
     public Long getId() {
         return id;
@@ -32,7 +32,6 @@ public class PictureDTO implements Serializable {
         this.link = link;
     }
 
-    /*
     public ProductDTO getProduct() {
         return product;
     }
@@ -40,7 +39,6 @@ public class PictureDTO implements Serializable {
     public void setProduct(ProductDTO product) {
         this.product = product;
     }
-    */
 
     @Override
     public boolean equals(Object o) {
@@ -69,7 +67,7 @@ public class PictureDTO implements Serializable {
         return "PictureDTO{" +
             "id=" + getId() +
             ", link='" + getLink() + "'" +
-            // ", product=" + getProduct() +
+            ", product=" + getProduct() +
             "}";
     }
 }
