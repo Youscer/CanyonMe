@@ -91,6 +91,7 @@ a{
   z-index: 10000000;
 }
 
+/* TABLETTE */
 @media screen and (max-width: 1000px) {
   .tool-item span{
     display: none;
@@ -106,6 +107,9 @@ a{
   }
 
 }
+
+/* MOBIL */
+
 @media screen and (max-width: 599px) {
   .responsive-search{
     display: inherit;
@@ -124,5 +128,9 @@ a{
   .resp-spacer{
     display: inherit;
     width: 100%;
+  }
+  ::ng-deep .toolbar-menu{
+    width: 100%;
+    margin-top: 55px;
   }
 }
