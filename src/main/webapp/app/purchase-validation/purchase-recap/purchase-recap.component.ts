@@ -24,23 +24,25 @@ export interface cartData {
 })
 export class PurchaseRecapComponent implements OnInit {
   // Stepper
-  AdressesFormGroup = this._formBuilder.group({
-    ShippingFirstNameCtrl: ['', Validators.required],
-    ShippingLastNameCtrl: ['', Validators.required],
-    ShippingStreetCtrl: ['', Validators.required],
-    ShippingCityCtrl: ['', Validators.required],
-    ShippingStateCtrl: ['', Validators.required],
-    ShippingZipCodeCtrl: ['', Validators.required],
-    BillingFirstNameCtrl: ['', Validators.required],
-    BillingLastNameCtrl: ['', Validators.required],
-    BillingStreetCtrl: ['', Validators.required],
-    BillingCityCtrl: ['', Validators.required],
-    BillingStateCtrl: ['', Validators.required],
-    BillingZipCodeCtrl: ['', Validators.required],
+  adressesFormGroup = this._formBuilder.group({
+    shippingFirstNameCtrl: ['', Validators.required],
+    shippingLastNameCtrl: ['', Validators.required],
+    shippingStreetCtrl: ['', Validators.required],
+    shippingComplementCtrl: ['', Validators.nullValidator],
+    shippingCityCtrl: ['', Validators.required],
+    shippingStateCtrl: ['', Validators.required],
+    shippingZipCodeCtrl: ['', Validators.required],
+    billingFirstNameCtrl: ['', Validators.required],
+    billingLastNameCtrl: ['', Validators.required],
+    billingStreetCtrl: ['', Validators.required],
+    billingComplementCtrl: ['', Validators.nullValidator],
+    billingCityCtrl: ['', Validators.required],
+    billingStateCtrl: ['', Validators.required],
+    billingZipCodeCtrl: ['', Validators.required],
   });
   thirdFormGroup = this._formBuilder.group({
-    SelectShippingMode: [null, Validators.required],
-    SelectPaymentMode: [null, Validators.required],
+    selectShippingMode: [null, Validators.required],
+    selectPaymentMode: [null, Validators.required],
   });
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', Validators.required],
@@ -52,13 +54,27 @@ export class PurchaseRecapComponent implements OnInit {
   ELEMENT_DATA: cartData[] = [];
   dataSource = this.ELEMENT_DATA;
 
-  // Recuperation montant de la shippingfee selectionnee
-  selectedShippingMode = this.thirdFormGroup.get('SelectShippingMode')!.value;
+  // Recuperation valeurs adresses
+  selectedShippingFirstName = this.adressesFormGroup.get('shippingFirstNameCtrl')!.value;
+  selectedShippingLastName = this.adressesFormGroup.get('shippingLastNameCtrl')!.value;
+  selectedShippingStreet = this.adressesFormGroup.get('shippingStreetCtrl')!.value;
+  selectedShippingComplement = this.adressesFormGroup.get('shippingComplementCtrl')!.value;
+  selectedShippingCity = this.adressesFormGroup.get('shippingCityCtrl')!.value;
+  selectedShippingState = this.adressesFormGroup.get('shippingStateCtrl')!.value;
+  selectedShippingZipCode = this.adressesFormGroup.get('shippingZipCodeCtrl')!.value;
+  selectedBillingFirstName = this.adressesFormGroup.get('billingFirstNameCtrl')!.value;
+  selectedBillingLastName = this.adressesFormGroup.get('billingLastNameCtrl')!.value;
+  selectedBillingStreet = this.adressesFormGroup.get('billingStreetCtrl')!.value;
+  selectedBillingComplement = this.adressesFormGroup.get('billingComplementCtrl')!.value;
+  selectedBillingCity = this.adressesFormGroup.get('billingCityCtrl')!.value;
+  selectedBillingState = this.adressesFormGroup.get('billingStateCtrl')!.value;
+  selectedBillingZipCode = this.adressesFormGroup.get('billingZipCodeCtrl')!.value;
 
-  //selectedShippingModeMode = this.selectedShippingMode
+  // Recuperation montant de la shippingfee selectionnee
+  selectedShippingMode?: IShippingFees;
 
   // Recuperation montant de la paymentfee selectionnee
-  selectedPaymentMode = this.thirdFormGroup.get('SelectPaymentMode')!.value;
+  selectedPaymentMode?: IPaymentFees;
 
   // Cart
   cart: ICart;
@@ -95,7 +111,7 @@ export class PurchaseRecapComponent implements OnInit {
         this.isLoadingShippingFees = false;
       }
     );
-    //PaymentFees
+    // PaymentFees
     this.isLoadingPaymentFees = true;
 
     this.paymentFeesService.query().subscribe(
@@ -107,6 +123,13 @@ export class PurchaseRecapComponent implements OnInit {
         this.isLoadingPaymentFees = false;
       }
     );
+  }
+
+  getTotalCommandPrice(): number {
+    let totalCommandPrice = 0;
+    totalCommandPrice = this.totalPriceCart + (this.selectedShippingMode?.fees ?? 0) + (this.selectedPaymentMode?.fees ?? 0);
+    //totalCommandPrice = this.totalPriceCart
+    return totalCommandPrice;
   }
 
   ngOnInit(): void {
