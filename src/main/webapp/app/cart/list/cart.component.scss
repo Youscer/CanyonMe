@@ -3,10 +3,9 @@
   /* d-flex flex-row flex-wrap py-4  */
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
 }
 .no-item{
-  min-width: 422px;
+  min-width: 250px;
 }
 .cart-item-card {
   margin-right: 50px;
@@ -126,7 +125,7 @@
   }
 
   .order-card {
-    bottom: 0px;
+    bottom: 0;
   }
 
   .labels{
@@ -138,8 +137,15 @@
   }
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 599px) {
+  .main-container{
+    flex-direction: column;
+  }
   .cart-item-card{
     width: 100%;
+  }
+  .order-card {
+    border-top: 1px solid #AAA;
+    min-width: 250px;
   }
 }

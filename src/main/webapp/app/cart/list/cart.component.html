@@ -24,8 +24,13 @@
 
     <!-- Card No Item -->
     <div *ngIf="cart.items.length === 0" class="no-item" style="flex: 3;">
-      <mat-card class="d-flex justify-content-center align-items-center cart-item-card mat-elevation-z3">
+      <mat-card class="d-flex justify-content-center align-items-center cart-item-card flex-column mat-elevation-z3">
         <span class="h3">Your cart is empty</span>
+        <button mat-raised-button color="primary" [routerLink]="['/']" class="mat-elevation-z1" style="width: 100%; max-width: 300px;">
+          <mat-icon>playlist_add_check</mat-icon>
+          <!-- <fa-icon icon="clipboard-list"></fa-icon> -->
+          <span>Continue shopping</span>
+        </button>
       </mat-card>
     </div>
 
@@ -101,12 +106,12 @@
       <div class="d-flex flex-column px-4">
         <span class="h2">Total price</span>
         <div class="my-3 vdivider"></div>
-        <span class="h3">{{ getTotalPrice() | currency }}</span>
+        <span *ngIf="cart.items.length !== 0" class="h3" style="text-align: end;">{{ getTotalPrice() | currency }}</span>
+        <span *ngIf="cart.items.length === 0" class="h3" style="text-align: end;">--</span>
       </div>
       <button mat-raised-button color="primary" [routerLink]="['/purchase-validation']" class="mat-elevation-z1"
         [disabled]="cart.items.length === 0">
         <mat-icon>playlist_add_check</mat-icon>
-        <!-- <fa-icon icon="clipboard-list"></fa-icon> -->
         <span>Checkout</span>
       </button>
     </mat-card>
