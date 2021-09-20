@@ -14,6 +14,8 @@ import javax.validation.constraints.*;
  */
 public class ProductDTO implements Serializable {
 
+    public ProductDTO() {}
+
     // @NotNull
     private Long id;
 

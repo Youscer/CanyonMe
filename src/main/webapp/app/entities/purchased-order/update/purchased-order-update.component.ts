@@ -27,6 +27,8 @@ export class PurchasedOrderUpdateComponent implements OnInit {
     shippingFees: [],
     paymentMode: [],
     paymentFees: [],
+    shippingAddress: [],
+    billingAddress: [],
     person: [],
   });
 
@@ -91,6 +93,8 @@ export class PurchasedOrderUpdateComponent implements OnInit {
       shippingFees: purchasedOrder.shippingFees,
       paymentMode: purchasedOrder.paymentMode,
       paymentFees: purchasedOrder.paymentFees,
+      shippingAddress: purchasedOrder.shippingAddress,
+      billingAddress: purchasedOrder.billingAddress,
       person: purchasedOrder.person,
     });
 
@@ -115,6 +119,8 @@ export class PurchasedOrderUpdateComponent implements OnInit {
       shippingFees: this.editForm.get(['shippingFees'])!.value,
       paymentMode: this.editForm.get(['paymentMode'])!.value,
       paymentFees: this.editForm.get(['paymentFees'])!.value,
+      shippingAddress: this.editForm.get(['shippingAddress'])!.value,
+      billingAddress: this.editForm.get(['billingAddress'])!.value,
       person: this.editForm.get(['person'])!.value,
     };
   }

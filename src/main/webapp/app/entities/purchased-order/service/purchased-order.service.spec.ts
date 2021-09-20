@@ -33,6 +33,8 @@ describe('Service Tests', () => {
         shippingFees: 0,
         paymentMode: 'AAAAAAA',
         paymentFees: 0,
+        shippingAddress: 'AAAAAAA',
+        billingAddress: 'AAAAAAA',
       };
     });
 
@@ -85,6 +87,8 @@ describe('Service Tests', () => {
             shippingFees: 1,
             paymentMode: 'BBBBBB',
             paymentFees: 1,
+            shippingAddress: 'BBBBBB',
+            billingAddress: 'BBBBBB',
           },
           elemDefault
         );
@@ -104,7 +108,12 @@ describe('Service Tests', () => {
       });
 
       it('should partial update a PurchasedOrder', () => {
-        const patchObject = Object.assign({}, new PurchasedOrder());
+        const patchObject = Object.assign(
+          {
+            billingAddress: 'BBBBBB',
+          },
+          new PurchasedOrder()
+        );
 
         const returnedFromService = Object.assign(patchObject, elemDefault);
 
@@ -132,6 +141,8 @@ describe('Service Tests', () => {
             shippingFees: 1,
             paymentMode: 'BBBBBB',
             paymentFees: 1,
+            shippingAddress: 'BBBBBB',
+            billingAddress: 'BBBBBB',
           },
           elemDefault
         );
@@ -188,7 +199,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique PurchasedOrder to an array', () => {
-          const purchasedOrderArray: IPurchasedOrder[] = [{ id: 123 }, { id: 456 }, { id: 15369 }];
+          const purchasedOrderArray: IPurchasedOrder[] = [{ id: 123 }, { id: 456 }, { id: 93537 }];
           const purchasedOrderCollection: IPurchasedOrder[] = [{ id: 123 }];
           expectedResult = service.addPurchasedOrderToCollectionIfMissing(purchasedOrderCollection, ...purchasedOrderArray);
           expect(expectedResult).toHaveLength(3);

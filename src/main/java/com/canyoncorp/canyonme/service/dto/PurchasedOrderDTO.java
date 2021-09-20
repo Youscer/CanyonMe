@@ -28,6 +28,10 @@ public class PurchasedOrderDTO implements Serializable {
 
     private Float paymentFees;
 
+    private String shippingAddress;
+
+    private String billingAddress;
+
     private PersonDTO person;
 
     public Long getId() {
@@ -86,6 +90,22 @@ public class PurchasedOrderDTO implements Serializable {
         this.paymentFees = paymentFees;
     }
 
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
     public PersonDTO getPerson() {
         return person;
     }
@@ -126,6 +146,8 @@ public class PurchasedOrderDTO implements Serializable {
             ", shippingFees=" + getShippingFees() +
             ", paymentMode='" + getPaymentMode() + "'" +
             ", paymentFees=" + getPaymentFees() +
+            ", shippingAddress='" + getShippingAddress() + "'" +
+            ", billingAddress='" + getBillingAddress() + "'" +
             ", person=" + getPerson() +
             "}";
     }

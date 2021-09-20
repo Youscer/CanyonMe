@@ -1,7 +1,6 @@
 package com.canyoncorp.canyonme.repository;
 
 import com.canyoncorp.canyonme.domain.Picture;
-import com.canyoncorp.canyonme.domain.Product;
 import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;

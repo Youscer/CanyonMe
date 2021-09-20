@@ -39,6 +39,8 @@
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.shippingFees">Shipping Fees</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.paymentMode">Payment Mode</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.paymentFees">Payment Fees</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.shippingAddress">Shipping Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.billingAddress">Billing Address</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.person">Person</span></th>
           <th scope="col"></th>
         </tr>
@@ -54,6 +56,8 @@
           <td>{{ purchasedOrder.shippingFees }}</td>
           <td>{{ purchasedOrder.paymentMode }}</td>
           <td>{{ purchasedOrder.paymentFees }}</td>
+          <td>{{ purchasedOrder.shippingAddress }}</td>
+          <td>{{ purchasedOrder.billingAddress }}</td>
           <td>
             <div *ngIf="purchasedOrder.person">
               <a [routerLink]="['/person', purchasedOrder.person?.id, 'view']">{{ purchasedOrder.person?.id }}</a>
