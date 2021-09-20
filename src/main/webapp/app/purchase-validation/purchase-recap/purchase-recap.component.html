@@ -123,16 +123,16 @@
       <p>
         <mat-label>Mode Livraison :</mat-label>
         <mat-radio-group formControlName="selectShippingMode" [(ngModel)]="selectedShippingMode">
-          <mat-radio-button *ngFor="let ShippingFee of shippingFees" [value]="ShippingFee">
-            {{ ShippingFee.shippingMode }}
+          <mat-radio-button *ngFor="let shippingFee of shippingFees" [value]="shippingFee">
+            {{ shippingFee.shippingMode }}
           </mat-radio-button>
         </mat-radio-group>
       </p>
       <p>
         <mat-label>Mode Paiement :</mat-label>
         <mat-radio-group formControlName="selectPaymentMode" [(ngModel)]="selectedPaymentMode">
-          <mat-radio-button *ngFor="let PaymentFee of paymentFees" [value]="PaymentFee">
-            {{ PaymentFee.paymentMode }}
+          <mat-radio-button *ngFor="let paymentFee of paymentFees" [value]="paymentFee">
+            {{ paymentFee.paymentMode }}
           </mat-radio-button>
         </mat-radio-group>
       </p>
@@ -145,7 +145,7 @@
   <!-- Step 3 -->
   <mat-step>
     <ng-template matStepLabel>Validation Commande</ng-template>
-    <div class="d-flex flex-row py-4">
+    <div class="d-flex flex-row py-4 flex-wrap-reverse">
       <div class="right-side">
         <h2>Recapitulatif Commande</h2>
         <table mat-table [dataSource]="dataSource" class="cart-item-card mat-elevation-z8">
@@ -162,12 +162,10 @@
           <ng-container matColumnDef="prix">
             <th mat-header-cell *matHeaderCellDef>Prix</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.prix }}
-              <mat-icon>euro</mat-icon>
+              {{ element.prix | currency }}
             </td>
             <td mat-footer-cell *matFooterCellDef>
-              {{ totalPriceCart }}
-              <mat-icon>euro</mat-icon>
+              {{ totalPriceCart | currency }}
             </td>
           </ng-container>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -178,19 +176,19 @@
           <div class="sous-total">
             <mat-label>Mode Livraison : </mat-label>
             {{ selectedShippingMode?.shippingMode }}
-            <div class="sous-montant">{{ selectedShippingMode?.fees }}</div>
+            <div class="sous-montant">{{ selectedShippingMode?.fees | currency }}</div>
           </div>
           <div class="sous-total">
             <mat-label>Mode Paiement : </mat-label>
             {{ selectedPaymentMode?.paymentMode }}
-            <div class="sous-montant">{{ selectedPaymentMode?.fees }}</div>
+            <div class="sous-montant">{{ selectedPaymentMode?.fees | currency }}</div>
           </div>
         </div>
         <mat-divider></mat-divider>
         <div class="sous-total">
           <h2>Total</h2>
           <div class="sous-montant">
-            <h2>{{ getTotalCommandPrice() }}€</h2>
+            <h2>{{ getTotalCommandPrice() | currency }}</h2>
           </div>
         </div>
         <!-- Card Adresses -->

@@ -99,7 +99,7 @@ export class PurchaseRecapComponent implements OnInit {
   }
 
   loadAll(): void {
-    // ShippingFees
+    // shippingFees
     this.isLoadingShippingFees = true;
 
     this.shippingFeesService.query().subscribe(
@@ -111,7 +111,7 @@ export class PurchaseRecapComponent implements OnInit {
         this.isLoadingShippingFees = false;
       }
     );
-    // PaymentFees
+    // paymentFees
     this.isLoadingPaymentFees = true;
 
     this.paymentFeesService.query().subscribe(
