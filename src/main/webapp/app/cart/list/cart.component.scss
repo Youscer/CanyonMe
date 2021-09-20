@@ -1,3 +1,13 @@
+
+.main-container{
+  /* d-flex flex-row flex-wrap py-4  */
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.no-item{
+  min-width: 422px;
+}
 .cart-item-card {
   margin-right: 50px;
   margin-bottom: 20px;
@@ -32,8 +42,24 @@
 }
 
 .detail-price{
-  width: 270px;
+  width: 150px;
   text-align: end;
+}
+
+.labels{
+  height: 50px;
+  position: relative;
+  /* overflow: hidden; */
+}
+
+.mat-divider-vertical{
+  height: 30px;
+  width: 0px !important;
+  position: inherit !important;
+}
+
+.vdivider{
+  border-top: 2px solid rgba($color: #000000, $alpha: 0.1);
 }
 
 ::ng-deep .cart-item-card-button {
@@ -66,17 +92,23 @@
 }
 
 .order-card {
-  max-height: 200px;
   background-color: #eeeeee;
   display: block;
   position: sticky;
   top: 75px;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  height: 230px;
 }
 
-@media screen and (max-width: 1262px) {
+@media screen and (max-width: 1074px) {
+  .cart-item-card {
+    justify-content: center;
+  }
   .item-card-content{
     flex-direction: column;
     flex: inherit;
+    align-items: start;
   }
   .detail-name{
     width: 300px;
@@ -93,7 +125,21 @@
     text-align: start;
   }
 
+  .order-card {
+    bottom: 0px;
+  }
+
   .labels{
     display: none;
+  }
+
+  .mat-divider-vertical{
+    display: none;
+  }
+}
+
+@media screen and (max-width: 620px) {
+  .cart-item-card{
+    width: 100%;
   }
 }

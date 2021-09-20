@@ -3,11 +3,13 @@
     <span>My Cart</span>
 
     <div class="d-flex justify-content-end">
-      <button mat-raised-button color="primary" class="mr-2" (click)="deleteCart()" [disabled]="cart.items.length === 0">
+      <button mat-raised-button color="primary" class="mr-2" (click)="deleteCart()"
+        [disabled]="cart.items.length === 0">
         <fa-icon icon="clipboard-list"></fa-icon>
         Delete Cart
       </button>
-      <button mat-raised-button color="primary" class="mr-2" (click)="refreshCart()" [disabled]="isLoading || cart.items.length === 0">
+      <button mat-raised-button color="primary" class="mr-2" (click)="refreshCart()"
+        [disabled]="isLoading || cart.items.length === 0">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="canyonMeApp.product.home.refreshListLabel">Refresh List</span>
       </button>
@@ -18,10 +20,10 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="d-flex flex-row flex-wrap py-4">
+  <div class="main-container">
 
     <!-- Card No Item -->
-    <div *ngIf="cart.items.length === 0" class="cart-card-container" style="flex: 3;">
+    <div *ngIf="cart.items.length === 0" class="no-item" style="flex: 3;">
       <mat-card class="d-flex justify-content-center align-items-center cart-item-card mat-elevation-z3">
         <span class="h3">Your cart is empty</span>
       </mat-card>
@@ -36,9 +38,12 @@
           <div class="detail-name text-center">
             <span>Name</span>
           </div>
+          <!-- <div class="divider"></div> -->
+          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
           <div class="detail-quantity text-center">
             <span>Quantity</span>
           </div>
+          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
           <div class="detail-price text-center">
             <span>Price</span>
           </div>
@@ -50,10 +55,12 @@
 
           <!-- Item Details -->
           <div class="detail-name">
-            <span>
-              <a class="h3" [routerLink]="['/catalog', item.product.id]">{{ item.product.name }}</a>
-            </span>
+            <a class="h4" [routerLink]="['/catalog', item.product.id]">
+              <span> {{ item.product.name }} </span>
+            </a>
           </div>
+
+          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
 
           <!-- Quantity manager -->
           <div class="detail-quantity">
@@ -72,9 +79,11 @@
             </button>
           </div>
 
+          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
+
           <!-- Total price -->
           <div class="detail-price">
-            <span class="h2">{{ (item.product.unitPrice * item.quantity) | currency }}</span>
+            <span class="h4">{{ (item.product.unitPrice * item.quantity) | currency }}</span>
           </div>
 
         </mat-card-content>
@@ -90,10 +99,11 @@
     <!-- Card Order -->
     <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z3" style="flex: 1;">
       <div class="d-flex flex-column px-4">
-        <span>Total price</span>
-        <span class="h1">{{ getTotalPrice() | currency }}</span>
+        <span class="h2">Total price</span>
+        <div class="my-3 vdivider"></div>
+        <span class="h3">{{ getTotalPrice() | currency }}</span>
       </div>
-      <button mat-raised-button color="primary" [routerLink]="['/purchase-validation']" class="mr-2 mat-elevation-z1"
+      <button mat-raised-button color="primary" [routerLink]="['/purchase-validation']" class="mat-elevation-z1"
         [disabled]="cart.items.length === 0">
         <mat-icon>playlist_add_check</mat-icon>
         <!-- <fa-icon icon="clipboard-list"></fa-icon> -->
