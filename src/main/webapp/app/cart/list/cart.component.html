@@ -19,18 +19,16 @@
   <jhi-alert></jhi-alert>
 
   <div class="d-flex flex-row py-4">
-
     <!-- Card No Item -->
-    <div *ngIf="cart.items.length === 0" class="cart-card-container" style="flex: 3;">
+    <div *ngIf="cart.items.length === 0" class="cart-card-container" style="flex: 3">
       <mat-card class="d-flex justify-content-center align-items-center cart-item-card mat-elevation-z8">
         <span class="h3">Your cart is empty</span>
       </mat-card>
     </div>
 
     <!-- Card Items -->
-    <div *ngIf="cart.items && cart.items.length > 0" style="flex: 3;">
+    <div *ngIf="cart.items && cart.items.length > 0" style="flex: 3">
       <div *ngFor="let item of cart.items" class="cart-card-container">
-
         <!-- Card Content Left -->
         <mat-card class="cart-item-card mat-elevation-z8">
           <mat-card-content class="d-flex flex-row justify-content-between">
@@ -47,33 +45,33 @@
               </div>
               <div class="d-flex flex-column px-4">
                 <span>Price</span>
-                <span class="h1">{{ (item.product.unitPrice * item.quantity) | currency }}</span>
+                <span class="h1">{{ item.product.unitPrice * item.quantity | currency }}</span>
               </div>
             </div>
           </mat-card-content>
 
           <!-- Card Content Right -->
           <div class="d-flex justify-content-end mr-4">
-            <button class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1" mat-button
-              (click)="addQuantity(item.product, 1)">
+            <button class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1" mat-button (click)="addQuantity(item.product, 1)">
               <fa-icon icon="plus-square"></fa-icon>
             </button>
-            <button class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1" mat-button
-              (click)="addQuantity(item.product, -1)">
+            <button
+              class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1"
+              mat-button
+              (click)="addQuantity(item.product, -1)"
+            >
               <fa-icon icon="minus-square"></fa-icon>
             </button>
-            <button class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1" mat-button
-              (click)="deleteItem(item)">
+            <button class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1" mat-button (click)="deleteItem(item)">
               <fa-icon icon="trash-alt"></fa-icon>
             </button>
           </div>
-
         </mat-card>
       </div>
     </div>
 
     <!-- Card Order -->
-    <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z8" style="flex: 1;">
+    <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z8" style="flex: 1">
       <div class="d-flex flex-column px-4">
         <span>Total price</span>
         <span class="h1">{{ getTotalPrice() | currency }}</span>
@@ -83,7 +81,5 @@
         Order
       </button>
     </mat-card>
-
   </div>
-
 </div>

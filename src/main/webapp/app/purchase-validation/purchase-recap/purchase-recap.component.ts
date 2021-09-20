@@ -1,19 +1,21 @@
+import { PaymentMode } from 'app/entities/enumerations/payment-mode.model';
+import { ShippingFees } from './../../entities/shipping-fees/shipping-fees.model';
+import { Cart, ICart } from './../../cart/cart.model';
 import { Component, OnInit } from '@angular/core';
-import { ShippingInformationsUpdateService } from '../shipping-informations/shipping-informations-update.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { CartService } from 'app/cart/services/cart.service';
+import { ShippingFeesService } from 'app/entities/shipping-fees/service/shipping-fees.service';
+import { IShippingFees } from 'app/entities/shipping-fees/shipping-fees.model';
+import { HttpResponse } from '@angular/common/http';
+import { PaymentFeesService } from 'app/entities/payment-fees/service/payment-fees.service';
+import { IPaymentFees } from 'app/entities/payment-fees/payment-fees.model';
 
-// Colonnes Tableau
-export interface PeriodicElement {
+// Colonnes Tableau panier recap
+export interface cartData {
   article: string;
+  quantite: number;
   prix: number;
 }
-
-// Data Tableau
-const ELEMENT_DATA: PeriodicElement[] = [
-  { article: 'Casque', prix: 39.9 },
-  { article: 'Corde', prix: 29.9 },
-  { article: 'Gourde', prix: 18.9 },
-];
 
 @Component({
   selector: 'jhi-purchase-recap',
@@ -21,32 +23,134 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./purchase-recap.component.scss'],
 })
 export class PurchaseRecapComponent implements OnInit {
-  //Stepper
-  secondFormGroup = this._formBuilder.group({
-    secondCtrl: ['', Validators.required],
+  // Stepper
+  adressesFormGroup = this._formBuilder.group({
+    shippingFirstNameCtrl: ['', Validators.required],
+    shippingLastNameCtrl: ['', Validators.required],
+    shippingStreetCtrl: ['', Validators.required],
+    shippingComplementCtrl: ['', Validators.nullValidator],
+    shippingCityCtrl: ['', Validators.required],
+    shippingStateCtrl: ['', Validators.required],
+    shippingZipCodeCtrl: ['', Validators.required],
+    billingFirstNameCtrl: ['', Validators.required],
+    billingLastNameCtrl: ['', Validators.required],
+    billingStreetCtrl: ['', Validators.required],
+    billingComplementCtrl: ['', Validators.nullValidator],
+    billingCityCtrl: ['', Validators.required],
+    billingStateCtrl: ['', Validators.required],
+    billingZipCodeCtrl: ['', Validators.required],
   });
   thirdFormGroup = this._formBuilder.group({
-    SelectShippingMode: [null, Validators.required],
-    SelectPaymentMode: [null, Validators.required],
+    selectShippingMode: [null, Validators.required],
+    selectPaymentMode: [null, Validators.required],
   });
   fourthFormGroup = this._formBuilder.group({
     fourthCtrl: ['', Validators.required],
   });
-  isEditable = false;
+  isEditable = true;
 
-  //Tableau
-  displayedColumns: string[] = ['article', 'prix'];
-  dataSource = ELEMENT_DATA;
+  // Tableau panier recap
+  displayedColumns: string[] = ['article', 'quantite', 'prix'];
+  ELEMENT_DATA: cartData[] = [];
+  dataSource = this.ELEMENT_DATA;
 
-  //Bouton Radio
-  selectedShippingMode = this.thirdFormGroup.get('SelectShippingMode')!.value;
-  ShippingModes: string[] = ['UPS', 'DPD'];
-  selectedPaymentMode = this.thirdFormGroup.get('SelectPaymentMode')!.value;
-  PaymentModes: string[] = ['Carte Bancaire', 'Paypal'];
+  // Recuperation valeurs adresses
+  selectedShippingFirstName = this.adressesFormGroup.get('shippingFirstNameCtrl')!.value;
+  selectedShippingLastName = this.adressesFormGroup.get('shippingLastNameCtrl')!.value;
+  selectedShippingStreet = this.adressesFormGroup.get('shippingStreetCtrl')!.value;
+  selectedShippingComplement = this.adressesFormGroup.get('shippingComplementCtrl')!.value;
+  selectedShippingCity = this.adressesFormGroup.get('shippingCityCtrl')!.value;
+  selectedShippingState = this.adressesFormGroup.get('shippingStateCtrl')!.value;
+  selectedShippingZipCode = this.adressesFormGroup.get('shippingZipCodeCtrl')!.value;
+  selectedBillingFirstName = this.adressesFormGroup.get('billingFirstNameCtrl')!.value;
+  selectedBillingLastName = this.adressesFormGroup.get('billingLastNameCtrl')!.value;
+  selectedBillingStreet = this.adressesFormGroup.get('billingStreetCtrl')!.value;
+  selectedBillingComplement = this.adressesFormGroup.get('billingComplementCtrl')!.value;
+  selectedBillingCity = this.adressesFormGroup.get('billingCityCtrl')!.value;
+  selectedBillingState = this.adressesFormGroup.get('billingStateCtrl')!.value;
+  selectedBillingZipCode = this.adressesFormGroup.get('billingZipCodeCtrl')!.value;
 
-  constructor(private cartService: ShippingInformationsUpdateService, private _formBuilder: FormBuilder) {}
+  // Recuperation montant de la shippingfee selectionnee
+  selectedShippingMode?: IShippingFees;
+
+  // Recuperation montant de la paymentfee selectionnee
+  selectedPaymentMode?: IPaymentFees;
+
+  // Cart
+  cart: ICart;
+  totalPriceCart = 0;
+
+  // shippingFees
+  shippingFees?: IShippingFees[];
+  isLoadingShippingFees = false;
+
+  // paymentFees
+  paymentFees?: IPaymentFees[];
+  isLoadingPaymentFees = false;
+
+  constructor(
+    public cartService: CartService,
+    private _formBuilder: FormBuilder,
+    protected shippingFeesService: ShippingFeesService,
+    protected paymentFeesService: PaymentFeesService
+  ) {
+    this.cart = new Cart();
+    this.shippingFees === new ShippingFees();
+  }
+
+  loadAll(): void {
+    // shippingFees
+    this.isLoadingShippingFees = true;
+
+    this.shippingFeesService.query().subscribe(
+      (res: HttpResponse<IShippingFees[]>) => {
+        this.isLoadingShippingFees = false;
+        this.shippingFees = res.body ?? [];
+      },
+      () => {
+        this.isLoadingShippingFees = false;
+      }
+    );
+    // paymentFees
+    this.isLoadingPaymentFees = true;
+
+    this.paymentFeesService.query().subscribe(
+      (res: HttpResponse<IPaymentFees[]>) => {
+        this.isLoadingPaymentFees = false;
+        this.paymentFees = res.body ?? [];
+      },
+      () => {
+        this.isLoadingPaymentFees = false;
+      }
+    );
+  }
+
+  getTotalCommandPrice(): number {
+    let totalCommandPrice = 0;
+    totalCommandPrice = this.totalPriceCart + (this.selectedShippingMode?.fees ?? 0) + (this.selectedPaymentMode?.fees ?? 0);
+    //totalCommandPrice = this.totalPriceCart
+    return totalCommandPrice;
+  }
 
   ngOnInit(): void {
-    return;
+    // Recuperation panier et peuplement tableau panier recap
+    this.cart = this.cartService.getCart();
+
+    for (const item of this.cart.items) {
+      this.ELEMENT_DATA.push({ article: item.product.name, quantite: item.quantity, prix: item.product.unitPrice * item.quantity });
+    }
+    this.totalPriceCart = this.cartService.getTotalPrice();
+
+    // Recuperation ShippingFees et PaymentFees
+    this.loadAll();
+    // Peuplement boutons radio
+    for (const shippingFee of this.shippingFees!) {
+      this.shippingFees?.push({ id: shippingFee.fees, shippingMode: shippingFee.shippingMode, fees: shippingFee.fees });
+    }
+
+    // Peuplement boutons radio
+    for (const paymentFee of this.paymentFees!) {
+      this.paymentFees?.push({ id: paymentFee.fees, paymentMode: paymentFee.paymentMode, fees: paymentFee.fees });
+    }
   }
 }
