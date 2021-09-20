@@ -52,6 +52,12 @@ class PurchasedOrderResourceIT {
     private static final Float DEFAULT_PAYMENT_FEES = 1F;
     private static final Float UPDATED_PAYMENT_FEES = 2F;
 
+    private static final String DEFAULT_SHIPPING_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_SHIPPING_ADDRESS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_BILLING_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_BILLING_ADDRESS = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/purchased-orders";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -85,7 +91,9 @@ class PurchasedOrderResourceIT {
             .shippingMode(DEFAULT_SHIPPING_MODE)
             .shippingFees(DEFAULT_SHIPPING_FEES)
             .paymentMode(DEFAULT_PAYMENT_MODE)
-            .paymentFees(DEFAULT_PAYMENT_FEES);
+            .paymentFees(DEFAULT_PAYMENT_FEES)
+            .shippingAddress(DEFAULT_SHIPPING_ADDRESS)
+            .billingAddress(DEFAULT_BILLING_ADDRESS);
         return purchasedOrder;
     }
 
@@ -102,7 +110,9 @@ class PurchasedOrderResourceIT {
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
             .paymentMode(UPDATED_PAYMENT_MODE)
-            .paymentFees(UPDATED_PAYMENT_FEES);
+            .paymentFees(UPDATED_PAYMENT_FEES)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .billingAddress(UPDATED_BILLING_ADDRESS);
         return purchasedOrder;
     }
 
@@ -133,6 +143,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(DEFAULT_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(DEFAULT_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(DEFAULT_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(DEFAULT_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(DEFAULT_BILLING_ADDRESS);
     }
 
     @Test
@@ -213,7 +225,9 @@ class PurchasedOrderResourceIT {
             .andExpect(jsonPath("$.[*].shippingMode").value(hasItem(DEFAULT_SHIPPING_MODE)))
             .andExpect(jsonPath("$.[*].shippingFees").value(hasItem(DEFAULT_SHIPPING_FEES.doubleValue())))
             .andExpect(jsonPath("$.[*].paymentMode").value(hasItem(DEFAULT_PAYMENT_MODE)))
-            .andExpect(jsonPath("$.[*].paymentFees").value(hasItem(DEFAULT_PAYMENT_FEES.doubleValue())));
+            .andExpect(jsonPath("$.[*].paymentFees").value(hasItem(DEFAULT_PAYMENT_FEES.doubleValue())))
+            .andExpect(jsonPath("$.[*].shippingAddress").value(hasItem(DEFAULT_SHIPPING_ADDRESS)))
+            .andExpect(jsonPath("$.[*].billingAddress").value(hasItem(DEFAULT_BILLING_ADDRESS)));
     }
 
     @Test
@@ -233,7 +247,9 @@ class PurchasedOrderResourceIT {
             .andExpect(jsonPath("$.shippingMode").value(DEFAULT_SHIPPING_MODE))
             .andExpect(jsonPath("$.shippingFees").value(DEFAULT_SHIPPING_FEES.doubleValue()))
             .andExpect(jsonPath("$.paymentMode").value(DEFAULT_PAYMENT_MODE))
-            .andExpect(jsonPath("$.paymentFees").value(DEFAULT_PAYMENT_FEES.doubleValue()));
+            .andExpect(jsonPath("$.paymentFees").value(DEFAULT_PAYMENT_FEES.doubleValue()))
+            .andExpect(jsonPath("$.shippingAddress").value(DEFAULT_SHIPPING_ADDRESS))
+            .andExpect(jsonPath("$.billingAddress").value(DEFAULT_BILLING_ADDRESS));
     }
 
     @Test
@@ -261,7 +277,9 @@ class PurchasedOrderResourceIT {
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
             .paymentMode(UPDATED_PAYMENT_MODE)
-            .paymentFees(UPDATED_PAYMENT_FEES);
+            .paymentFees(UPDATED_PAYMENT_FEES)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .billingAddress(UPDATED_BILLING_ADDRESS);
         PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(updatedPurchasedOrder);
 
         restPurchasedOrderMockMvc
@@ -282,6 +300,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(UPDATED_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(UPDATED_BILLING_ADDRESS);
     }
 
     @Test
@@ -367,7 +387,8 @@ class PurchasedOrderResourceIT {
             .orderState(UPDATED_ORDER_STATE)
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
-            .paymentMode(UPDATED_PAYMENT_MODE);
+            .paymentMode(UPDATED_PAYMENT_MODE)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS);
 
         restPurchasedOrderMockMvc
             .perform(
@@ -387,6 +408,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(DEFAULT_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(DEFAULT_BILLING_ADDRESS);
     }
 
     @Test
@@ -407,7 +430,9 @@ class PurchasedOrderResourceIT {
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
             .paymentMode(UPDATED_PAYMENT_MODE)
-            .paymentFees(UPDATED_PAYMENT_FEES);
+            .paymentFees(UPDATED_PAYMENT_FEES)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .billingAddress(UPDATED_BILLING_ADDRESS);
 
         restPurchasedOrderMockMvc
             .perform(
@@ -427,6 +452,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(UPDATED_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(UPDATED_BILLING_ADDRESS);
     }
 
     @Test
