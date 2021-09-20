@@ -8,6 +8,8 @@ import com.canyoncorp.canyonme.service.UnavailableProductException;
 import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
 import com.canyoncorp.canyonme.service.dto.ProductDTO;
 import com.canyoncorp.canyonme.service.mapper.ProductMapper;
+import com.canyoncorp.canyonme.web.rest.vm.OrderLineVM;
+import com.canyoncorp.canyonme.web.rest.vm.OrderVM;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Transactional
-    public List<ProductDTO> purchaseOrder(List<OrderLineDTO> orders) {
+    public List<ProductDTO> purchaseOrder(OrderVM order) {
+        List<OrderLineDTO> orders = toOrderLineDTOS(order.getOrderLines());
         List<ProductDTO> remainingItems = new ArrayList<ProductDTO>();
         try {
             for (OrderLineDTO orderLine : orders) {
@@ -57,5 +60,18 @@ public class OrderServiceImpl implements OrderService {
             if (!productDTO.isPresent() || productDTO.get().getQuantity() < orderLine.getQuantity()) products.add(productDTO.get());
         }
         return products;
+    }
+
+    public List<OrderLineDTO> toOrderLineDTOS(List<OrderLineVM> orderLineVMS) {
+        List<OrderLineDTO> orderLineDTOS = new ArrayList<OrderLineDTO>();
+
+        // mapping OrderLineVM to OderLineDTO
+        for (OrderLineVM orderLineVM : orderLineVMS) {
+            OrderLineDTO orderLineDTO = new OrderLineDTO();
+            orderLineDTO.setProduct(orderLineVM.getProductId());
+            orderLineDTO.setQuantity(orderLineVM.getQuantity());
+            orderLineDTOS.add(orderLineDTO);
+        }
+        return orderLineDTOS;
     }
 }

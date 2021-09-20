@@ -12,6 +12,7 @@ import com.canyoncorp.canyonme.service.dto.ProductDTO;
 import com.canyoncorp.canyonme.service.mapper.ProductMapper;
 import com.canyoncorp.canyonme.web.rest.errors.BadRequestAlertException;
 import com.canyoncorp.canyonme.web.rest.vm.OrderLineVM;
+import com.canyoncorp.canyonme.web.rest.vm.OrderVM;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -197,37 +198,21 @@ public class ProductResource {
 
     /**
      * {@code GET  /purchase} purches an order, o
-     * @param orderLinesJSON Json object of List of orderLineVM
-     * @return List of ProductDTO, and http status: OK/CONFLICT on success/failure
+     * @param orderVM
+     * @return
      */
     @PostMapping("/purchase")
     //@PreAuthorize("hasRole(\"" + AuthoritiesConstants.USER + "\")")
-    public ResponseEntity<List<ProductDTO>> purchase(@RequestBody String orderLinesJSON) {
+    public ResponseEntity<List<ProductDTO>> purchase(@RequestBody OrderVM orderVM) {
         ObjectMapper objectMapper = new ObjectMapper();
+        List<OrderLineDTO> orderLineDTOS = orderService.toOrderLineDTOS(orderVM.getOrderLines());
         List<ProductDTO> productDTOS;
-        List<OrderLineDTO> orderLineDTOS = new ArrayList<OrderLineDTO>();
-
-        // Converting json object to java object
-        List<OrderLineVM> orderLines = new ArrayList<>();
-        try {
-            orderLines = objectMapper.readValue(orderLinesJSON, new TypeReference<List<OrderLineVM>>() {});
-        } catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Bad json string passed\n msg: " + e.getMessage(), e);
-        }
-
-        // mapping OrderLineVM to OderLineDTO
-        for (OrderLineVM orderLineVM : orderLines) {
-            OrderLineDTO orderLineDTO = new OrderLineDTO();
-            orderLineDTO.setProduct(orderLineVM.getProductId());
-            orderLineDTO.setQuantity(orderLineVM.getQuantity());
-            orderLineDTOS.add(orderLineDTO);
-        }
 
         productDTOS = orderService.getBadOrderLinesProducts(orderLineDTOS);
         if (!productDTOS.isEmpty()) return new ResponseEntity<List<ProductDTO>>(productDTOS, HttpStatus.CONFLICT);
 
         try {
-            productDTOS = orderService.purchaseOrder(orderLineDTOS);
+            productDTOS = orderService.purchaseOrder(orderVM);
         } catch (UnavailableProductException e) {
             return new ResponseEntity<List<ProductDTO>>(orderService.getBadOrderLinesProducts(orderLineDTOS), HttpStatus.CONFLICT);
         } catch (Exception e) {

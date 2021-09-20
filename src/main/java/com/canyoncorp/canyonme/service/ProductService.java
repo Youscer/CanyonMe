@@ -25,6 +25,8 @@ public interface ProductService {
 
     public ProductDTO addProduct(ProductDTO productDTO);
 
+    // TODO: add function to remove a product (Qeury)
+
     // purchase operations
 
     public Optional<ProductDTO> purchase(OrderLineDTO orderLineDTO);
