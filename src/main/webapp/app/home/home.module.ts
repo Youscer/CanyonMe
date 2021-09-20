@@ -7,6 +7,6 @@ import { HomeComponent } from './home.component';
 
 @NgModule({
   imports: [SharedModule, RouterModule.forChild([HOME_ROUTE])],
-  declarations: [HomeComponent],
+  declarations: [],
 })
 export class HomeModule {}

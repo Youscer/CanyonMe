@@ -1,3 +1,4 @@
+import { CartComponent } from './cart/list/cart.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -31,9 +32,17 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
         },
         {
+          path: 'purchase-validation',
+          loadChildren: () => import('./purchase-validation/purchase-validation.module').then(m => m.PurchaseValidationModule),
+        },
+        {
           path: 'catalog',
           data: { pageTitle: 'canyonMeApp.product.home.title' },
           loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
+        },
+        {
+          path: 'cart',
+          component: CartComponent,
         },
         ...LAYOUT_ROUTES,
       ],

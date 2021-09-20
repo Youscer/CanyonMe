@@ -1,0 +1,22 @@
+.cart-card-container {
+  padding-right: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.cart-item-card {
+  max-height: 200px;
+  background-color: #eeeeee;
+}
+
+.cart-item-card-button {
+  background-color: #ddd;
+}
+
+.order-card {
+  max-height: 200px;
+  background-color: #eeeeee;
+  display: block;
+  position: sticky;
+  top: 20px;
+}
