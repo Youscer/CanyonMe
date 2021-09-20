@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-order-line"
-        [routerLink]="['/order-line/new']"
+        [routerLink]="['/entities', 'order-line/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.orderLine.home.createLabel"> Create a new Order Line </span>
@@ -45,7 +45,7 @@
       <tbody>
         <tr *ngFor="let orderLine of orderLines; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/order-line', orderLine.id, 'view']">{{ orderLine.id }}</a>
+            <a [routerLink]="['/entities', 'order-line', orderLine.id, 'view']">{{ orderLine.id }}</a>
           </td>
           <td>{{ orderLine.product }}</td>
           <td>{{ orderLine.productName }}</td>
@@ -54,14 +54,14 @@
           <td>{{ orderLine.discount }}</td>
           <td>
             <div *ngIf="orderLine.order">
-              <a [routerLink]="['/purchased-order', orderLine.order?.id, 'view']">{{ orderLine.order?.id }}</a>
+              <a [routerLink]="['/entities', 'purchased-order', orderLine.order?.id, 'view']">{{ orderLine.order?.id }}</a>
             </div>
           </td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/order-line', orderLine.id, 'view']"
+                [routerLink]="['/entities', 'order-line', orderLine.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -71,7 +71,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/order-line', orderLine.id, 'edit']"
+                [routerLink]="['/entities', 'order-line', orderLine.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

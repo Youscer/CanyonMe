@@ -20,7 +20,7 @@ export class CartService {
    * Ajoute un produit au panier
    * @param product
    */
-   addProduct(product: Product, quantity: number = 1): void {
+  addProduct(product: Product, quantity: number = 1): void {
     this.cart.changeQuantity(product, quantity);
   }
 
@@ -50,8 +50,8 @@ export class CartService {
     this.cart.changeQuantity(product, -quantity);
   }
 
-  deleteAllCart(): ICart{
-    return this.cart = new Cart();
+  deleteAllCart(): ICart {
+    return (this.cart = new Cart());
   }
 
   refreshCartProducts(): Observable<void> {
@@ -71,7 +71,7 @@ export class CartService {
 
   getTotalPrice(): number {
     let totalPrice = 0;
-    this.cart.items.forEach( item => totalPrice += (item.product.unitPrice * item.quantity) );
+    this.cart.items.forEach(item => (totalPrice += item.product.unitPrice * item.quantity));
     return totalPrice;
   }
 

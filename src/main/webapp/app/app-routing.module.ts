@@ -42,7 +42,7 @@ const LAYOUT_ROUTES = [toolbarRoute, ...errorRoute];
         },
         {
           path: 'cart',
-          component: CartComponent
+          component: CartComponent,
         },
         ...LAYOUT_ROUTES,
       ],

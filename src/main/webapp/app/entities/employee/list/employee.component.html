@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-employee"
-        [routerLink]="['/employee/new']"
+        [routerLink]="['/entities', 'employee/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.employee.home.createLabel"> Create a new Employee </span>
@@ -40,14 +40,14 @@
       <tbody>
         <tr *ngFor="let employee of employees; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/employee', employee.id, 'view']">{{ employee.id }}</a>
+            <a [routerLink]="['/entities', 'employee', employee.id, 'view']">{{ employee.id }}</a>
           </td>
           <td jhiTranslate="{{ 'canyonMeApp.Role.' + employee.role }}">{{ employee.role }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/employee', employee.id, 'view']"
+                [routerLink]="['/entities', 'employee', employee.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -57,7 +57,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/employee', employee.id, 'edit']"
+                [routerLink]="['/entities', 'employee', employee.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

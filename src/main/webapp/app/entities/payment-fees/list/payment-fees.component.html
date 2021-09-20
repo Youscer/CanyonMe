@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-payment-fees"
-        [routerLink]="['/payment-fees/new']"
+        [routerLink]="['/entities', 'payment-fees/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.paymentFees.home.createLabel"> Create a new Payment Fees </span>
@@ -41,7 +41,7 @@
       <tbody>
         <tr *ngFor="let paymentFees of paymentFees; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/payment-fees', paymentFees.id, 'view']">{{ paymentFees.id }}</a>
+            <a [routerLink]="['/entities', 'payment-fees', paymentFees.id, 'view']">{{ paymentFees.id }}</a>
           </td>
           <td jhiTranslate="{{ 'canyonMeApp.PaymentMode.' + paymentFees.paymentMode }}">{{ paymentFees.paymentMode }}</td>
           <td>{{ paymentFees.fees }}</td>
@@ -49,7 +49,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/payment-fees', paymentFees.id, 'view']"
+                [routerLink]="['/entities', 'payment-fees', paymentFees.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -59,7 +59,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/payment-fees', paymentFees.id, 'edit']"
+                [routerLink]="['/entities', 'payment-fees', paymentFees.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
