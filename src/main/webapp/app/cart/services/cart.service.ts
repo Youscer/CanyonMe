@@ -75,6 +75,12 @@ export class CartService {
     return totalPrice;
   }
 
+  getTotalQuantity(): number {
+    let totalQuantity = 0;
+    this.cart.items.forEach( item => totalQuantity += (item.quantity) );
+    return totalQuantity;
+  }
+
   private reconstructCart(products: IProduct[]): void {
     const tempCart: Cart = new Cart();
     Object.assign(tempCart, this.cart);

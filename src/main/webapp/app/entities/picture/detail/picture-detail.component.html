@@ -21,7 +21,7 @@
         <dt><span jhiTranslate="canyonMeApp.picture.product">Product</span></dt>
         <dd>
           <div *ngIf="picture.product">
-            <a [routerLink]="['/product', picture.product?.id, 'view']">{{ picture.product?.id }}</a>
+            <a [routerLink]="['/entities', 'product', picture.product?.id, 'view']">{{ picture.product?.id }}</a>
           </div>
         </dd>
       </dl>
@@ -30,7 +30,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/picture', picture.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/entities', 'picture', picture.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

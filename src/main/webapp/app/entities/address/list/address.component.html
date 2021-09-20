@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-address"
-        [routerLink]="['/address/new']"
+        [routerLink]="['/entities', 'address/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.address.home.createLabel"> Create a new Address </span>
@@ -47,7 +47,7 @@
       <tbody>
         <tr *ngFor="let address of addresses; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/address', address.id, 'view']">{{ address.id }}</a>
+            <a [routerLink]="['/entities', 'address', address.id, 'view']">{{ address.id }}</a>
           </td>
           <td>{{ address.streetNumber }}</td>
           <td>{{ address.street }}</td>
@@ -61,7 +61,7 @@
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/address', address.id, 'view']"
+                [routerLink]="['/entities', 'address', address.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -71,7 +71,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/address', address.id, 'edit']"
+                [routerLink]="['/entities', 'address', address.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
