@@ -3,11 +3,11 @@
     <span>My Cart</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="deleteCart()" [disabled]="cart.items.length === 0">
+      <button mat-raised-button color="primary" class="mr-2" (click)="deleteCart()" [disabled]="cart.items.length === 0">
         <fa-icon icon="clipboard-list"></fa-icon>
         Delete Cart
       </button>
-      <button class="btn btn-info mr-2" (click)="refreshCart()" [disabled]="isLoading || cart.items.length === 0">
+      <button mat-raised-button color="primary" class="mr-2" (click)="refreshCart()" [disabled]="isLoading || cart.items.length === 0">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="canyonMeApp.product.home.refreshListLabel">Refresh List</span>
       </button>
@@ -29,7 +29,23 @@
 
     <!-- Card Items -->
     <div *ngIf="cart.items && cart.items.length > 0" style="flex: 3;">
-      <mat-card *ngFor="let item of cart.items" class="cart-item-card mat-elevation-z1">
+
+      <!-- labels -->
+      <div class="cart-item-card mat-elevation-z3 labels">
+        <div class="item-card-content">
+          <div class="detail-name text-center">
+            <span>Name</span>
+          </div>
+          <div class="detail-quantity text-center">
+            <span>Quantity</span>
+          </div>
+          <div class="detail-price text-center">
+            <span>Price</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-card *ngFor="let item of cart.items" class="cart-item-card mat-elevation-z3">
         <mat-card-content class="item-card-content">
 
           <!-- Item Details -->
@@ -50,16 +66,16 @@
               mat-button (click)="addQuantity(item.product, 1)">
               <mat-icon>add</mat-icon>
             </button>
-            <button mat-raised-button color="primary" class="cart-item-card-button mat-elevation-z1"
-              mat-button (click)="deleteItem(item)">
+            <button mat-raised-button color="primary" class="cart-item-card-button mat-elevation-z1" mat-button
+              (click)="deleteItem(item)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>
 
-            <!-- Total price -->
-            <div class="detail-price">
-              <span class="h2">{{ (item.product.unitPrice * item.quantity) | currency }}</span>
-            </div>
+          <!-- Total price -->
+          <div class="detail-price">
+            <span class="h2">{{ (item.product.unitPrice * item.quantity) | currency }}</span>
+          </div>
 
         </mat-card-content>
 
