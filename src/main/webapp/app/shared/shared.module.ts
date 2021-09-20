@@ -12,7 +12,6 @@ import { SharedLibsModule } from './shared-libs.module';
 import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 
-
 @NgModule({
   imports: [SharedLibsModule],
   declarations: [

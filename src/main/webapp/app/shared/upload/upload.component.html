@@ -1,0 +1,21 @@
+<!-- <div>
+	<input type="file" (change)="uploadFile($event)">
+	<div>{{ progress$ | async }}</div>
+	<a [href]="url$ | async">{{ url$ | async }}</a>
+</div> -->
+<div>
+  <h3>Upload file</h3>
+  <button type="button" mat-raised-button (click)="fileInput.click()">Choose File</button>
+  <input hidden #fileInput type="file" id="file" (change)="uploadFile($event)" />
+  <input matInput type="text" [(ngModel)]="path" readonly="readonly" />
+  <div *ngIf="show">
+    <mat-card>
+      <mat-progress-bar mode="determinate" value="{{ progress$ | async }}"></mat-progress-bar>
+      <a [href]="url$ | async">Upload completed, click me</a>
+    </mat-card>
+  </div>
+</div>
+
+<!-- <label class="btn btn-outline-primary">
+	<input type="file" >
+</label> -->

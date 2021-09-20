@@ -31,8 +31,18 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { MainComponent } from './layouts/main/main.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
+import { UploadComponent } from './shared/upload/upload.component';
+import { HomeComponent } from './home/home.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
+// firebase
+import { firebaseConfig } from './environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/compat/storage';
 
 @NgModule({
   imports: [
@@ -62,15 +72,34 @@ import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
     MatSnackBarModule,
     BrowserAnimationsModule,
     MatButtonModule,
-    MatCardModule
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    MatSliderModule,
+    MatFormFieldModule,
+    MatCardModule,
+    // firebase
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp(firebaseConfig),
   ],
   providers: [
     Title,
     { provide: LOCALE_ID, useValue: 'en' },
     { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
     httpInterceptorProviders,
+    // firebase bucket
+    { provide: BUCKET, useValue: firebaseConfig.storageBucket },
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent, CartComponent],
+  declarations: [
+    HomeComponent,
+    MainComponent,
+    NavbarComponent,
+    ErrorComponent,
+    PageRibbonComponent,
+    ActiveMenuDirective,
+    FooterComponent,
+    CartComponent,
+    UploadComponent,
+  ],
   bootstrap: [MainComponent],
 })
 export class AppModule {
