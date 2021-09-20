@@ -1,11 +1,3 @@
-.item-card-content {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  flex: 1;
-}
-
 .cart-item-card {
   margin-right: 50px;
   margin-bottom: 20px;
@@ -15,7 +7,14 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  
+}
+
+.item-card-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
 }
 
 .item-detail{
