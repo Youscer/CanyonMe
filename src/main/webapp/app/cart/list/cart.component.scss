@@ -1,16 +1,68 @@
-.cart-card-container {
-  padding-right: 50px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
 .cart-item-card {
+  margin-right: 50px;
+  margin-bottom: 20px;
   max-height: 200px;
-  background-color: #eeeeee;
+  background-color: #EEEEEE;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.cart-item-card-button {
-  background-color: #ddd;
+.item-card-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
+.item-detail{
+  width: 300px;
+}
+
+.detail-name{
+  width: 300px;
+  text-align: start;
+}
+
+.detail-quantity{
+  width: 270px;
+  text-align: center;
+}
+
+.detail-price{
+  width: 270px;
+  text-align: end;
+}
+
+::ng-deep .cart-item-card-button {
+
+  transform: scale(0.8) !important;
+}
+.button-minus{
+  border-top-right-radius: 0px;
+  border-top-left-radius: 15px;
+  border-bottom-right-radius: 0px;
+  border-bottom-left-radius: 15px;
+}
+
+.span-quantity{
+  display: inline-block;
+  text-align: center;
+  min-width: 50px;
+}
+
+.button-plus{
+  border-top-right-radius: 15px;
+  border-top-left-radius: 0px;
+  border-bottom-right-radius: 15px;
+  border-bottom-left-radius: 0px;
+  margin-right: 10px;
+}
+
+.cart-item-card-button mat-icon{
+  transform: scale(1.2);
 }
 
 .order-card {
@@ -18,5 +70,30 @@
   background-color: #eeeeee;
   display: block;
   position: sticky;
-  top: 20px;
+  top: 75px;
+}
+
+@media screen and (max-width: 1262px) {
+  .item-card-content{
+    flex-direction: column;
+    flex: inherit;
+  }
+  .detail-name{
+    width: 300px;
+    text-align: start;
+  }
+  
+  .detail-quantity{
+    width: 270px;
+    text-align: start;
+  }
+  
+  .detail-price{
+    width: 270px;
+    text-align: start;
+  }
+
+  .labels{
+    display: none;
+  }
 }

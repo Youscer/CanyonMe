@@ -1,13 +1,13 @@
 <div>
   <h2 id="page-heading" data-cy="ProductHeading">
-    <span>Cart</span>
+    <span>My Cart</span>
 
     <div class="d-flex justify-content-end">
-      <button class="btn btn-info mr-2" (click)="deleteCart()" [disabled]="cart.items.length === 0">
+      <button mat-raised-button color="primary" class="mr-2" (click)="deleteCart()" [disabled]="cart.items.length === 0">
         <fa-icon icon="clipboard-list"></fa-icon>
         Delete Cart
       </button>
-      <button class="btn btn-info mr-2" (click)="refreshCart()" [disabled]="isLoading || cart.items.length === 0">
+      <button mat-raised-button color="primary" class="mr-2" (click)="refreshCart()" [disabled]="isLoading || cart.items.length === 0">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
         <span jhiTranslate="canyonMeApp.product.home.refreshListLabel">Refresh List</span>
       </button>
@@ -18,67 +18,86 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="d-flex flex-row py-4">
+  <div class="d-flex flex-row flex-wrap py-4">
+
     <!-- Card No Item -->
-    <div *ngIf="cart.items.length === 0" class="cart-card-container" style="flex: 3">
-      <mat-card class="d-flex justify-content-center align-items-center cart-item-card mat-elevation-z8">
+    <div *ngIf="cart.items.length === 0" class="cart-card-container" style="flex: 3;">
+      <mat-card class="d-flex justify-content-center align-items-center cart-item-card mat-elevation-z3">
         <span class="h3">Your cart is empty</span>
       </mat-card>
     </div>
 
     <!-- Card Items -->
-    <div *ngIf="cart.items && cart.items.length > 0" style="flex: 3">
-      <div *ngFor="let item of cart.items" class="cart-card-container">
-        <!-- Card Content Left -->
-        <mat-card class="cart-item-card mat-elevation-z8">
-          <mat-card-content class="d-flex flex-row justify-content-between">
-            <div class="d-flex flex-column">
-              <span>Name</span>
-              <span>
-                <a class="h3" [routerLink]="['/catalog', item.product.id]">{{ item.product.name }}</a>
-              </span>
-            </div>
-            <div class="d-flex flex-row">
-              <div class="d-flex flex-column px-4">
-                <span>Quantity</span>
-                <span class="h4">{{ item.quantity }}</span>
-              </div>
-              <div class="d-flex flex-column px-4">
-                <span>Price</span>
-                <span class="h1">{{ item.product.unitPrice * item.quantity | currency }}</span>
-              </div>
-            </div>
-          </mat-card-content>
+    <div *ngIf="cart.items && cart.items.length > 0" style="flex: 3;">
 
-          <!-- Card Content Right -->
-          <div class="d-flex justify-content-end mr-4">
-            <button class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1" mat-button (click)="addQuantity(item.product, 1)">
-              <fa-icon icon="plus-square"></fa-icon>
+      <!-- labels -->
+      <div class="cart-item-card mat-elevation-z3 labels">
+        <div class="item-card-content">
+          <div class="detail-name text-center">
+            <span>Name</span>
+          </div>
+          <div class="detail-quantity text-center">
+            <span>Quantity</span>
+          </div>
+          <div class="detail-price text-center">
+            <span>Price</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-card *ngFor="let item of cart.items" class="cart-item-card mat-elevation-z3">
+        <mat-card-content class="item-card-content">
+
+          <!-- Item Details -->
+          <div class="detail-name">
+            <span>
+              <a class="h3" [routerLink]="['/catalog', item.product.id]">{{ item.product.name }}</a>
+            </span>
+          </div>
+
+          <!-- Quantity manager -->
+          <div class="detail-quantity">
+            <button mat-raised-button color="primary" class="cart-item-card-button button-minus mat-elevation-z1"
+              mat-button (click)="addQuantity(item.product, -1)">
+              <mat-icon>remove</mat-icon>
             </button>
-            <button
-              class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1"
-              mat-button
-              (click)="addQuantity(item.product, -1)"
-            >
-              <fa-icon icon="minus-square"></fa-icon>
+            <span class="h4 span-quantity">{{ item.quantity }}</span>
+            <button mat-raised-button color="primary" class="cart-item-card-button button-plus mat-elevation-z1"
+              mat-button (click)="addQuantity(item.product, 1)">
+              <mat-icon>add</mat-icon>
             </button>
-            <button class="btn btn-info px-5 mx-4 cart-item-card-button mat-elevation-z1" mat-button (click)="deleteItem(item)">
-              <fa-icon icon="trash-alt"></fa-icon>
+            <button mat-raised-button color="primary" class="cart-item-card-button mat-elevation-z1" mat-button
+              (click)="deleteItem(item)">
+              <mat-icon>delete</mat-icon>
             </button>
           </div>
-        </mat-card>
-      </div>
+
+          <!-- Total price -->
+          <div class="detail-price">
+            <span class="h2">{{ (item.product.unitPrice * item.quantity) | currency }}</span>
+          </div>
+
+        </mat-card-content>
+
+        <!-- Card Content Right -->
+        <!--           <div class="d-flex justify-content-end mr-4">
+
+          </div> -->
+
+      </mat-card>
     </div>
 
     <!-- Card Order -->
-    <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z8" style="flex: 1">
+    <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z3" style="flex: 1;">
       <div class="d-flex flex-column px-4">
         <span>Total price</span>
         <span class="h1">{{ getTotalPrice() | currency }}</span>
       </div>
-      <button [routerLink]="['/purchase-validation']" class="btn btn-info mr-2 mat-elevation-z1" [disabled]="cart.items.length === 0">
-        <fa-icon icon="clipboard-list"></fa-icon>
-        Order
+      <button mat-raised-button color="primary" [routerLink]="['/purchase-validation']" class="mr-2 mat-elevation-z1"
+        [disabled]="cart.items.length === 0">
+        <mat-icon>playlist_add_check</mat-icon>
+        <!-- <fa-icon icon="clipboard-list"></fa-icon> -->
+        <span>Checkout</span>
       </button>
     </mat-card>
   </div>
