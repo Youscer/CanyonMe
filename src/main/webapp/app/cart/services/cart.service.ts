@@ -4,8 +4,6 @@ import { Injectable } from '@angular/core';
 import { IProduct, Product } from 'app/product/product.model';
 import { ProductService } from 'app/product/service/product.service';
 import { Cart, ICart } from '../cart.model';
-
-
 @Injectable({ providedIn: 'root' })
 export class CartService {
   private cart: Cart;
@@ -53,7 +51,7 @@ export class CartService {
   }
 
   deleteAllCart(): ICart {
-    return this.cart = new Cart();
+    return (this.cart = new Cart());
   }
 
   refreshCartProducts(): Observable<void> {
@@ -73,18 +71,14 @@ export class CartService {
 
   getTotalPrice(): number {
     let totalPrice = 0;
-    this.cart.items.forEach(item => totalPrice += (item.product.unitPrice * item.quantity));
+    this.cart.items.forEach(item => (totalPrice += item.product.unitPrice * item.quantity));
     return totalPrice;
   }
 
-  adjustQuantity(conflict: IProduct[]): void {
-    conflict.forEach(productConflict => {
-      if (productConflict.quantity > 0) {
-        this.cart.changeQuantitySet(productConflict, productConflict.quantity);
-      } else {
-        this.cart.deleteProduct(productConflict.id);
-      }
-    });
+  getTotalQuantity(): number {
+    let totalQuantity = 0;
+    this.cart.items.forEach(item => (totalQuantity += item.quantity));
+    return totalQuantity;
   }
 
   private reconstructCart(products: IProduct[]): void {

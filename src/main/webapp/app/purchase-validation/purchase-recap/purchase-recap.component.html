@@ -1,86 +1,141 @@
-<mat-stepper #stepper>
+<mat-stepper linear #stepper>
   <ng-template matStepperIcon="edit">
     <mat-icon>done</mat-icon>
   </ng-template>
   <!-- Step 1 -->
-  <mat-step>
-    <ng-template matStepLabel>Récapitulatif Commande</ng-template>
-    <mat-label>Commande</mat-label>
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container matColumnDef="article">
-        <th mat-header-cell *matHeaderCellDef>Article</th>
-        <td mat-cell *matCellDef="let element">{{ element.article }}</td>
-      </ng-container>
-      <ng-container matColumnDef="prix">
-        <th mat-header-cell *matHeaderCellDef>Prix</th>
-        <td mat-cell *matCellDef="let element">
-          {{ element.prix }}
-          <mat-icon>euro</mat-icon>
-        </td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-    <div>
-      <button mat-stroked-button color="primary" matStepperNext>Valider</button>
-    </div>
-  </mat-step>
-  <!-- Step 2 -->
-  <mat-step [stepControl]="secondFormGroup" [editable]="isEditable">
-    <form [formGroup]="secondFormGroup">
+  <mat-step [stepControl]="adressesFormGroup" [editable]="isEditable">
+    <form [formGroup]="adressesFormGroup">
       <ng-template matStepLabel>Livraison / Facturation</ng-template>
-      <mat-label>Adresse de livraison</mat-label>
-      <table class="example-full-width" cellspacing="0">
+      <h2>Adresse de livraison</h2>
+      <table cellspacing="0">
         <tr>
           <td>
-            <mat-form-field class="example-full-width" appearance="fill">
+            <mat-form-field appearance="fill" required>
               <mat-label>Prénom</mat-label>
-              <input matInput formControlName="secondCtrl" required />
+              <input matInput formControlName="shippingFirstNameCtrl" [(ngModel)]="selectedShippingFirstName" />
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="example-full-width" appearance="fill">
+            <mat-form-field appearance="fill" required>
               <mat-label>Nom</mat-label>
-              <input matInput formControlName="secondCtrl" required />
+              <input matInput formControlName="shippingLastNameCtrl" [(ngModel)]="selectedShippingLastName" />
             </mat-form-field>
           </td>
         </tr>
       </table>
 
       <p>
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Adresse</mat-label>
-          <textarea matInput placeholder="Ex. 100 Main St" formControlName="secondCtrl" required></textarea>
+        <mat-form-field appearance="fill" required>
+          <mat-label>Rue</mat-label>
+          <textarea matInput formControlName="shippingStreetCtrl" [(ngModel)]="selectedShippingStreet"></textarea>
         </mat-form-field>
-        <mat-form-field class="example-full-width" appearance="fill">
+        <mat-form-field appearance="fill">
           <mat-label>Complément</mat-label>
-          <textarea matInput></textarea>
+          <textarea matInput formControlName="shippingComplementCtrl" [(ngModel)]="selectedShippingComplement"></textarea>
         </mat-form-field>
       </p>
 
-      <table class="example-full-width" cellspacing="0">
+      <table cellspacing="0">
         <tr>
           <td>
-            <mat-form-field class="example-full-width" appearance="fill">
+            <mat-form-field appearance="fill" required>
               <mat-label>Ville</mat-label>
-              <input matInput placeholder="Ex. San Francisco" formControlName="secondCtrl" required />
+              <input matInput formControlName="shippingCityCtrl" [(ngModel)]="selectedShippingCity" />
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="example-full-width" appearance="fill">
+            <mat-form-field appearance="fill" required>
               <mat-label>Etat</mat-label>
-              <input matInput placeholder="Ex. California" formControlName="secondCtrl" required />
+              <input matInput formControlName="shippingStateCtrl" [(ngModel)]="selectedShippingState" />
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="example-full-width" appearance="fill">
+            <mat-form-field appearance="fill" required>
               <mat-label>Code Postal</mat-label>
-              <input matInput #postalCode maxlength="5" placeholder="Ex. 94105" formControlName="secondCtrl" required />
+              <input matInput #postalCode maxlength="5" formControlName="shippingZipCodeCtrl" [(ngModel)]="selectedShippingZipCode" />
               <mat-hint align="end">{{ postalCode.value.length }} / 5</mat-hint>
             </mat-form-field>
           </td>
         </tr>
       </table>
+      <p></p>
+      <h2>Adresse de facturation</h2>
+      <table cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field appearance="fill" required>
+              <mat-label>Prénom</mat-label>
+              <input matInput formControlName="billingFirstNameCtrl" [(ngModel)]="selectedBillingFirstName" />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill" required>
+              <mat-label>Nom</mat-label>
+              <input matInput formControlName="billingLastNameCtrl" [(ngModel)]="selectedBillingLastName" />
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+
+      <p>
+        <mat-form-field appearance="fill" required>
+          <mat-label>Rue</mat-label>
+          <textarea matInput formControlName="billingStreetCtrl" [(ngModel)]="selectedBillingStreet"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="fill" required>
+          <mat-label>Complément</mat-label>
+          <textarea matInput formControlName="billingComplementCtrl" [(ngModel)]="selectedBillingComplement"></textarea>
+        </mat-form-field>
+      </p>
+
+      <table cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field appearance="fill" required>
+              <mat-label>Ville</mat-label>
+              <input matInput formControlName="billingCityCtrl" [(ngModel)]="selectedBillingCity" />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill" required>
+              <mat-label>Etat</mat-label>
+              <input matInput formControlName="billingStateCtrl" />
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field appearance="fill" required>
+              <mat-label>Code Postal</mat-label>
+              <input matInput #postalCode maxlength="5" formControlName="billingZipCodeCtrl" [(ngModel)]="selectedBillingZipCode" />
+              <mat-hint align="end">{{ postalCode.value.length }} / 5</mat-hint>
+            </mat-form-field>
+          </td>
+        </tr>
+      </table>
+      <div>
+        <button mat-stroked-button color="primary" matStepperNext>Valider</button>
+      </div>
+    </form>
+  </mat-step>
+  <!-- Step 2 -->
+  <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
+    <form [formGroup]="thirdFormGroup">
+      <ng-template matStepLabel>Choix Livraison / Paiement</ng-template>
+      <p>
+        <mat-label>Mode Livraison :</mat-label>
+        <mat-radio-group formControlName="selectShippingMode" [(ngModel)]="selectedShippingMode">
+          <mat-radio-button *ngFor="let shippingFee of shippingFees" [value]="shippingFee">
+            {{ shippingFee.shippingMode }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </p>
+      <p>
+        <mat-label>Mode Paiement :</mat-label>
+        <mat-radio-group formControlName="selectPaymentMode" [(ngModel)]="selectedPaymentMode">
+          <mat-radio-button *ngFor="let paymentFee of paymentFees" [value]="paymentFee">
+            {{ paymentFee.paymentMode }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </p>
       <div>
         <button mat-stroked-button color="primary" matStepperPrevious>Retour</button>
         <button mat-stroked-button color="primary" matStepperNext>Suite</button>
@@ -88,45 +143,78 @@
     </form>
   </mat-step>
   <!-- Step 3 -->
-  <mat-step [stepControl]="thirdFormGroup" [editable]="isEditable">
-    <form [formGroup]="thirdFormGroup">
-      <ng-template matStepLabel>Choix Livraison / Paiement</ng-template>
-      <p>
-        <mat-label>Mode Livraison :</mat-label>
-        <mat-radio-group formControlName="SelectShippingMode" [(ngModel)]="selectedShippingMode">
-          <mat-radio-button *ngFor="let ShippingMode of ShippingModes" [value]="ShippingMode">
-            {{ ShippingMode }}
-          </mat-radio-button>
-        </mat-radio-group>
-      </p>
-      <p>
-        <mat-label>Mode Paiement :</mat-label>
-        <mat-radio-group formControlName="SelectPaymentMode" [(ngModel)]="selectedPaymentMode">
-          <mat-radio-button *ngFor="let PaymentMode of PaymentModes" [value]="PaymentMode">
-            {{ PaymentMode }}
-          </mat-radio-button>
-        </mat-radio-group>
-      </p>
-      <div>
-        <button mat-stroked-button color="primary" matStepperPrevious>Retour</button>
-        <button mat-stroked-button color="primary" matStepperNext>Suite</button>
-      </div>
-    </form>
-  </mat-step>
-  <!-- Step 4 -->
   <mat-step>
     <ng-template matStepLabel>Validation Commande</ng-template>
-    <mat-label>Recapitulatif Commande</mat-label>
-    <p>
-      <mat-label>Mode Livraison :</mat-label>
-      {{ selectedShippingMode }}
-    </p>
-    <p>
-      <mat-label>Mode Paiement :</mat-label>
-      {{ selectedPaymentMode }}
-    </p>
-    <div>
-      <button mat-stroked-button color="primary" (click)="postCartOrder()">Confirmer et Payer</button>
+    <div class="d-flex flex-row py-4 flex-wrap-reverse">
+      <div class="right-side">
+        <h2>Recapitulatif Commande</h2>
+        <table mat-table [dataSource]="dataSource" class="cart-item-card mat-elevation-z8">
+          <ng-container matColumnDef="article">
+            <th mat-header-cell *matHeaderCellDef>Article</th>
+            <td mat-cell *matCellDef="let element">{{ element.article }}</td>
+            <td mat-footer-cell *matFooterCellDef></td>
+          </ng-container>
+          <ng-container matColumnDef="quantite">
+            <th mat-header-cell *matHeaderCellDef>Quantité</th>
+            <td mat-cell *matCellDef="let element">{{ element.quantite }}</td>
+            <td mat-footer-cell *matFooterCellDef>Sous-Total</td>
+          </ng-container>
+          <ng-container matColumnDef="prix">
+            <th mat-header-cell *matHeaderCellDef>Prix</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.prix | currency }}
+            </td>
+            <td mat-footer-cell *matFooterCellDef>
+              {{ totalPriceCart | currency }}
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+        </table>
+        <div class="total">
+          <div class="sous-total">
+            <mat-label>Mode Livraison : </mat-label>
+            {{ selectedShippingMode?.shippingMode }}
+            <div class="sous-montant">{{ selectedShippingMode?.fees | currency }}</div>
+          </div>
+          <div class="sous-total">
+            <mat-label>Mode Paiement : </mat-label>
+            {{ selectedPaymentMode?.paymentMode }}
+            <div class="sous-montant">{{ selectedPaymentMode?.fees | currency }}</div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="sous-total">
+          <h2>Total</h2>
+          <div class="sous-montant">
+            <h2>{{ getTotalCommandPrice() | currency }}</h2>
+          </div>
+        </div>
+        <!-- Card Adresses -->
+        <div>
+          <button mat-stroked-button color="primary" matStepperPrevious>Retour</button>
+          <button mat-raised-button color="primary" (click)="stepper.reset()">Confirmer et Payer</button>
+        </div>
+      </div>
+      <div class="left-side">
+        <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z8 adress-card" style="flex: 1">
+          <div class="d-flex flex-column px-4">
+            <div>Adresse Livraison</div>
+            <div class="recap-adresse">
+              {{ selectedShippingFirstName }} {{ selectedShippingLastName }}<br />
+              {{ selectedShippingStreet }} {{ selectedShippingComplement }} <br />
+              {{ selectedShippingZipCode }} {{ selectedShippingCity }} {{ selectedShippingState }}
+            </div>
+            <mat-label>Adresse Facturation</mat-label>
+            <div class="recap-adresse">
+              {{ selectedBillingFirstName }} {{ selectedBillingLastName }}<br />
+              {{ selectedBillingStreet }} {{ selectedBillingComplement }} <br />
+              {{ selectedBillingZipCode }} {{ selectedBillingCity }} {{ selectedBillingState }}
+            </div>
+          </div>
+        </mat-card>
+      </div>
     </div>
   </mat-step>
 </mat-stepper>

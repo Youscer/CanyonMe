@@ -1,0 +1,134 @@
+.canyonme {
+  /*   background: url('../../../content/images/CanyonMe_montagnes.png') no-repeat center top;
+  background-size: contain;
+  width: 50px; 
+  height: 50px; 
+  display: block; 
+  margin-right: 10px;
+  margin-left: 10px; */
+  display: block;
+  height: 50%;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+  display: flex;
+}
+
+form .inside-icon {
+  margin-left: -40px;
+  z-index: 1;
+}
+
+form input {
+  width: 85%;
+}
+
+.profile-image {
+  height: 1.75em;
+  width: 1.75em;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+  background-color: rgba($color: #fff, $alpha: 0.05);
+  transition: 0.2s;
+}
+a {
+  transition: 0.2s;
+}
+
+.tool-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  user-select: none;
+}
+
+.center-inside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tool-item span {
+  color: inherit;
+}
+
+.tool-item mat-icon {
+  transform: scale(1.5);
+  margin-right: 10px;
+}
+
+.site-title {
+  font-size: 35px;
+}
+
+.arrow-drop-down {
+  margin-left: 0px;
+}
+
+.responsive-search {
+  display: none;
+}
+
+.resp-spacer {
+  display: none;
+}
+
+::ng-deep .toolbar-menu {
+  width: 500px;
+  z-index: 10000000;
+}
+
+/* TABLETTE */
+@media screen and (max-width: 1000px) {
+  .tool-item span {
+    display: none;
+  }
+  form input {
+    width: 95%;
+  }
+  .arrow-drop-down {
+    margin-left: -10px;
+  }
+  .tool-item mat-icon {
+    margin-right: 0px;
+  }
+}
+
+/* MOBIL */
+
+@media screen and (max-width: 599px) {
+  .responsive-search {
+    display: inherit;
+    margin: 0px;
+    padding: 0px;
+  }
+  .responsive-search form {
+    width: 100%;
+  }
+  .responsive-search input {
+    width: 100%;
+  }
+  .classic-search {
+    display: none;
+  }
+  .resp-spacer {
+    display: inherit;
+    width: 100%;
+  }
+  ::ng-deep .toolbar-menu {
+    width: 100%;
+    margin-top: 55px;
+  }
+}

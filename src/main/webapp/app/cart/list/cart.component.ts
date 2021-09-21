@@ -17,7 +17,7 @@ export class CartComponent implements OnInit {
     this.cart = new Cart();
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.refreshCart();
   }
 
@@ -29,13 +29,13 @@ export class CartComponent implements OnInit {
     });
   }
 
-  addQuantity(product : Product, quantity: number): void{
+  addQuantity(product: Product, quantity: number): void {
     this.cartService.addProduct(product, quantity);
   }
 
-  deleteItem(item : ICartItem): void{
+  deleteItem(item: ICartItem): void {
     const snackBarRef = this.snackBar.open(item.product.name + ' deleted.', 'Undo', {
-      duration: 5000
+      duration: 5000,
     });
     snackBarRef.onAction().subscribe(() => {
       this.cartService.addProduct(item.product, item.quantity);
@@ -43,14 +43,14 @@ export class CartComponent implements OnInit {
     this.cartService.deleteProduct(item.product.id);
   }
 
-  deleteCart(): void{
+  deleteCart(): void {
     const tempCart: Cart = new Cart();
     Object.assign(tempCart, this.cart);
     const snackBarRef = this.snackBar.open('Your cart has been deleted.', 'Undo', {
-      duration: 5000
+      duration: 5000,
     });
     snackBarRef.onAction().subscribe(() => {
-      for(const item of tempCart.items){
+      for (const item of tempCart.items) {
         this.cartService.addProduct(item.product, item.quantity);
       }
     });
