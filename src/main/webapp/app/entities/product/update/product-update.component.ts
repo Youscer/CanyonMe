@@ -24,7 +24,7 @@ export class ProductUpdateComponent implements OnInit {
     brand: [null, [Validators.required]],
     description: [null, [Validators.required]],
     unitPrice: [null, [Validators.required]],
-    quantity: [],
+    quantity: [null, [Validators.required]],
   });
 
   constructor(protected productService: ProductService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
