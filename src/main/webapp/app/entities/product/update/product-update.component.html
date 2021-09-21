@@ -10,30 +10,13 @@
 
         <div class="form-group" [hidden]="editForm.get('id')!.value == null">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label class="form-control-label" jhiTranslate="canyonMeApp.product.id" for="field_id">Id</mat-label>
-            <input
-              matInput
-              type="number"
-              class="form-control"
-              name="id"
-              id="field_id"
-              data-cy="id"
-              formControlName="id"
-              [readonly]="true"
-            />
+            <mat-label jhiTranslate="canyonMeApp.product.id" for="field_id">Id</mat-label>
+            <input matInput type="number" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
             <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
-              <mat-error
-                class="form-text text-danger"
-                *ngIf="editForm.get('id')?.errors?.required"
-                jhiTranslate="entity.validation.required"
-              >
+              <mat-error *ngIf="editForm.get('id')?.errors?.required" jhiTranslate="entity.validation.required">
                 This field is required.
               </mat-error>
-              <mat-error
-                class="form-text text-danger"
-                [hidden]="!editForm.get('id')?.errors?.number"
-                jhiTranslate="entity.validation.number"
-              >
+              <mat-error [hidden]="!editForm.get('id')?.errors?.number" jhiTranslate="entity.validation.number">
                 This field should be a number.
               </mat-error>
             </div>
@@ -42,14 +25,10 @@
 
         <div class="form-group">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label class="form-control-label" jhiTranslate="canyonMeApp.product.name" for="field_name">Name</mat-label>
-            <input matInput type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+            <mat-label jhiTranslate="canyonMeApp.product.name" for="field_name">Name</mat-label>
+            <input matInput type="text" name="name" id="field_name" data-cy="name" formControlName="name" />
             <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
-              <mat-error
-                class="form-text text-danger"
-                *ngIf="editForm.get('name')?.errors?.required"
-                jhiTranslate="entity.validation.required"
-              >
+              <mat-error *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
                 This field is required.
               </mat-error>
             </div>
@@ -58,23 +37,15 @@
 
         <div class="form-group">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label class="form-control-label" jhiTranslate="canyonMeApp.product.brand" for="field_brand">Brand</mat-label>
-            <input matInput type="text" class="form-control" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
+            <mat-label jhiTranslate="canyonMeApp.product.brand" for="field_brand">Brand</mat-label>
+            <input matInput type="text" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
           </mat-form-field>
         </div>
 
         <div class="form-group">
-          <mat-form-field appearance="outline">
+          <mat-form-field class="example-full-width" appearance="outline">
             <mat-label jhiTranslate="canyonMeApp.product.description" for="field_description">Description</mat-label>
-            <input
-              matInput
-              type="text"
-              class="form-control"
-              name="description"
-              id="field_description"
-              data-cy="description"
-              formControlName="description"
-            />
+            <input matInput type="text" name="description" id="field_description" data-cy="description" formControlName="description" />
             <div
               *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)"
             >
