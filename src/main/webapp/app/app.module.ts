@@ -1,3 +1,4 @@
+import { MatDividerModule } from '@angular/material/divider';
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
@@ -55,9 +56,11 @@ import { MatInputModule } from '@angular/material/input';
     BrowserModule,
     SharedModule,
     HomeModule,
+
     // jhipster-needle-angular-add-module JHipster will add new module here
     EntityRoutingModule,
     AppRoutingModule,
+
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
@@ -77,6 +80,8 @@ import { MatInputModule } from '@angular/material/input';
     NoopAnimationsModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
+
+    // Material
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
@@ -89,6 +94,9 @@ import { MatInputModule } from '@angular/material/input';
     MatFormFieldModule,
     MatInputModule,
     // firebase
+    MatDividerModule,
+
+    // Firebase
     AngularFireStorageModule,
     AngularFireModule.initializeApp(firebaseConfig),
   ],
