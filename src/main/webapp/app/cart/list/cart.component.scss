@@ -1,6 +1,4 @@
-
 .main-container{
-  /* d-flex flex-row flex-wrap py-4  */
   display: flex;
   flex-direction: row;
 }
@@ -48,7 +46,6 @@
 .labels{
   height: 50px;
   position: relative;
-  /* overflow: hidden; */
 }
 
 .mat-divider-vertical{
