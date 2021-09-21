@@ -66,63 +66,71 @@
       <div class="right-side">
         <h2>Billing Adress</h2>
         <mat-divider></mat-divider>
-        <table cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field appearance="fill" required>
-                <mat-label>First Name</mat-label>
-                <input matInput formControlName="billingFirstNameCtrl" [(ngModel)]="selectedBillingFirstName" />
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field appearance="fill" required>
-                <mat-label>Last Name</mat-label>
-                <input matInput formControlName="billingLastNameCtrl" [(ngModel)]="selectedBillingLastName" />
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
-
-        <p>
-          <mat-form-field appearance="fill" required>
-            <mat-label>Street</mat-label>
-            <textarea matInput formControlName="billingStreetCtrl" [(ngModel)]="selectedBillingStreet"></textarea>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Complement</mat-label>
-            <textarea matInput formControlName="billingComplementCtrl" [(ngModel)]="selectedBillingComplement"></textarea>
-          </mat-form-field>
+        <p id="shiptobilling" class="form-row">
+          <mat-checkbox name="processBilling" [checked]="checkboxFlag" labelPosition="before" (change)="SetBilling($event.checked)"
+            >Same as Shipping</mat-checkbox
+          >
         </p>
 
-        <table cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field appearance="fill" required>
-                <mat-label>City</mat-label>
-                <input matInput formControlName="billingCityCtrl" [(ngModel)]="selectedBillingCity" />
-              </mat-form-field>
-            </td>
-            <td>
-              <mat-form-field appearance="fill" required>
-                <mat-label>State</mat-label>
-                <input matInput formControlName="billingStateCtrl" />
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <mat-form-field appearance="fill" required>
-                <mat-label>ZIP Code</mat-label>
-                <input matInput #postalCode maxlength="5" formControlName="billingZipCodeCtrl" [(ngModel)]="selectedBillingZipCode" />
-                <mat-hint align="end">{{ postalCode.value.length }} / 5</mat-hint>
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
+        <div id="billingaddress" class="billing_address" style="display: none">
+          <table cellspacing="0">
+            <tr>
+              <td>
+                <mat-form-field appearance="fill" required>
+                  <mat-label>First Name</mat-label>
+                  <input matInput formControlName="billingFirstNameCtrl" [(ngModel)]="selectedBillingFirstName" />
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field appearance="fill" required>
+                  <mat-label>Last Name</mat-label>
+                  <input matInput formControlName="billingLastNameCtrl" [(ngModel)]="selectedBillingLastName" />
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+
+          <p>
+            <mat-form-field appearance="fill" required>
+              <mat-label>Street</mat-label>
+              <textarea matInput formControlName="billingStreetCtrl" [(ngModel)]="selectedBillingStreet"></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+              <mat-label>Complement</mat-label>
+              <textarea matInput formControlName="billingComplementCtrl" [(ngModel)]="selectedBillingComplement"></textarea>
+            </mat-form-field>
+          </p>
+
+          <table cellspacing="0">
+            <tr>
+              <td>
+                <mat-form-field appearance="fill" required>
+                  <mat-label>City</mat-label>
+                  <input matInput formControlName="billingCityCtrl" [(ngModel)]="selectedBillingCity" />
+                </mat-form-field>
+              </td>
+              <td>
+                <mat-form-field appearance="fill" required>
+                  <mat-label>State</mat-label>
+                  <input matInput formControlName="billingStateCtrl" [(ngModel)]="selectedBillingState" />
+                </mat-form-field>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <mat-form-field appearance="fill" required>
+                  <mat-label>ZIP Code</mat-label>
+                  <input matInput #postalCode maxlength="5" formControlName="billingZipCodeCtrl" [(ngModel)]="selectedBillingZipCode" />
+                  <mat-hint align="end">{{ postalCode.value.length }} / 5</mat-hint>
+                </mat-form-field>
+              </td>
+            </tr>
+          </table>
+        </div>
       </div>
     </form>
     <div>
-      <button mat-stroked-button color="primary" matStepperNext>Next</button>
+      <button mat-stroked-button color="primary" (click)="SetBilling(checkboxFlag)" matStepperNext>Next</button>
     </div>
   </mat-step>
   <!-- Step 2 -->
@@ -209,13 +217,13 @@
       <div class="right-side">
         <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z8 adress-card" style="flex: 1">
           <div class="d-flex flex-column px-4">
-            <div>Shipping Adress</div>
+            <h3>Shipping Adress</h3>
             <div class="recap-adresse">
               {{ selectedShippingFirstName }} {{ selectedShippingLastName }}<br />
               {{ selectedShippingStreet }} {{ selectedShippingComplement }} <br />
               {{ selectedShippingZipCode }} {{ selectedShippingCity }} {{ selectedShippingState }}
             </div>
-            <mat-label>Billing Adress</mat-label>
+            <h3>Billing Adress</h3>
             <div class="recap-adresse">
               {{ selectedBillingFirstName }} {{ selectedBillingLastName }}<br />
               {{ selectedBillingStreet }} {{ selectedBillingComplement }} <br />

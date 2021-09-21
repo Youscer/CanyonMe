@@ -15,6 +15,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { PurchaseConfirmationComponent } from './purchase-confirmation/purchase-confirmation.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { PurchaseConfirmationComponent } from './purchase-confirmation/purchase-
     MatRadioModule,
     MatDividerModule,
     MatCardModule,
+    MatCheckboxModule,
   ],
   exports: [RouterModule],
   declarations: [PurchaseRecapComponent, PurchaseConfirmationComponent],

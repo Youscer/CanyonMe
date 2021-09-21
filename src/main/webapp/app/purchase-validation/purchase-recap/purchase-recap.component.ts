@@ -31,21 +31,18 @@ export class PurchaseRecapComponent implements OnInit {
     shippingComplementCtrl: ['', Validators.nullValidator],
     shippingCityCtrl: ['', Validators.required],
     shippingStateCtrl: ['', Validators.required],
-    shippingZipCodeCtrl: ['', Validators.required],
+    shippingZipCodeCtrl: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
     billingFirstNameCtrl: ['', Validators.required],
     billingLastNameCtrl: ['', Validators.required],
     billingStreetCtrl: ['', Validators.required],
     billingComplementCtrl: ['', Validators.nullValidator],
     billingCityCtrl: ['', Validators.required],
     billingStateCtrl: ['', Validators.required],
-    billingZipCodeCtrl: ['', Validators.required],
+    billingZipCodeCtrl: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
   });
   thirdFormGroup = this._formBuilder.group({
     selectShippingMode: [null, Validators.required],
     selectPaymentMode: [null, Validators.required],
-  });
-  fourthFormGroup = this._formBuilder.group({
-    fourthCtrl: ['', Validators.required],
   });
   isEditable = true;
 
@@ -88,6 +85,9 @@ export class PurchaseRecapComponent implements OnInit {
   paymentFees?: IPaymentFees[];
   isLoadingPaymentFees = false;
 
+  // initialisation copie billing adress à partir de la shipping adress
+  checkboxFlag = true;
+
   constructor(
     public cartService: CartService,
     private _formBuilder: FormBuilder,
@@ -97,6 +97,30 @@ export class PurchaseRecapComponent implements OnInit {
   ) {
     this.cart = new Cart();
     this.shippingFees === new ShippingFees();
+  }
+
+  // Gestion billing adress si identique a shipping adress
+  SetBilling(checked: boolean): void {
+    if (checked) {
+      document.getElementById('billingaddress')!.style.display = 'none';
+      this.selectedBillingFirstName = this.selectedShippingFirstName;
+      this.selectedBillingLastName = this.selectedShippingLastName;
+      this.selectedBillingStreet = this.selectedShippingStreet;
+      this.selectedBillingComplement = this.selectedShippingComplement;
+      this.selectedBillingCity = this.selectedShippingCity;
+      this.selectedBillingState = this.selectedShippingState;
+      this.selectedBillingZipCode = this.selectedShippingZipCode;
+    } else {
+      document.getElementById('billingaddress')!.style.display = 'block';
+      this.selectedBillingFirstName = '';
+      this.selectedBillingLastName = '';
+      this.selectedBillingStreet = '';
+      this.selectedBillingComplement = '';
+      this.selectedBillingCity = '';
+      this.selectedBillingState = '';
+      this.selectedBillingZipCode = '';
+    }
+    this.checkboxFlag = checked;
   }
 
   loadAll(): void {
@@ -157,5 +181,8 @@ export class PurchaseRecapComponent implements OnInit {
     for (const paymentFee of this.paymentFees!) {
       this.paymentFees?.push({ id: paymentFee.fees, paymentMode: paymentFee.paymentMode, fees: paymentFee.fees });
     }
+
+    //Initialisation billing adress
+    this.SetBilling(this.checkboxFlag);
   }
 }
