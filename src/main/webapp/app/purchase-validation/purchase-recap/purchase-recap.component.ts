@@ -1,3 +1,4 @@
+import { OrderService } from './../service/order.service';
 import { PaymentMode } from 'app/entities/enumerations/payment-mode.model';
 import { ShippingFees } from './../../entities/shipping-fees/shipping-fees.model';
 import { Cart, ICart } from './../../cart/cart.model';
@@ -9,6 +10,7 @@ import { IShippingFees } from 'app/entities/shipping-fees/shipping-fees.model';
 import { HttpResponse } from '@angular/common/http';
 import { PaymentFeesService } from 'app/entities/payment-fees/service/payment-fees.service';
 import { IPaymentFees } from 'app/entities/payment-fees/payment-fees.model';
+import { IProduct } from 'app/product/product.model';
 
 // Colonnes Tableau panier recap
 export interface cartData {
@@ -92,10 +94,28 @@ export class PurchaseRecapComponent implements OnInit {
     public cartService: CartService,
     private _formBuilder: FormBuilder,
     protected shippingFeesService: ShippingFeesService,
-    protected paymentFeesService: PaymentFeesService
+    protected paymentFeesService: PaymentFeesService,
+    public orderService : OrderService
   ) {
     this.cart = new Cart();
     this.shippingFees === new ShippingFees();
+  }
+
+  postCartOrder(): void {
+    this.orderService.postCartOrder(this.cartService.getCart(), 1, 1, '35 rue du test', '35 rue du test').subscribe(
+      () => {
+        this.cartService.deleteAllCart();
+        alert('Commande OK');
+      },
+      (error) => {
+        switch (error.status) {
+          case 409:
+            this.cartService.adjustQuantity(error.error as IProduct[]);
+            alert('Probleme stock, panier ajusté');
+            break;
+        }
+      }
+    );
   }
 
   loadAll(): void {

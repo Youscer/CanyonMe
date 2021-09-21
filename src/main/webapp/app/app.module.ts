@@ -48,7 +48,8 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ToolBarComponent } from './layouts/toolbar/toolbar.component';
 import { UploadComponent } from './shared/upload/upload.component';
-
+import { ProductUpdateComponent } from './entities/product/update/product-update.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -91,6 +92,8 @@ import { UploadComponent } from './shared/upload/upload.component';
     MatProgressSpinnerModule,
     MatSliderModule,
     MatFormFieldModule,
+    MatInputModule,
+    // firebase
     MatDividerModule,
 
     // Firebase
@@ -115,7 +118,8 @@ import { UploadComponent } from './shared/upload/upload.component';
     FooterComponent,
     CartComponent,
     UploadComponent,
-    ToolBarComponent
+    ToolBarComponent,
+    ProductUpdateComponent,
   ],
   bootstrap: [MainComponent],
 })

@@ -134,6 +134,34 @@
         </div>
 
         <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.shippingAddress" for="field_shippingAddress"
+            >Shipping Address</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="shippingAddress"
+            id="field_shippingAddress"
+            data-cy="shippingAddress"
+            formControlName="shippingAddress"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.billingAddress" for="field_billingAddress"
+            >Billing Address</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="billingAddress"
+            id="field_billingAddress"
+            data-cy="billingAddress"
+            formControlName="billingAddress"
+          />
+        </div>
+
+        <div class="form-group">
           <label class="form-control-label" jhiTranslate="canyonMeApp.purchasedOrder.person" for="field_person">Person</label>
           <select class="form-control" id="field_person" data-cy="person" name="person" formControlName="person">
             <option [ngValue]="null"></option>

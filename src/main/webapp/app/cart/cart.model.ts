@@ -36,7 +36,7 @@ export class Cart implements ICart {
 
   /**
    * Applique la quantité à l'item du panier
-   * Supprime l'item si la quantité est négatif ou nul
+   * Remise de la quantité à 1 si la quantité est négatif ou nul
    *
    * @param cartItem
    * @param quantity
@@ -44,6 +44,8 @@ export class Cart implements ICart {
   setQuantity(cartItem: CartItem, quantity: number): void {
     if (quantity > 0) {
       cartItem.quantity = quantity;
+    }else{
+      cartItem.quantity = 1;
     }
   }
 
@@ -52,6 +54,17 @@ export class Cart implements ICart {
     if (cartItem !== undefined) {
       const newquantity = cartItem.quantity + quantity;
       this.setQuantity(cartItem, newquantity);
+    } else {
+      if (quantity > 0) {
+        this.items.push(new CartItem(product, quantity));
+      }
+    }
+  }
+
+  changeQuantitySet(product: Product, quantity: number): void {
+    const cartItem = this.items.find(ci => ci.product.id === product.id);
+    if (cartItem !== undefined) {
+      this.setQuantity(cartItem, quantity);
     } else {
       if (quantity > 0) {
         this.items.push(new CartItem(product, quantity));

@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.OrderLine;
 import com.canyoncorp.canyonme.repository.OrderLineRepository;
+import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
+import com.canyoncorp.canyonme.service.mapper.OrderLineMapper;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -52,6 +54,9 @@ class OrderLineResourceIT {
 
     @Autowired
     private OrderLineRepository orderLineRepository;
+
+    @Autowired
+    private OrderLineMapper orderLineMapper;
 
     @Autowired
     private EntityManager em;
@@ -103,8 +108,9 @@ class OrderLineResourceIT {
     void createOrderLine() throws Exception {
         int databaseSizeBeforeCreate = orderLineRepository.findAll().size();
         // Create the OrderLine
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
         restOrderLineMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLineDTO)))
             .andExpect(status().isCreated());
 
         // Validate the OrderLine in the database
@@ -123,12 +129,13 @@ class OrderLineResourceIT {
     void createOrderLineWithExistingId() throws Exception {
         // Create the OrderLine with an existing ID
         orderLine.setId(1L);
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
 
         int databaseSizeBeforeCreate = orderLineRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOrderLineMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLineDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the OrderLine in the database
@@ -144,9 +151,10 @@ class OrderLineResourceIT {
         orderLine.setProduct(null);
 
         // Create the OrderLine, which fails.
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
 
         restOrderLineMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLineDTO)))
             .andExpect(status().isBadRequest());
 
         List<OrderLine> orderLineList = orderLineRepository.findAll();
@@ -161,9 +169,10 @@ class OrderLineResourceIT {
         orderLine.setProductName(null);
 
         // Create the OrderLine, which fails.
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
 
         restOrderLineMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLineDTO)))
             .andExpect(status().isBadRequest());
 
         List<OrderLine> orderLineList = orderLineRepository.findAll();
@@ -178,9 +187,10 @@ class OrderLineResourceIT {
         orderLine.setQuantity(null);
 
         // Create the OrderLine, which fails.
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
 
         restOrderLineMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLineDTO)))
             .andExpect(status().isBadRequest());
 
         List<OrderLine> orderLineList = orderLineRepository.findAll();
@@ -195,9 +205,10 @@ class OrderLineResourceIT {
         orderLine.setUnitPrice(null);
 
         // Create the OrderLine, which fails.
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
 
         restOrderLineMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLineDTO)))
             .andExpect(status().isBadRequest());
 
         List<OrderLine> orderLineList = orderLineRepository.findAll();
@@ -267,12 +278,13 @@ class OrderLineResourceIT {
             .quantity(UPDATED_QUANTITY)
             .unitPrice(UPDATED_UNIT_PRICE)
             .discount(UPDATED_DISCOUNT);
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(updatedOrderLine);
 
         restOrderLineMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedOrderLine.getId())
+                put(ENTITY_API_URL_ID, orderLineDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedOrderLine))
+                    .content(TestUtil.convertObjectToJsonBytes(orderLineDTO))
             )
             .andExpect(status().isOk());
 
@@ -293,12 +305,15 @@ class OrderLineResourceIT {
         int databaseSizeBeforeUpdate = orderLineRepository.findAll().size();
         orderLine.setId(count.incrementAndGet());
 
+        // Create the OrderLine
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOrderLineMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, orderLine.getId())
+                put(ENTITY_API_URL_ID, orderLineDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(orderLine))
+                    .content(TestUtil.convertObjectToJsonBytes(orderLineDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -313,12 +328,15 @@ class OrderLineResourceIT {
         int databaseSizeBeforeUpdate = orderLineRepository.findAll().size();
         orderLine.setId(count.incrementAndGet());
 
+        // Create the OrderLine
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderLineMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(orderLine))
+                    .content(TestUtil.convertObjectToJsonBytes(orderLineDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -333,9 +351,12 @@ class OrderLineResourceIT {
         int databaseSizeBeforeUpdate = orderLineRepository.findAll().size();
         orderLine.setId(count.incrementAndGet());
 
+        // Create the OrderLine
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderLineMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLine)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(orderLineDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the OrderLine in the database
@@ -420,12 +441,15 @@ class OrderLineResourceIT {
         int databaseSizeBeforeUpdate = orderLineRepository.findAll().size();
         orderLine.setId(count.incrementAndGet());
 
+        // Create the OrderLine
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOrderLineMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, orderLine.getId())
+                patch(ENTITY_API_URL_ID, orderLineDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(orderLine))
+                    .content(TestUtil.convertObjectToJsonBytes(orderLineDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -440,12 +464,15 @@ class OrderLineResourceIT {
         int databaseSizeBeforeUpdate = orderLineRepository.findAll().size();
         orderLine.setId(count.incrementAndGet());
 
+        // Create the OrderLine
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderLineMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(orderLine))
+                    .content(TestUtil.convertObjectToJsonBytes(orderLineDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -460,10 +487,13 @@ class OrderLineResourceIT {
         int databaseSizeBeforeUpdate = orderLineRepository.findAll().size();
         orderLine.setId(count.incrementAndGet());
 
+        // Create the OrderLine
+        OrderLineDTO orderLineDTO = orderLineMapper.toDto(orderLine);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderLineMockMvc
             .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(orderLine))
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(orderLineDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

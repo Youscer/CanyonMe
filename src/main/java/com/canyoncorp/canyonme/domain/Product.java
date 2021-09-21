@@ -39,6 +39,9 @@ public class Product implements Serializable {
     @Column(name = "unit_price", nullable = false)
     private Float unitPrice;
 
+    @Column(name = "quantity")
+    private Integer quantity;
+
     @OneToMany(mappedBy = "product")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "product" }, allowSetters = true)
@@ -110,6 +113,19 @@ public class Product implements Serializable {
         this.unitPrice = unitPrice;
     }
 
+    public Integer getQuantity() {
+        return this.quantity;
+    }
+
+    public Product quantity(Integer quantity) {
+        this.quantity = quantity;
+        return this;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     public Set<Discount> getDiscounts() {
         return this.discounts;
     }
@@ -169,6 +185,7 @@ public class Product implements Serializable {
             ", brand='" + getBrand() + "'" +
             ", description='" + getDescription() + "'" +
             ", unitPrice=" + getUnitPrice() +
+            ", quantity=" + getQuantity() +
             "}";
     }
 }

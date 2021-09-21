@@ -7,8 +7,6 @@ import { CartComponent } from './cart/list/cart.component';
 import { errorRoute } from './layouts/error/error.route';
 import { toolbarRoute } from './layouts/toolbar/toolbar.route';
 
-
-
 const LAYOUT_ROUTES = [toolbarRoute, ...errorRoute];
 
 @NgModule({
@@ -33,6 +31,7 @@ const LAYOUT_ROUTES = [toolbarRoute, ...errorRoute];
         },
         {
           path: 'purchase-validation',
+          canActivate: [UserRouteAccessService],
           loadChildren: () => import('./purchase-validation/purchase-validation.module').then(m => m.PurchaseValidationModule),
         },
         {

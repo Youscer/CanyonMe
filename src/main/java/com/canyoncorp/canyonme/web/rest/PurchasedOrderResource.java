@@ -2,6 +2,8 @@ package com.canyoncorp.canyonme.web.rest;
 
 import com.canyoncorp.canyonme.domain.PurchasedOrder;
 import com.canyoncorp.canyonme.repository.PurchasedOrderRepository;
+import com.canyoncorp.canyonme.service.dto.PurchasedOrderDTO;
+import com.canyoncorp.canyonme.service.mapper.PurchasedOrderMapper;
 import com.canyoncorp.canyonme.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,25 +38,30 @@ public class PurchasedOrderResource {
 
     private final PurchasedOrderRepository purchasedOrderRepository;
 
-    public PurchasedOrderResource(PurchasedOrderRepository purchasedOrderRepository) {
+    private final PurchasedOrderMapper purchasedOrderMapper;
+
+    public PurchasedOrderResource(PurchasedOrderRepository purchasedOrderRepository, PurchasedOrderMapper purchasedOrderMapper) {
         this.purchasedOrderRepository = purchasedOrderRepository;
+        this.purchasedOrderMapper = purchasedOrderMapper;
     }
 
     /**
      * {@code POST  /purchased-orders} : Create a new purchasedOrder.
      *
-     * @param purchasedOrder the purchasedOrder to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new purchasedOrder, or with status {@code 400 (Bad Request)} if the purchasedOrder has already an ID.
+     * @param purchasedOrderDTO the purchasedOrderDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new purchasedOrderDTO, or with status {@code 400 (Bad Request)} if the purchasedOrder has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/purchased-orders")
-    public ResponseEntity<PurchasedOrder> createPurchasedOrder(@Valid @RequestBody PurchasedOrder purchasedOrder)
+    public ResponseEntity<PurchasedOrderDTO> createPurchasedOrder(@Valid @RequestBody PurchasedOrderDTO purchasedOrderDTO)
         throws URISyntaxException {
-        log.debug("REST request to save PurchasedOrder : {}", purchasedOrder);
-        if (purchasedOrder.getId() != null) {
+        log.debug("REST request to save PurchasedOrder : {}", purchasedOrderDTO);
+        if (purchasedOrderDTO.getId() != null) {
             throw new BadRequestAlertException("A new purchasedOrder cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PurchasedOrder result = purchasedOrderRepository.save(purchasedOrder);
+        PurchasedOrder purchasedOrder = purchasedOrderMapper.toEntity(purchasedOrderDTO);
+        purchasedOrder = purchasedOrderRepository.save(purchasedOrder);
+        PurchasedOrderDTO result = purchasedOrderMapper.toDto(purchasedOrder);
         return ResponseEntity
             .created(new URI("/api/purchased-orders/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -64,23 +71,23 @@ public class PurchasedOrderResource {
     /**
      * {@code PUT  /purchased-orders/:id} : Updates an existing purchasedOrder.
      *
-     * @param id the id of the purchasedOrder to save.
-     * @param purchasedOrder the purchasedOrder to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated purchasedOrder,
-     * or with status {@code 400 (Bad Request)} if the purchasedOrder is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the purchasedOrder couldn't be updated.
+     * @param id the id of the purchasedOrderDTO to save.
+     * @param purchasedOrderDTO the purchasedOrderDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated purchasedOrderDTO,
+     * or with status {@code 400 (Bad Request)} if the purchasedOrderDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the purchasedOrderDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/purchased-orders/{id}")
-    public ResponseEntity<PurchasedOrder> updatePurchasedOrder(
+    public ResponseEntity<PurchasedOrderDTO> updatePurchasedOrder(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody PurchasedOrder purchasedOrder
+        @Valid @RequestBody PurchasedOrderDTO purchasedOrderDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update PurchasedOrder : {}, {}", id, purchasedOrder);
-        if (purchasedOrder.getId() == null) {
+        log.debug("REST request to update PurchasedOrder : {}, {}", id, purchasedOrderDTO);
+        if (purchasedOrderDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, purchasedOrder.getId())) {
+        if (!Objects.equals(id, purchasedOrderDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -88,34 +95,36 @@ public class PurchasedOrderResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        PurchasedOrder result = purchasedOrderRepository.save(purchasedOrder);
+        PurchasedOrder purchasedOrder = purchasedOrderMapper.toEntity(purchasedOrderDTO);
+        purchasedOrder = purchasedOrderRepository.save(purchasedOrder);
+        PurchasedOrderDTO result = purchasedOrderMapper.toDto(purchasedOrder);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, purchasedOrder.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, purchasedOrderDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /purchased-orders/:id} : Partial updates given fields of an existing purchasedOrder, field will ignore if it is null
      *
-     * @param id the id of the purchasedOrder to save.
-     * @param purchasedOrder the purchasedOrder to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated purchasedOrder,
-     * or with status {@code 400 (Bad Request)} if the purchasedOrder is not valid,
-     * or with status {@code 404 (Not Found)} if the purchasedOrder is not found,
-     * or with status {@code 500 (Internal Server Error)} if the purchasedOrder couldn't be updated.
+     * @param id the id of the purchasedOrderDTO to save.
+     * @param purchasedOrderDTO the purchasedOrderDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated purchasedOrderDTO,
+     * or with status {@code 400 (Bad Request)} if the purchasedOrderDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the purchasedOrderDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the purchasedOrderDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/purchased-orders/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<PurchasedOrder> partialUpdatePurchasedOrder(
+    public ResponseEntity<PurchasedOrderDTO> partialUpdatePurchasedOrder(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody PurchasedOrder purchasedOrder
+        @NotNull @RequestBody PurchasedOrderDTO purchasedOrderDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update PurchasedOrder partially : {}, {}", id, purchasedOrder);
-        if (purchasedOrder.getId() == null) {
+        log.debug("REST request to partial update PurchasedOrder partially : {}, {}", id, purchasedOrderDTO);
+        if (purchasedOrderDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, purchasedOrder.getId())) {
+        if (!Objects.equals(id, purchasedOrderDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -123,37 +132,21 @@ public class PurchasedOrderResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<PurchasedOrder> result = purchasedOrderRepository
-            .findById(purchasedOrder.getId())
+        Optional<PurchasedOrderDTO> result = purchasedOrderRepository
+            .findById(purchasedOrderDTO.getId())
             .map(
                 existingPurchasedOrder -> {
-                    if (purchasedOrder.getOrderDate() != null) {
-                        existingPurchasedOrder.setOrderDate(purchasedOrder.getOrderDate());
-                    }
-                    if (purchasedOrder.getOrderState() != null) {
-                        existingPurchasedOrder.setOrderState(purchasedOrder.getOrderState());
-                    }
-                    if (purchasedOrder.getShippingMode() != null) {
-                        existingPurchasedOrder.setShippingMode(purchasedOrder.getShippingMode());
-                    }
-                    if (purchasedOrder.getShippingFees() != null) {
-                        existingPurchasedOrder.setShippingFees(purchasedOrder.getShippingFees());
-                    }
-                    if (purchasedOrder.getPaymentMode() != null) {
-                        existingPurchasedOrder.setPaymentMode(purchasedOrder.getPaymentMode());
-                    }
-                    if (purchasedOrder.getPaymentFees() != null) {
-                        existingPurchasedOrder.setPaymentFees(purchasedOrder.getPaymentFees());
-                    }
+                    purchasedOrderMapper.partialUpdate(existingPurchasedOrder, purchasedOrderDTO);
 
                     return existingPurchasedOrder;
                 }
             )
-            .map(purchasedOrderRepository::save);
+            .map(purchasedOrderRepository::save)
+            .map(purchasedOrderMapper::toDto);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, purchasedOrder.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, purchasedOrderDTO.getId().toString())
         );
     }
 
@@ -163,28 +156,29 @@ public class PurchasedOrderResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of purchasedOrders in body.
      */
     @GetMapping("/purchased-orders")
-    public List<PurchasedOrder> getAllPurchasedOrders() {
+    public List<PurchasedOrderDTO> getAllPurchasedOrders() {
         log.debug("REST request to get all PurchasedOrders");
-        return purchasedOrderRepository.findAll();
+        List<PurchasedOrder> purchasedOrders = purchasedOrderRepository.findAll();
+        return purchasedOrderMapper.toDto(purchasedOrders);
     }
 
     /**
      * {@code GET  /purchased-orders/:id} : get the "id" purchasedOrder.
      *
-     * @param id the id of the purchasedOrder to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the purchasedOrder, or with status {@code 404 (Not Found)}.
+     * @param id the id of the purchasedOrderDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the purchasedOrderDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/purchased-orders/{id}")
-    public ResponseEntity<PurchasedOrder> getPurchasedOrder(@PathVariable Long id) {
+    public ResponseEntity<PurchasedOrderDTO> getPurchasedOrder(@PathVariable Long id) {
         log.debug("REST request to get PurchasedOrder : {}", id);
-        Optional<PurchasedOrder> purchasedOrder = purchasedOrderRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(purchasedOrder);
+        Optional<PurchasedOrderDTO> purchasedOrderDTO = purchasedOrderRepository.findById(id).map(purchasedOrderMapper::toDto);
+        return ResponseUtil.wrapOrNotFound(purchasedOrderDTO);
     }
 
     /**
      * {@code DELETE  /purchased-orders/:id} : delete the "id" purchasedOrder.
      *
-     * @param id the id of the purchasedOrder to delete.
+     * @param id the id of the purchasedOrderDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/purchased-orders/{id}")

@@ -1,6 +1,7 @@
 package com.canyoncorp.canyonme.repository;
 
 import com.canyoncorp.canyonme.domain.Person;
+import java.util.List;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -9,4 +10,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PersonRepository extends JpaRepository<Person, Long> {}
+public interface PersonRepository extends JpaRepository<Person, Long> {
+    @Query("select person from Person person where person.user.login = ?#{principal.username}")
+    List<Person> findByUserIsCurrentUser();
+}

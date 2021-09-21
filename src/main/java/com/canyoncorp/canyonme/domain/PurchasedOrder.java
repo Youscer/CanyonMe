@@ -47,6 +47,12 @@ public class PurchasedOrder implements Serializable {
     @Column(name = "payment_fees")
     private Float paymentFees;
 
+    @Column(name = "shipping_address")
+    private String shippingAddress;
+
+    @Column(name = "billing_address")
+    private String billingAddress;
+
     @OneToMany(mappedBy = "order")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnoreProperties(value = { "order" }, allowSetters = true)
@@ -148,6 +154,32 @@ public class PurchasedOrder implements Serializable {
         this.paymentFees = paymentFees;
     }
 
+    public String getShippingAddress() {
+        return this.shippingAddress;
+    }
+
+    public PurchasedOrder shippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+        return this;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getBillingAddress() {
+        return this.billingAddress;
+    }
+
+    public PurchasedOrder billingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
+        return this;
+    }
+
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
     public Set<OrderLine> getOrderLines() {
         return this.orderLines;
     }
@@ -222,6 +254,8 @@ public class PurchasedOrder implements Serializable {
             ", shippingFees=" + getShippingFees() +
             ", paymentMode='" + getPaymentMode() + "'" +
             ", paymentFees=" + getPaymentFees() +
+            ", shippingAddress='" + getShippingAddress() + "'" +
+            ", billingAddress='" + getBillingAddress() + "'" +
             "}";
     }
 }

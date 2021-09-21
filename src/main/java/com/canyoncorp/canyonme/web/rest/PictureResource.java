@@ -2,6 +2,8 @@ package com.canyoncorp.canyonme.web.rest;
 
 import com.canyoncorp.canyonme.domain.Picture;
 import com.canyoncorp.canyonme.repository.PictureRepository;
+import com.canyoncorp.canyonme.service.dto.PictureDTO;
+import com.canyoncorp.canyonme.service.mapper.PictureMapper;
 import com.canyoncorp.canyonme.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,24 +38,29 @@ public class PictureResource {
 
     private final PictureRepository pictureRepository;
 
-    public PictureResource(PictureRepository pictureRepository) {
+    private final PictureMapper pictureMapper;
+
+    public PictureResource(PictureRepository pictureRepository, PictureMapper pictureMapper) {
         this.pictureRepository = pictureRepository;
+        this.pictureMapper = pictureMapper;
     }
 
     /**
      * {@code POST  /pictures} : Create a new picture.
      *
-     * @param picture the picture to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new picture, or with status {@code 400 (Bad Request)} if the picture has already an ID.
+     * @param pictureDTO the pictureDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new pictureDTO, or with status {@code 400 (Bad Request)} if the picture has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/pictures")
-    public ResponseEntity<Picture> createPicture(@Valid @RequestBody Picture picture) throws URISyntaxException {
-        log.debug("REST request to save Picture : {}", picture);
-        if (picture.getId() != null) {
+    public ResponseEntity<PictureDTO> createPicture(@Valid @RequestBody PictureDTO pictureDTO) throws URISyntaxException {
+        log.debug("REST request to save Picture : {}", pictureDTO);
+        if (pictureDTO.getId() != null) {
             throw new BadRequestAlertException("A new picture cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Picture result = pictureRepository.save(picture);
+        Picture picture = pictureMapper.toEntity(pictureDTO);
+        picture = pictureRepository.save(picture);
+        PictureDTO result = pictureMapper.toDto(picture);
         return ResponseEntity
             .created(new URI("/api/pictures/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -63,23 +70,23 @@ public class PictureResource {
     /**
      * {@code PUT  /pictures/:id} : Updates an existing picture.
      *
-     * @param id the id of the picture to save.
-     * @param picture the picture to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated picture,
-     * or with status {@code 400 (Bad Request)} if the picture is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the picture couldn't be updated.
+     * @param id the id of the pictureDTO to save.
+     * @param pictureDTO the pictureDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pictureDTO,
+     * or with status {@code 400 (Bad Request)} if the pictureDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the pictureDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/pictures/{id}")
-    public ResponseEntity<Picture> updatePicture(
+    public ResponseEntity<PictureDTO> updatePicture(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody Picture picture
+        @Valid @RequestBody PictureDTO pictureDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update Picture : {}, {}", id, picture);
-        if (picture.getId() == null) {
+        log.debug("REST request to update Picture : {}, {}", id, pictureDTO);
+        if (pictureDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, picture.getId())) {
+        if (!Objects.equals(id, pictureDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -87,34 +94,36 @@ public class PictureResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Picture result = pictureRepository.save(picture);
+        Picture picture = pictureMapper.toEntity(pictureDTO);
+        picture = pictureRepository.save(picture);
+        PictureDTO result = pictureMapper.toDto(picture);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, picture.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, pictureDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /pictures/:id} : Partial updates given fields of an existing picture, field will ignore if it is null
      *
-     * @param id the id of the picture to save.
-     * @param picture the picture to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated picture,
-     * or with status {@code 400 (Bad Request)} if the picture is not valid,
-     * or with status {@code 404 (Not Found)} if the picture is not found,
-     * or with status {@code 500 (Internal Server Error)} if the picture couldn't be updated.
+     * @param id the id of the pictureDTO to save.
+     * @param pictureDTO the pictureDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated pictureDTO,
+     * or with status {@code 400 (Bad Request)} if the pictureDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the pictureDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the pictureDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/pictures/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<Picture> partialUpdatePicture(
+    public ResponseEntity<PictureDTO> partialUpdatePicture(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody Picture picture
+        @NotNull @RequestBody PictureDTO pictureDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update Picture partially : {}, {}", id, picture);
-        if (picture.getId() == null) {
+        log.debug("REST request to partial update Picture partially : {}, {}", id, pictureDTO);
+        if (pictureDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, picture.getId())) {
+        if (!Objects.equals(id, pictureDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -122,22 +131,21 @@ public class PictureResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Picture> result = pictureRepository
-            .findById(picture.getId())
+        Optional<PictureDTO> result = pictureRepository
+            .findById(pictureDTO.getId())
             .map(
                 existingPicture -> {
-                    if (picture.getLink() != null) {
-                        existingPicture.setLink(picture.getLink());
-                    }
+                    pictureMapper.partialUpdate(existingPicture, pictureDTO);
 
                     return existingPicture;
                 }
             )
-            .map(pictureRepository::save);
+            .map(pictureRepository::save)
+            .map(pictureMapper::toDto);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, picture.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, pictureDTO.getId().toString())
         );
     }
 
@@ -147,28 +155,29 @@ public class PictureResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of pictures in body.
      */
     @GetMapping("/pictures")
-    public List<Picture> getAllPictures() {
+    public List<PictureDTO> getAllPictures() {
         log.debug("REST request to get all Pictures");
-        return pictureRepository.findAll();
+        List<Picture> pictures = pictureRepository.findAll();
+        return pictureMapper.toDto(pictures);
     }
 
     /**
      * {@code GET  /pictures/:id} : get the "id" picture.
      *
-     * @param id the id of the picture to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the picture, or with status {@code 404 (Not Found)}.
+     * @param id the id of the pictureDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the pictureDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/pictures/{id}")
-    public ResponseEntity<Picture> getPicture(@PathVariable Long id) {
+    public ResponseEntity<PictureDTO> getPicture(@PathVariable Long id) {
         log.debug("REST request to get Picture : {}", id);
-        Optional<Picture> picture = pictureRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(picture);
+        Optional<PictureDTO> pictureDTO = pictureRepository.findById(id).map(pictureMapper::toDto);
+        return ResponseUtil.wrapOrNotFound(pictureDTO);
     }
 
     /**
      * {@code DELETE  /pictures/:id} : delete the "id" picture.
      *
-     * @param id the id of the picture to delete.
+     * @param id the id of the pictureDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/pictures/{id}")

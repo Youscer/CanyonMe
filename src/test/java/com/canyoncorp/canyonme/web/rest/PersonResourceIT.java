@@ -9,6 +9,8 @@ import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.Person;
 import com.canyoncorp.canyonme.domain.enumeration.Gender;
 import com.canyoncorp.canyonme.repository.PersonRepository;
+import com.canyoncorp.canyonme.service.dto.PersonDTO;
+import com.canyoncorp.canyonme.service.mapper.PersonMapper;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -58,6 +60,9 @@ class PersonResourceIT {
 
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private PersonMapper personMapper;
 
     @Autowired
     private EntityManager em;
@@ -111,8 +116,9 @@ class PersonResourceIT {
     void createPerson() throws Exception {
         int databaseSizeBeforeCreate = personRepository.findAll().size();
         // Create the Person
+        PersonDTO personDTO = personMapper.toDto(person);
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Person in the database
@@ -132,12 +138,13 @@ class PersonResourceIT {
     void createPersonWithExistingId() throws Exception {
         // Create the Person with an existing ID
         person.setId(1L);
+        PersonDTO personDTO = personMapper.toDto(person);
 
         int databaseSizeBeforeCreate = personRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Person in the database
@@ -153,9 +160,10 @@ class PersonResourceIT {
         person.setFirstname(null);
 
         // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
 
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isBadRequest());
 
         List<Person> personList = personRepository.findAll();
@@ -170,9 +178,10 @@ class PersonResourceIT {
         person.setLastname(null);
 
         // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
 
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isBadRequest());
 
         List<Person> personList = personRepository.findAll();
@@ -187,9 +196,10 @@ class PersonResourceIT {
         person.setGender(null);
 
         // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
 
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isBadRequest());
 
         List<Person> personList = personRepository.findAll();
@@ -204,9 +214,10 @@ class PersonResourceIT {
         person.setBirthDate(null);
 
         // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
 
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isBadRequest());
 
         List<Person> personList = personRepository.findAll();
@@ -221,9 +232,10 @@ class PersonResourceIT {
         person.setEmail(null);
 
         // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
 
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isBadRequest());
 
         List<Person> personList = personRepository.findAll();
@@ -238,9 +250,10 @@ class PersonResourceIT {
         person.setPassword(null);
 
         // Create the Person, which fails.
+        PersonDTO personDTO = personMapper.toDto(person);
 
         restPersonMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isBadRequest());
 
         List<Person> personList = personRepository.findAll();
@@ -313,12 +326,13 @@ class PersonResourceIT {
             .birthDate(UPDATED_BIRTH_DATE)
             .email(UPDATED_EMAIL)
             .password(UPDATED_PASSWORD);
+        PersonDTO personDTO = personMapper.toDto(updatedPerson);
 
         restPersonMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedPerson.getId())
+                put(ENTITY_API_URL_ID, personDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedPerson))
+                    .content(TestUtil.convertObjectToJsonBytes(personDTO))
             )
             .andExpect(status().isOk());
 
@@ -340,12 +354,15 @@ class PersonResourceIT {
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
         person.setId(count.incrementAndGet());
 
+        // Create the Person
+        PersonDTO personDTO = personMapper.toDto(person);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPersonMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, person.getId())
+                put(ENTITY_API_URL_ID, personDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(person))
+                    .content(TestUtil.convertObjectToJsonBytes(personDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -360,12 +377,15 @@ class PersonResourceIT {
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
         person.setId(count.incrementAndGet());
 
+        // Create the Person
+        PersonDTO personDTO = personMapper.toDto(person);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPersonMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(person))
+                    .content(TestUtil.convertObjectToJsonBytes(personDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -380,9 +400,12 @@ class PersonResourceIT {
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
         person.setId(count.incrementAndGet());
 
+        // Create the Person
+        PersonDTO personDTO = personMapper.toDto(person);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPersonMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(personDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Person in the database
@@ -470,12 +493,15 @@ class PersonResourceIT {
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
         person.setId(count.incrementAndGet());
 
+        // Create the Person
+        PersonDTO personDTO = personMapper.toDto(person);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPersonMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, person.getId())
+                patch(ENTITY_API_URL_ID, personDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(person))
+                    .content(TestUtil.convertObjectToJsonBytes(personDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -490,12 +516,15 @@ class PersonResourceIT {
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
         person.setId(count.incrementAndGet());
 
+        // Create the Person
+        PersonDTO personDTO = personMapper.toDto(person);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPersonMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(person))
+                    .content(TestUtil.convertObjectToJsonBytes(personDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -510,9 +539,14 @@ class PersonResourceIT {
         int databaseSizeBeforeUpdate = personRepository.findAll().size();
         person.setId(count.incrementAndGet());
 
+        // Create the Person
+        PersonDTO personDTO = personMapper.toDto(person);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPersonMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(person)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(personDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Person in the database

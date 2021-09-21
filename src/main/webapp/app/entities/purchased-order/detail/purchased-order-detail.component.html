@@ -38,6 +38,14 @@
         <dd>
           <span>{{ purchasedOrder.paymentFees }}</span>
         </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.shippingAddress">Shipping Address</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.shippingAddress }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.purchasedOrder.billingAddress">Billing Address</span></dt>
+        <dd>
+          <span>{{ purchasedOrder.billingAddress }}</span>
+        </dd>
         <dt><span jhiTranslate="canyonMeApp.purchasedOrder.person">Person</span></dt>
         <dd>
           <div *ngIf="purchasedOrder.person">

@@ -8,6 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.Discount;
 import com.canyoncorp.canyonme.repository.DiscountRepository;
+import com.canyoncorp.canyonme.service.dto.DiscountDTO;
+import com.canyoncorp.canyonme.service.mapper.DiscountMapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -50,6 +52,9 @@ class DiscountResourceIT {
     private DiscountRepository discountRepository;
 
     @Autowired
+    private DiscountMapper discountMapper;
+
+    @Autowired
     private EntityManager em;
 
     @Autowired
@@ -89,8 +94,9 @@ class DiscountResourceIT {
     void createDiscount() throws Exception {
         int databaseSizeBeforeCreate = discountRepository.findAll().size();
         // Create the Discount
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
         restDiscountMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discount)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discountDTO)))
             .andExpect(status().isCreated());
 
         // Validate the Discount in the database
@@ -107,12 +113,13 @@ class DiscountResourceIT {
     void createDiscountWithExistingId() throws Exception {
         // Create the Discount with an existing ID
         discount.setId(1L);
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
 
         int databaseSizeBeforeCreate = discountRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restDiscountMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discount)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discountDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Discount in the database
@@ -128,9 +135,10 @@ class DiscountResourceIT {
         discount.setRate(null);
 
         // Create the Discount, which fails.
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
 
         restDiscountMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discount)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discountDTO)))
             .andExpect(status().isBadRequest());
 
         List<Discount> discountList = discountRepository.findAll();
@@ -191,12 +199,13 @@ class DiscountResourceIT {
         // Disconnect from session so that the updates on updatedDiscount are not directly saved in db
         em.detach(updatedDiscount);
         updatedDiscount.rate(UPDATED_RATE).startDate(UPDATED_START_DATE).endDate(UPDATED_END_DATE);
+        DiscountDTO discountDTO = discountMapper.toDto(updatedDiscount);
 
         restDiscountMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedDiscount.getId())
+                put(ENTITY_API_URL_ID, discountDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedDiscount))
+                    .content(TestUtil.convertObjectToJsonBytes(discountDTO))
             )
             .andExpect(status().isOk());
 
@@ -215,12 +224,15 @@ class DiscountResourceIT {
         int databaseSizeBeforeUpdate = discountRepository.findAll().size();
         discount.setId(count.incrementAndGet());
 
+        // Create the Discount
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDiscountMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, discount.getId())
+                put(ENTITY_API_URL_ID, discountDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(discount))
+                    .content(TestUtil.convertObjectToJsonBytes(discountDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -235,12 +247,15 @@ class DiscountResourceIT {
         int databaseSizeBeforeUpdate = discountRepository.findAll().size();
         discount.setId(count.incrementAndGet());
 
+        // Create the Discount
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDiscountMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(discount))
+                    .content(TestUtil.convertObjectToJsonBytes(discountDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -255,9 +270,12 @@ class DiscountResourceIT {
         int databaseSizeBeforeUpdate = discountRepository.findAll().size();
         discount.setId(count.incrementAndGet());
 
+        // Create the Discount
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDiscountMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discount)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(discountDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Discount in the database
@@ -333,12 +351,15 @@ class DiscountResourceIT {
         int databaseSizeBeforeUpdate = discountRepository.findAll().size();
         discount.setId(count.incrementAndGet());
 
+        // Create the Discount
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restDiscountMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, discount.getId())
+                patch(ENTITY_API_URL_ID, discountDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(discount))
+                    .content(TestUtil.convertObjectToJsonBytes(discountDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -353,12 +374,15 @@ class DiscountResourceIT {
         int databaseSizeBeforeUpdate = discountRepository.findAll().size();
         discount.setId(count.incrementAndGet());
 
+        // Create the Discount
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDiscountMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(discount))
+                    .content(TestUtil.convertObjectToJsonBytes(discountDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -373,9 +397,14 @@ class DiscountResourceIT {
         int databaseSizeBeforeUpdate = discountRepository.findAll().size();
         discount.setId(count.incrementAndGet());
 
+        // Create the Discount
+        DiscountDTO discountDTO = discountMapper.toDto(discount);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restDiscountMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(discount)))
+            .perform(
+                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(discountDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Discount in the database
