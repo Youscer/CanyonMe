@@ -1,11 +1,8 @@
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IProduct } from '../product.model';
-import { ProductService } from '../service/product.service';
-import { switchMap } from 'rxjs/operators';
+import { IProduct } from 'app/product/product.model';
+import { ProductService } from 'app/product/service/product.service';
 
 @Component({
   selector: 'jhi-catalog',

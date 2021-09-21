@@ -6,6 +6,7 @@ import { ProductService } from '../service/product.service';
 @Component({
   selector: 'jhi-product-detail',
   templateUrl: './product-detail.component.html',
+  styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit {
   product: IProduct | null = null;

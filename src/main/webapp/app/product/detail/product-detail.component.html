@@ -1,40 +1,46 @@
 <div class="row justify-content-center">
   <div class="col-8">
     <div *ngIf="product">
-      <h2 data-cy="productDetailsHeading"><span jhiTranslate="canyonMeApp.product.detail.title">Product</span></h2>
+      <!--       <h2 data-cy="productDetailsHeading"><span jhiTranslate="canyonMeApp.product.detail.title">Product</span></h2>
+ -->
+      <div class="product-main">
 
-      <hr />
+        <!-- IMAGES -->
+        <div class="imgs-div">
+          <div class="other-imgs">
+            <div class="other-img"></div>
+            <div class="other-img"></div>
+            <div class="other-img"></div>
+            <div class="other-img"></div>
+            <div class="other-img"></div>
+          </div>
+          <div class="v-divider"></div>
+          <div class="img-principale"></div>
+        </div>
 
-      <jhi-alert-error></jhi-alert-error>
 
-      <jhi-alert></jhi-alert>
 
-      <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="canyonMeApp.product.id">Id</span></dt>
-        <dd>
-          <span>{{ product.id }}</span>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.product.name">Name</span></dt>
-        <dd>
-          <span>{{ product.name }}</span>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.product.description">Description</span></dt>
-        <dd>
-          <span>{{ product.description }}</span>
-        </dd>
-        <dt><span jhiTranslate="canyonMeApp.product.unitPrice">Unit Price</span></dt>
-        <dd>
-          <span>{{ product.unitPrice }}</span>
-        </dd>
-      </dl>
+        <!-- Informations -->
+        <div class="info-div">
+          <div class="info-text">
+            <h1> {{ product.name }} </h1>
+            <p> {{ product.description }} </p>
+          </div>
+          <div class="info-end">
+            <div class="info-pricing">
+              <p>Price : {{ product.unitPrice | currency }}</p>
+              <div class="button-end">
+                <button mat-raised-button color="primary" type="submit" (click)="previousState()">
+                  <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+                </button>
+                <jhi-button-add-cart [product]="product"></jhi-button-add-cart>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div class="align-buttons">
-        <button mat-raised-button color="primary" type="submit" (click)="previousState()">
-          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-        </button>
-        <!-- Bouton ajout Panier -->
-        <jhi-button-add-cart [product]="product"></jhi-button-add-cart>
       </div>
+
     </div>
     <span>{{ errmsg }}</span>
   </div>

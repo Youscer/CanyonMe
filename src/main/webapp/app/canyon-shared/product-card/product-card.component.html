@@ -1,0 +1,20 @@
+<div class="pcard">
+  <mat-card class="m-card mat-elevation-z3">
+    <mat-card-content class="pcard-info" [routerLink]="['/catalog', product.id]">
+      <div class="pcard-name">
+        <span> {{ product.name }} </span>
+      </div>
+      <div class="pcard-img"></div>
+    </mat-card-content>
+    <mat-card-content class="pcard-price">
+      <span> {{ product.unitPrice | currency }} </span>
+    </mat-card-content>
+    <mat-card-content class="pcard-button">
+      <span> {{ product.unitPrice | currency }} </span>
+      <div class="cart-div">
+        <button mat-raised-button color="primary">Ajouter Panier</button>
+      </div>
+    </mat-card-content>
+
+  </mat-card>
+</div>
