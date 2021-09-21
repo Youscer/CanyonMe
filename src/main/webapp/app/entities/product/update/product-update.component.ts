@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 
 import { IProduct, Product } from '../product.model';
 import { ProductService } from '../service/product.service';
+import { Picture } from '../../picture/picture.model';
 
 @Component({
   selector: 'jhi-product-update',
@@ -15,9 +16,10 @@ import { ProductService } from '../service/product.service';
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
+  pictures: Array<string> | undefined;
 
   editForm = this.fb.group({
-    id: [null, [Validators.required]],
+    id: [],
     name: [null, [Validators.required]],
     brand: [null, [Validators.required]],
     description: [null, [Validators.required]],
@@ -47,6 +49,10 @@ export class ProductUpdateComponent implements OnInit {
     }
   }
 
+  public getPictures(pictures: Array<string>): void {
+    this.pictures = pictures;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProduct>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -64,6 +70,7 @@ export class ProductUpdateComponent implements OnInit {
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
+    this.pictures = [];
   }
 
   protected updateForm(product: IProduct): void {
@@ -86,6 +93,7 @@ export class ProductUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       unitPrice: this.editForm.get(['unitPrice'])!.value,
       quantity: this.editForm.get(['quantity'])!.value,
+      pictures: this.pictures?.map(p => new Picture(null, p, null)),
     };
   }
 }
