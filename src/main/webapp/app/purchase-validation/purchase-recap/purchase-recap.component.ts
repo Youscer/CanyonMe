@@ -1,4 +1,3 @@
-import { PaymentMode } from 'app/entities/enumerations/payment-mode.model';
 import { ShippingFees } from './../../entities/shipping-fees/shipping-fees.model';
 import { Cart, ICart } from './../../cart/cart.model';
 import { Component, OnInit } from '@angular/core';
@@ -9,6 +8,7 @@ import { IShippingFees } from 'app/entities/shipping-fees/shipping-fees.model';
 import { HttpResponse } from '@angular/common/http';
 import { PaymentFeesService } from 'app/entities/payment-fees/service/payment-fees.service';
 import { IPaymentFees } from 'app/entities/payment-fees/payment-fees.model';
+import { Router } from '@angular/router';
 
 // Colonnes Tableau panier recap
 export interface cartData {
@@ -92,7 +92,8 @@ export class PurchaseRecapComponent implements OnInit {
     public cartService: CartService,
     private _formBuilder: FormBuilder,
     protected shippingFeesService: ShippingFeesService,
-    protected paymentFeesService: PaymentFeesService
+    protected paymentFeesService: PaymentFeesService,
+    private router: Router
   ) {
     this.cart = new Cart();
     this.shippingFees === new ShippingFees();
@@ -130,6 +131,10 @@ export class PurchaseRecapComponent implements OnInit {
     totalCommandPrice = this.totalPriceCart + (this.selectedShippingMode?.fees ?? 0) + (this.selectedPaymentMode?.fees ?? 0);
     //totalCommandPrice = this.totalPriceCart
     return totalCommandPrice;
+  }
+
+  processOrder(): void {
+    this.router.navigate(['/purchase-confirmation']);
   }
 
   ngOnInit(): void {

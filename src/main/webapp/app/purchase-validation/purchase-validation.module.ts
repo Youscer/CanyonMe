@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
+import { PurchaseConfirmationComponent } from './purchase-confirmation/purchase-confirmation.component';
 
 @NgModule({
   imports: [
@@ -33,7 +34,7 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
   ],
   exports: [RouterModule],
-  declarations: [PurchaseRecapComponent],
+  declarations: [PurchaseRecapComponent, PurchaseConfirmationComponent],
   entryComponents: [PurchaseRecapComponent],
 })
 export class PurchaseValidationModule {}
