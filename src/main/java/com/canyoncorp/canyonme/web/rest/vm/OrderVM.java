@@ -10,8 +10,13 @@ public class OrderVM {
     private List<OrderLineVM> orderLines;
     private String billingAddress;
     private String shippingAddress;
+    private Long shippingFeesId;
+    private Long paymentFeesId;
+
+    /*
     private ShippingMode shippingMode;
     private PaymentMode paymentMode;
+     */
 
     public OrderVM() {}
 
@@ -39,6 +44,23 @@ public class OrderVM {
         this.shippingAddress = shippingAddress;
     }
 
+    public Long getShippingFeesId() {
+        return shippingFeesId;
+    }
+
+    public void setShippingFeesId(Long shippingFeesId) {
+        this.shippingFeesId = shippingFeesId;
+    }
+
+    public Long getPaymentFeesId() {
+        return paymentFeesId;
+    }
+
+    public void setPaymentFeesId(Long paymentFeesId) {
+        this.paymentFeesId = paymentFeesId;
+    }
+    /*
+
     public ShippingMode getShippingMode() {
         return shippingMode;
     }
@@ -54,4 +76,5 @@ public class OrderVM {
     public void setPaymentMode(String paymentMode) {
         this.paymentMode = PaymentMode.valueOf(paymentMode.toUpperCase());
     }
+     */
 }

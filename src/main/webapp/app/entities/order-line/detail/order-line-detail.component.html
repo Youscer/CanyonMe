@@ -37,7 +37,7 @@
         <dt><span jhiTranslate="canyonMeApp.orderLine.order">Order</span></dt>
         <dd>
           <div *ngIf="orderLine.order">
-            <a [routerLink]="['/purchased-order', orderLine.order?.id, 'view']">{{ orderLine.order?.id }}</a>
+            <a [routerLink]="['/entities', 'purchased-order', orderLine.order?.id, 'view']">{{ orderLine.order?.id }}</a>
           </div>
         </dd>
       </dl>
@@ -46,7 +46,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/order-line', orderLine.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/entities', 'order-line', orderLine.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

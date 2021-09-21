@@ -41,13 +41,13 @@
         <dt><span jhiTranslate="canyonMeApp.person.billingAddress">Billing Address</span></dt>
         <dd>
           <div *ngIf="person.billingAddress">
-            <a [routerLink]="['/address', person.billingAddress?.id, 'view']">{{ person.billingAddress?.id }}</a>
+            <a [routerLink]="['/entities', 'address', person.billingAddress?.id, 'view']">{{ person.billingAddress?.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="canyonMeApp.person.shippingAddress">Shipping Address</span></dt>
         <dd>
           <div *ngIf="person.shippingAddress">
-            <a [routerLink]="['/address', person.shippingAddress?.id, 'view']">{{ person.shippingAddress?.id }}</a>
+            <a [routerLink]="['/entities', 'address', person.shippingAddress?.id, 'view']">{{ person.shippingAddress?.id }}</a>
           </div>
         </dd>
         <dt><span jhiTranslate="canyonMeApp.person.user">User</span></dt>
@@ -57,7 +57,7 @@
         <dt><span jhiTranslate="canyonMeApp.person.employee">Employee</span></dt>
         <dd>
           <div *ngIf="person.employee">
-            <a [routerLink]="['/employee', person.employee?.id, 'view']">{{ person.employee?.id }}</a>
+            <a [routerLink]="['/entities', 'employee', person.employee?.id, 'view']">{{ person.employee?.id }}</a>
           </div>
         </dd>
       </dl>
@@ -66,7 +66,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/person', person.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/entities', 'person', person.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

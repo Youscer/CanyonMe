@@ -1,11 +1,11 @@
 package com.canyoncorp.canyonme.service.impl;
 
-import com.canyoncorp.canyonme.domain.OrderLine;
-import com.canyoncorp.canyonme.domain.Product;
-import com.canyoncorp.canyonme.domain.PurchasedOrder;
+import com.canyoncorp.canyonme.domain.*;
 import com.canyoncorp.canyonme.domain.enumeration.OrderState;
 import com.canyoncorp.canyonme.domain.enumeration.PaymentMode;
+import com.canyoncorp.canyonme.repository.PaymentFeesRepository;
 import com.canyoncorp.canyonme.repository.PurchasedOrderRepository;
+import com.canyoncorp.canyonme.repository.ShippingFeesRepository;
 import com.canyoncorp.canyonme.service.OrderService;
 import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.service.UnavailableProductException;
@@ -33,16 +33,22 @@ public class OrderServiceImpl implements OrderService {
     private ProductService productService;
     private PurchasedOrderRepository purchasedOrderRepository;
     private PurchasedOrderMapper purchasedOrderMapper;
+    private ShippingFeesRepository shippingFeesRepository;
+    private PaymentFeesRepository paymentFeesRepository;
     private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(
         ProductService productService,
         PurchasedOrderRepository purchasedOrderRepository,
-        PurchasedOrderMapper purchasedOrderMapper
+        PurchasedOrderMapper purchasedOrderMapper,
+        ShippingFeesRepository shippingFeesRepository,
+        PaymentFeesRepository paymentFeesRepository
     ) {
         this.productService = productService;
         this.purchasedOrderRepository = purchasedOrderRepository;
         this.purchasedOrderMapper = purchasedOrderMapper;
+        this.shippingFeesRepository = shippingFeesRepository;
+        this.paymentFeesRepository = paymentFeesRepository;
     }
 
     @Transactional
@@ -95,13 +101,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private PurchasedOrderDTO createPurchasedOrderDTO(OrderVM orderVM) {
+        ShippingFees shippingFees = shippingFeesRepository.getOne(orderVM.getPaymentFeesId());
+        PaymentFees paymentFees = paymentFeesRepository.getOne(orderVM.getPaymentFeesId());
         PurchasedOrderDTO purchasedOrderDTO = new PurchasedOrderDTO();
         purchasedOrderDTO.setOrderDate(LocalDate.now());
         purchasedOrderDTO.setOrderState(OrderState.NEW);
         purchasedOrderDTO.setBillingAddress(orderVM.getBillingAddress());
         purchasedOrderDTO.setShippingAddress(orderVM.getShippingAddress());
-        purchasedOrderDTO.setPaymentMode(orderVM.getPaymentMode().toString());
-        purchasedOrderDTO.setShippingMode(orderVM.getShippingMode().toString());
+        purchasedOrderDTO.setPaymentMode(paymentFees.getPaymentMode().toString());
+        purchasedOrderDTO.setShippingMode(shippingFees.getShippingMode().toString());
         // TODO: set Person
 
         // inserting to db

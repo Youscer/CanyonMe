@@ -9,92 +9,96 @@
         <jhi-alert-error></jhi-alert-error>
 
         <div class="form-group" [hidden]="editForm.get('id')!.value == null">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.product.id" for="field_id">Id</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
-          <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('id')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-            <small class="form-text text-danger" [hidden]="!editForm.get('id')?.errors?.number" jhiTranslate="entity.validation.number">
-              This field should be a number.
-            </small>
-          </div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label jhiTranslate="canyonMeApp.product.id" for="field_id">Id</mat-label>
+            <input matInput type="number" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            <div *ngIf="editForm.get('id')!.invalid && (editForm.get('id')!.dirty || editForm.get('id')!.touched)">
+              <mat-error *ngIf="editForm.get('id')?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+              </mat-error>
+              <mat-error [hidden]="!editForm.get('id')?.errors?.number" jhiTranslate="entity.validation.number">
+                This field should be a number.
+              </mat-error>
+            </div>
+          </mat-form-field>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.product.name" for="field_name">Name</label>
-          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
-          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
-            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
-              This field is required.
-            </small>
-          </div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label jhiTranslate="canyonMeApp.product.name" for="field_name">Name</mat-label>
+            <input matInput type="text" name="name" id="field_name" data-cy="name" formControlName="name" />
+            <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+              <mat-error *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+              </mat-error>
+            </div>
+          </mat-form-field>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.product.brand" for="field_brand">Brand</label>
-          <input type="text" class="form-control" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label jhiTranslate="canyonMeApp.product.brand" for="field_brand">Brand</mat-label>
+            <input matInput type="text" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
+          </mat-form-field>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.product.description" for="field_description">Description</label>
-          <input
-            type="text"
-            class="form-control"
-            name="description"
-            id="field_description"
-            data-cy="description"
-            formControlName="description"
-          />
-          <div *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('description')?.errors?.required"
-              jhiTranslate="entity.validation.required"
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label jhiTranslate="canyonMeApp.product.description" for="field_description">Description</mat-label>
+            <input matInput type="text" name="description" id="field_description" data-cy="description" formControlName="description" />
+            <div
+              *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)"
             >
-              This field is required.
-            </small>
-          </div>
+              <mat-error *ngIf="editForm.get('description')?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+              </mat-error>
+            </div>
+          </mat-form-field>
         </div>
 
-        <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.product.unitPrice" for="field_unitPrice">Unit Price</label>
-          <input type="number" class="form-control" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
-          <div *ngIf="editForm.get('unitPrice')!.invalid && (editForm.get('unitPrice')!.dirty || editForm.get('unitPrice')!.touched)">
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('unitPrice')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-            >
-              This field is required.
-            </small>
-            <small
-              class="form-text text-danger"
-              [hidden]="!editForm.get('unitPrice')?.errors?.number"
-              jhiTranslate="entity.validation.number"
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label jhiTranslate="canyonMeApp.product.unitPrice" for="field_unitPrice">Unit Price</mat-label>
+            <input matInput type="number" name="unitPrice" id="field_unitPrice" data-cy="unitPrice" formControlName="unitPrice" />
+            <mat-error
+              *ngIf="editForm.get('unitPrice')!.invalid && (editForm.get('unitPrice')!.dirty || editForm.get('unitPrice')!.touched)"
             >
               This field should be a number.
-            </small>
-          </div>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label jhiTranslate="canyonMeApp.product.quantity" for="field_quantity">Quantity</mat-label>
+            <input matInput type="number" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
+          </mat-form-field>
         </div>
 
         <div class="form-group">
-          <label class="form-control-label" jhiTranslate="canyonMeApp.product.quantity" for="field_quantity">Quantity</label>
-          <input type="number" class="form-control" name="quantity" id="field_quantity" data-cy="quantity" formControlName="quantity" />
+          <jhi-upload></jhi-upload>
         </div>
       </div>
 
       <div>
-        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          id="cancel-save"
+          data-cy="entityCreateCancelButton"
+          (click)="previousState()"
+        >
           <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
 
         <button
+          mat-raised-button
+          color="primary"
           type="submit"
           id="save-entity"
           data-cy="entityCreateSaveButton"
           [disabled]="editForm.invalid || isSaving"
-          class="btn btn-primary"
         >
           <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>

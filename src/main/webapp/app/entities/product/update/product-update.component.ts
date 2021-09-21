@@ -11,6 +11,7 @@ import { ProductService } from '../service/product.service';
 @Component({
   selector: 'jhi-product-update',
   templateUrl: './product-update.component.html',
+  styleUrls: ['./product-update.component.scss'],
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
@@ -18,7 +19,7 @@ export class ProductUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [null, [Validators.required]],
     name: [null, [Validators.required]],
-    brand: [],
+    brand: [null, [Validators.required]],
     description: [null, [Validators.required]],
     unitPrice: [null, [Validators.required]],
     quantity: [],

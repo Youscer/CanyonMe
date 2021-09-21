@@ -29,7 +29,7 @@
         <dt><span jhiTranslate="canyonMeApp.discount.product">Product</span></dt>
         <dd>
           <div *ngIf="discount.product">
-            <a [routerLink]="['/product', discount.product?.id, 'view']">{{ discount.product?.id }}</a>
+            <a [routerLink]="['/entities', 'product', discount.product?.id, 'view']">{{ discount.product?.id }}</a>
           </div>
         </dd>
       </dl>

@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-person"
-        [routerLink]="['/person/new']"
+        [routerLink]="['/entities', 'person/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.person.home.createLabel"> Create a new Person </span>
@@ -49,7 +49,7 @@
       <tbody>
         <tr *ngFor="let person of people; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/person', person.id, 'view']">{{ person.id }}</a>
+            <a [routerLink]="['/entities', 'person', person.id, 'view']">{{ person.id }}</a>
           </td>
           <td>{{ person.firstname }}</td>
           <td>{{ person.lastname }}</td>
@@ -59,12 +59,12 @@
           <td>{{ person.password }}</td>
           <td>
             <div *ngIf="person.billingAddress">
-              <a [routerLink]="['/address', person.billingAddress?.id, 'view']">{{ person.billingAddress?.id }}</a>
+              <a [routerLink]="['/entities', 'address', person.billingAddress?.id, 'view']">{{ person.billingAddress?.id }}</a>
             </div>
           </td>
           <td>
             <div *ngIf="person.shippingAddress">
-              <a [routerLink]="['/address', person.shippingAddress?.id, 'view']">{{ person.shippingAddress?.id }}</a>
+              <a [routerLink]="['/entities', 'address', person.shippingAddress?.id, 'view']">{{ person.shippingAddress?.id }}</a>
             </div>
           </td>
           <td>
@@ -72,17 +72,27 @@
           </td>
           <td>
             <div *ngIf="person.employee">
-              <a [routerLink]="['/employee', person.employee?.id, 'view']">{{ person.employee?.id }}</a>
+              <a [routerLink]="['/entities', 'employee', person.employee?.id, 'view']">{{ person.employee?.id }}</a>
             </div>
           </td>
           <td class="text-right">
             <div class="btn-group">
-              <button type="submit" [routerLink]="['/person', person.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+              <button
+                type="submit"
+                [routerLink]="['/entities', 'person', person.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
                 <fa-icon icon="eye"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
               </button>
 
-              <button type="submit" [routerLink]="['/person', person.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+              <button
+                type="submit"
+                [routerLink]="['/entities', 'person', person.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
                 <fa-icon icon="pencil-alt"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
