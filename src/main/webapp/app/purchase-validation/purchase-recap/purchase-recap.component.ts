@@ -53,7 +53,7 @@ export class PurchaseRecapComponent implements OnInit {
   }
 
   postCartOrder(): void {
-    this.orderService.postCartOrder(this.cartService.getCart(), 'UPS', 'PAYPAL').subscribe(
+    this.orderService.postCartOrder(this.cartService.getCart(), 0, 0, '35 rue du test', '35 rue du test').subscribe(
       () => {
         this.cartService.deleteAllCart();
         alert('Commande OK');

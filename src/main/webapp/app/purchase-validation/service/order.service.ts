@@ -13,13 +13,13 @@ export class OrderService {
 
     constructor(protected cartService: CartService, protected http: HttpClient, protected applicationConfigService: ApplicationConfigService) {}
 
-    postCartOrder(cart: ICart, shippingMode: string, paymentMode: string): Observable<IOrderResponse[]> {
+    postCartOrder(cart: ICart, shippingMode: number, paymentMode: number, shippingAddress: string, billingAddress: string): Observable<IOrderResponse[]> {
         const url = `${this.resourceUrl}`;
         const items = cart.items.map<IOrderReqItem>(
             cartItem => new OrderReqItem(cartItem.product.id, cartItem.quantity)
         );
 
-        const reqParam = items;//new OrderReq(items, shippingMode, paymentMode);
+        const reqParam = new OrderReq(items, shippingMode, paymentMode, shippingAddress, billingAddress);
 
         return this.http.post<IOrderResponse[]>(url, reqParam);
     }
