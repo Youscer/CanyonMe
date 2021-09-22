@@ -1,21 +1,22 @@
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IProduct } from '../product.model';
-import { ProductService } from '../service/product.service';
-import { switchMap } from 'rxjs/operators';
+import { IProduct } from 'app/product/product.model';
+import { ProductService } from 'app/product/service/product.service';
 
 @Component({
   selector: 'jhi-catalog',
   templateUrl: './product.component.html',
+  styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
   products?: IProduct[];
   isLoading = false;
 
   searchName?: string;
+
+  minValue = 0;
+  maxValue = 500;
 
   constructor(protected productService: ProductService, protected modalService: NgbModal, private route: ActivatedRoute) {}
 
@@ -31,10 +32,12 @@ export class ProductComponent implements OnInit {
             this.isLoading = false;
           }
         ); */
-    let params: any;
+    const params: any = {};
     if (this.searchName) {
-      params = { name: this.searchName };
+      params.name = this.searchName;
     }
+    params.min = this.minValue;
+    params.max = this.maxValue;
 
     this.productService.getAll(params).subscribe(
       products => {

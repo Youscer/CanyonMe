@@ -21,7 +21,7 @@ export class CartService {
    * @param product
    */
   addProduct(product: Product, quantity: number = 1): void {
-    this.cart.changeQuantity(product, quantity);
+    this.cart.changeQuantity(product, quantity, false);
   }
 
   /**
@@ -38,7 +38,7 @@ export class CartService {
    * @param quantity
    */
   addQuantity(product: Product, quantity: number): void {
-    this.cart.changeQuantity(product, quantity);
+    this.cart.changeQuantity(product, quantity, false);
   }
 
   /**
@@ -46,8 +46,8 @@ export class CartService {
    * @param product
    * @param quantity
    */
-  subQuantity(product: Product, quantity: number): void {
-    this.cart.changeQuantity(product, -quantity);
+  subQuantity(product: Product, quantity: number, canDelete: boolean): void {
+    this.cart.changeQuantity(product, -quantity, canDelete);
   }
 
   deleteAllCart(): ICart {

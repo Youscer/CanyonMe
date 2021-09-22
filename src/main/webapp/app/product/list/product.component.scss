@@ -1,0 +1,44 @@
+.p-root {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.main-div {
+  display: flex;
+  flex-direction: row;
+}
+
+.p-filters {
+  z-index: 5;
+  background-color: white;
+  min-width: 300px;
+  margin-right: 50px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: 1074px) {
+  .p-root {
+    margin: 0;
+  }
+
+  .main-div {
+    flex-direction: column;
+  }
+
+  .p-filters {
+    position: sticky;
+    top: 60px;
+    margin-right: 0px;
+    margin-bottom: 50px;
+  }
+}
+
+@media screen and (max-width: 1074px) {
+    .p-filters {
+        top: 100px;
+      }
+}

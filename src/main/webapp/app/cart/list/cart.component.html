@@ -26,7 +26,8 @@
     <div *ngIf="cart.items.length === 0" class="no-item" style="flex: 3;">
       <mat-card class="d-flex justify-content-center align-items-center cart-item-card flex-column mat-elevation-z3">
         <span class="h3">Your cart is empty</span>
-        <button mat-raised-button color="primary" [routerLink]="['/']" class="mat-elevation-z1" style="width: 100%; max-width: 300px;">
+        <button mat-raised-button color="primary" [routerLink]="['/']" class="mat-elevation-z1"
+          style="width: 100%; max-width: 300px;">
           <mat-icon>playlist_add_check</mat-icon>
           <span>Continue shopping</span>
         </button>
@@ -39,16 +40,16 @@
       <!-- labels -->
       <div class="cart-item-card mat-elevation-z3 labels">
         <div class="item-card-content">
-          <div class="detail-name text-center">
-            <span>Name</span>
+          <div class="detail-name text-center" style="flex: 2;">
+            <span>Item</span>
           </div>
           <!-- <div class="divider"></div> -->
-          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
-          <div class="detail-quantity text-center">
+          <!--           <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider> -->
+          <div class="detail-quantity text-center" style="flex: 1;">
             <span>Quantity</span>
           </div>
-          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
-          <div class="detail-price text-center">
+          <!--           <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider> -->
+          <div class="detail-price text-center" style="flex: 1;">
             <span>Price</span>
           </div>
         </div>
@@ -57,10 +58,15 @@
       <mat-card *ngFor="let item of cart.items" class="cart-item-card mat-elevation-z3">
         <mat-card-content class="item-card-content">
 
+
+          <!-- Item Image -->
+          <a [routerLink]="['/catalog', item.product.id]">
+            <div class="detail-img"></div>
+          </a>
           <!-- Item Details -->
           <div class="detail-name">
-            <a class="h4" [routerLink]="['/catalog', item.product.id]">
-              <span> {{ item.product.name }} </span>
+            <a [routerLink]="['/catalog', item.product.id]">
+              <span class="h4"> {{ item.product.name }} </span>
             </a>
           </div>
 
@@ -100,7 +106,8 @@
       <div class="d-flex flex-column px-4">
         <span class="h2">Total price</span>
         <div class="my-3 vdivider"></div>
-        <span *ngIf="cart.items.length !== 0" class="h3" style="text-align: end;">{{ getTotalPrice() | currency }}</span>
+        <span *ngIf="cart.items.length !== 0" class="h3"
+          style="text-align: end;">{{ getTotalPrice() | currency }}</span>
         <span *ngIf="cart.items.length === 0" class="h3" style="text-align: end;">--</span>
       </div>
       <button mat-raised-button color="primary" [routerLink]="['/purchase-validation']" class="mat-elevation-z1"

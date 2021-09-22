@@ -1,0 +1,13 @@
+<!-- <div class="pgrid">
+  <mat-grid-list cols="3" rowHeight="fit">
+    <mat-grid-tile *ngFor="let product of products, i">
+      <jhi-product-card [product]="product"></jhi-product-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div> -->
+
+<div class="pgrid">
+  <div *ngFor="let product of products">
+    <jhi-product-card [product]="product"></jhi-product-card>
+  </div>
+</div>
