@@ -1,5 +1,4 @@
-<jhi-product-grid [products]="products!"></jhi-product-grid>
-<div>
+<div class="p-root">
   <h2 id="page-heading" data-cy="ProductHeading">
     <span jhiTranslate="canyonMeApp.product.home.title">Products</span>
 
@@ -11,44 +10,27 @@
     </div>
   </h2>
 
+
   <jhi-alert-error></jhi-alert-error>
 
   <jhi-alert></jhi-alert>
+  <div class="main-div">
+    <div class="p-filters mat-elevation-z3">
+      <span class="h3"> Filters </span>
+      <span>Min price : {{ minValue | currency }}</span>
+      <mat-slider thumbLabel tickInterval="1000" step="5" min="0" [max]="maxValue" [(ngModel)]="minValue" (change)="loadAll()" aria-label="units"></mat-slider>
+      <span>Max price : {{ maxValue | currency }}</span>
+      <mat-slider thumbLabel tickInterval="1000" step="5" [min]="minValue" max="500" [(ngModel)]="maxValue" (change)="loadAll()" aria-label="units"></mat-slider>
+    </div>
+    <div>
+      <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
+        <span jhiTranslate="canyonMeApp.product.home.notFound">No products found</span>
+      </div>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
-    <span jhiTranslate="canyonMeApp.product.home.notFound">No products found</span>
+      <div *ngIf="products && products.length > 0" class="mat-elevation-z3">
+        <jhi-product-grid [products]="products!"></jhi-product-grid>
+      </div>
+    </div>
   </div>
 
-  <div class="table-responsive" id="entities" *ngIf="products && products.length > 0">
-    <table class="table table-striped" aria-describedby="page-heading">
-      <thead>
-        <tr>
-          <th scope="col"><span jhiTranslate="canyonMeApp.product.id">Id</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.product.name">Name</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.product.description">Description</span></th>
-          <th scope="col"><span jhiTranslate="canyonMeApp.product.unitPrice">Unit Price</span></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
-          <td>
-            <a [routerLink]="['/catalog', product.id]">{{ product.id }}</a>
-          </td>
-          <td>{{ product.name }}</td>
-          <td>{{ product.description }}</td>
-          <td>{{ product.unitPrice }}</td>
-          <td class="text-right">
-            <div class="btn-group">
-              <button type="submit" [routerLink]="['/catalog', product.id]" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
-                <fa-icon icon="eye"></fa-icon>
-                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-              </button>
-              <jhi-button-add-cart class="pl-1" [product]="product"></jhi-button-add-cart>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
 </div>

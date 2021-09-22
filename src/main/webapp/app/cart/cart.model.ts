@@ -41,19 +41,23 @@ export class Cart implements ICart {
    * @param cartItem
    * @param quantity
    */
-  setQuantity(cartItem: CartItem, quantity: number): void {
+  setQuantity(cartItem: CartItem, quantity: number, canDelete: boolean): void {
     if (quantity > 0) {
       cartItem.quantity = quantity;
     }else{
-      cartItem.quantity = 1;
+      if(canDelete){
+        this.deleteProduct(cartItem.product.id);
+      }else{
+        cartItem.quantity = 1;
+      }
     }
   }
 
-  changeQuantity(product: Product, quantity: number): void {
+  changeQuantity(product: Product, quantity: number, canDelete: boolean): void {
     const cartItem = this.items.find(ci => ci.product.id === product.id);
     if (cartItem !== undefined) {
       const newquantity = cartItem.quantity + quantity;
-      this.setQuantity(cartItem, newquantity);
+      this.setQuantity(cartItem, newquantity, canDelete);
     } else {
       if (quantity > 0) {
         this.items.push(new CartItem(product, quantity));
@@ -64,7 +68,7 @@ export class Cart implements ICart {
   changeQuantitySet(product: Product, quantity: number): void {
     const cartItem = this.items.find(ci => ci.product.id === product.id);
     if (cartItem !== undefined) {
-      this.setQuantity(cartItem, quantity);
+      this.setQuantity(cartItem, quantity, false);
     } else {
       if (quantity > 0) {
         this.items.push(new CartItem(product, quantity));

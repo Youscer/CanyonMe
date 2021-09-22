@@ -1,3 +1,4 @@
+import { MatSliderModule } from '@angular/material/slider';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,7 +11,7 @@ import { ProductComponent } from './list/product.component';
 import { ProductRoutingModule } from './route/product-routing.module';
 
 @NgModule({
-  imports: [SharedModule, ProductRoutingModule, MatButtonModule, MatCardModule, ProductGridModule],
+  imports: [SharedModule, ProductRoutingModule, MatButtonModule, MatCardModule, ProductGridModule, MatSliderModule],
   declarations: [ProductComponent, ProductDetailComponent, ButtonAddCartComponent, ConfirmAddCartComponent],
 })
 export class ProductModule { }
