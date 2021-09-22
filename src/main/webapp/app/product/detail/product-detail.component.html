@@ -8,14 +8,12 @@
         <!-- IMAGES -->
         <div class="imgs-div">
           <div class="other-imgs">
-            <div class="other-img"></div>
-            <div class="other-img"></div>
-            <div class="other-img"></div>
-            <div class="other-img"></div>
-            <div class="other-img"></div>
+            <div *ngFor="let imgLink of imgs" class="other-img mat-elevation-z2" [ngStyle]="{'background-image': 'url(' + imgLink + ')'}" (mouseover)="imgMain=imgLink">
+              <!-- [ngStyle]="{'background-image': imgLink}" -->
+            </div>
           </div>
           <div class="v-divider"></div>
-          <div class="img-principale"></div>
+          <div class="img-principale mat-elevation-z4" [ngStyle]="{'background-image': 'url(' + imgMain + ')'}"></div>
         </div>
 
 
@@ -29,6 +27,9 @@
           <div class="info-end">
             <div class="info-pricing">
               <p>Price : {{ product.unitPrice | currency }}</p>
+              <div *ngIf="product.pictures">
+
+              </div>
               <div class="button-end">
                 <button mat-raised-button color="primary" type="submit" (click)="previousState()">
                   <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>

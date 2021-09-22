@@ -1,11 +1,10 @@
 .product-main {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .imgs-div {
   height: 400px;
-/*   background-color: lightgreen; */
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -15,15 +14,18 @@
 
 .other-imgs {
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .other-img {
   height: 90px;
   width: 160px;
-  border: 1px solid black;
-  background-color: lightgray;
   margin-bottom: 10px;
+  margin-right: 10px;
+  /*   background-image: url("https://firebasestorage.googleapis.com/v0/b/canyonme-e86ae.appspot.com/o/img%2F1632276054774_2008197_ST.jpg?alt=media&token=7888f9a9-fdd5-4b95-ac28-018dda697f05"); */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
 .v-divider {
@@ -34,29 +36,25 @@
 .img-principale {
   height: 360px;
   width: 640px;
-  border: 1px solid black;
-  background-color: lightgray;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
-.info-end{
+.info-end {}
+
+.info-div {}
+
+.info-text {}
+
+.info-pricing {
+  text-align: end;
 }
 
-.info-div{
-
-}
-
-.info-text{
-
-}
-
-.info-pricing{
-    text-align: end;
-}
-
-.button-end{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+.button-end {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 /* Scrollbar */
@@ -74,4 +72,30 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+
+@media screen and (max-width: 1200px) {
+  .imgs-div {
+    flex-direction: column;
+  }
+
+  .v-divider {
+    display: none;
+  }
+
+  .img-principale{
+    display: none;
+  }
+
+  .imgs-div{
+    height: 100%;
+  }
+
+  .other-imgs {
+    height: 100%;
+  }
+  .other-img{
+    width: 250px;
+    height: 150px;
+  }
 }
