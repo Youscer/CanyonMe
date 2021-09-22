@@ -114,7 +114,6 @@ import { MatInputModule } from '@angular/material/input';
     { provide: BUCKET, useValue: firebaseConfig.storageBucket },
   ],
   declarations: [
-    HomeComponent,
     MainComponent,
     NavbarComponent,
     ErrorComponent,

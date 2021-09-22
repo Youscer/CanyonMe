@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/auth/account.model';
+import { ISlide } from './carousel/carousel.model';
 //
 @Component({
   selector: 'jhi-home',
@@ -12,6 +13,27 @@ import { Account } from 'app/core/auth/account.model';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+  slides: ISlide[] = [
+    {
+      image: 'https://picsum.photos/id/1/1200/500',
+      title: 'Lorem ipsum',
+      description:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
+    },
+    {
+      image: 'https://picsum.photos/id/2/1200/500',
+      title: 'Lorem ipsum',
+      description:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
+    },
+    {
+      image: 'https://picsum.photos/id/3/1200/500',
+      title: 'Lorem ipsum',
+      description:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
+    },
+  ];
+
   account: Account | null = null;
 
   private readonly destroy$ = new Subject<void>();
