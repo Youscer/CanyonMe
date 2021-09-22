@@ -1,3 +1,4 @@
+import { PurchaseConfirmationComponent } from './purchase-validation/purchase-confirmation/purchase-confirmation.component';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { DEBUG_INFO_ENABLED } from 'app/app.constants';
@@ -42,6 +43,10 @@ const LAYOUT_ROUTES = [toolbarRoute, ...errorRoute];
         {
           path: 'cart',
           component: CartComponent,
+        },
+        {
+          path: 'purchase-confirmation',
+          component: PurchaseConfirmationComponent,
         },
         ...LAYOUT_ROUTES,
       ],
