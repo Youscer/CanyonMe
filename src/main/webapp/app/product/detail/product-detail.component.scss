@@ -14,7 +14,9 @@
 
 .other-imgs {
   height: 100%;
+  overflow-y: hidden;
   overflow-y: auto;
+  
 }
 
 .other-img {
@@ -58,19 +60,19 @@
 }
 
 /* Scrollbar */
-::-webkit-scrollbar {
+::-webkit-scrollbar,scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,scrollbar-track {
   background: #f1f1f1;
 }
 
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb,scrollbar-thumb {
   background: #888;
 }
 
-::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover,scrollbar-thumb:hover {
   background: #555;
 }
 
