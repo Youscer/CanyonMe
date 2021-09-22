@@ -61,7 +61,7 @@
 
           <!-- Item Image -->
           <a [routerLink]="['/catalog', item.product.id]">
-            <div class="detail-img"></div>
+            <div class="detail-img" [ngStyle]="{'background-image': 'url(' + getLink(item.product) + ')'}"></div>
           </a>
           <!-- Item Details -->
           <div class="detail-name">

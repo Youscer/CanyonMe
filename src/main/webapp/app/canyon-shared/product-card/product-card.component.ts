@@ -1,6 +1,6 @@
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CartService } from './../../cart/services/cart.service';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IProduct } from 'app/product/product.model';
 
 @Component({
@@ -8,13 +8,21 @@ import { IProduct } from 'app/product/product.model';
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.scss'],
 })
-export class ProductCardComponent{
+export class ProductCardComponent implements OnInit{
     
   @Input() product!: IProduct;
   errmsg: string;
 
+  imgLink : string = "../../../../content/images/no_image.png";
+
   constructor(private cartService: CartService, private snackBar: MatSnackBar) {
     this.errmsg = '';
+  }
+
+  ngOnInit(): void {
+    if (this.product.pictures && this.product.pictures.length > 0) {
+      this.imgLink = this.product.pictures[0].link!;
+    }
   }
 
   addToCart(): void{
