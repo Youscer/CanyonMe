@@ -15,19 +15,32 @@ import { ISlide } from './carousel/carousel.model';
 export class HomeComponent implements OnInit, OnDestroy {
   slides: ISlide[] = [
     {
-      image: 'https://picsum.photos/id/1/1200/500',
+      image: 'https://i.ibb.co/J2TTDcV/canyoning-5.jpg',
       title: 'Lorem ipsum',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
     },
     {
-      image: 'https://picsum.photos/id/2/1200/500',
+      image: 'https://i.ibb.co/KxkcQtB/canyoning-4.jpg',
       title: 'Lorem ipsum',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
     },
     {
-      image: 'https://picsum.photos/id/3/1200/500',
+      image: 'https://i.ibb.co/qdmc86n/canyoning-3.jpg',
+      title: 'Lorem ipsum',
+      description:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
+    },
+    {
+      image: 'https://i.ibb.co/NSFBP3N/canyoning-2.jpg',
+
+      title: 'Lorem ipsum',
+      description:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
+    },
+    {
+      image: 'https://i.ibb.co/V3kCqHP/canyoning-1.jpg',
       title: 'Lorem ipsum',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
