@@ -27,8 +27,13 @@
           <div class="info-end">
             <div class="info-pricing">
               <p>Price : {{ product.unitPrice | currency }}</p>
-              <div *ngIf="product.pictures">
-
+              <div *ngIf="product.quantity > 0" class="d-flex flex-row justify-content-end text-success h5">
+                <mat-icon>check</mat-icon>
+                <span>In stock</span>
+              </div>
+              <div *ngIf="product.quantity <= 0" class="d-flex flex-row justify-content-end text-danger h5">
+                <mat-icon>close</mat-icon>
+                <span>Out of stock</span>
               </div>
               <div class="button-end">
                 <button mat-raised-button color="primary" type="submit" (click)="previousState()">
