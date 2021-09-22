@@ -30,6 +30,9 @@ import { NgxWebstorageModule, SessionStorageService } from 'ngx-webstorage';
 import { AppRoutingModule } from './app-routing.module';
 import { SERVER_API_URL } from './app.constants';
 import { CartComponent } from './cart/list/cart.component';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import './config/dayjs';
@@ -93,6 +96,8 @@ import { MatInputModule } from '@angular/material/input';
     MatSliderModule,
     MatFormFieldModule,
     MatInputModule,
+    MatListModule,
+    MatGridListModule,
     // firebase
     MatDividerModule,
 
