@@ -55,7 +55,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional(readOnly = true)
     public ProductDTO getProduct(Long id) {
-        return productMapper.toDto(productRepository.getOne(id));
+        ProductDTO productDTO = productMapper.toDto(productRepository.getOne(id));
+        productDTO.setPictures(pictureService.getProductPictures(productDTO));
+        return productDTO;
     }
 
     @Transactional(readOnly = true)

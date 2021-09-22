@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
@@ -192,7 +193,7 @@ public class ProductResource {
     @GetMapping("/products/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
         log.debug("REST request to get Product : {}", id);
-        Optional<ProductDTO> productDTO = productRepository.findById(id).map(productMapper::toDto);
+        Optional<ProductDTO> productDTO = Optional.of(productService.getProduct(id));
         return ResponseUtil.wrapOrNotFound(productDTO);
     }
 
