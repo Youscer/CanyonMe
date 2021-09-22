@@ -136,7 +136,7 @@ export class PurchaseRecapComponent implements OnInit {
         switch (error.status) {
           case 409:
             this.cartService.adjustQuantity(error.error as IProduct[]);
-            this.router.navigate(['/purchase-confirmation']);
+            this.router.navigate(['/cart']);
             break;
         }
       }
