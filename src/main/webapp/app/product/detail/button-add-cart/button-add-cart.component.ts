@@ -11,6 +11,7 @@ import { Product } from 'app/product/product.model';
 })
 export class ButtonAddCartComponent {
   @Input() product! : Product;
+  @Input() disabled : boolean = false;
   durationInSeconds = 3;
   durationConversion = 1000;
 

@@ -39,7 +39,7 @@
                 <button mat-raised-button color="primary" type="submit" (click)="previousState()">
                   <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
                 </button>
-                <jhi-button-add-cart [product]="product"></jhi-button-add-cart>
+                <jhi-button-add-cart [product]="product" [disabled]="product.quantity <= 0"></jhi-button-add-cart>
               </div>
             </div>
           </div>

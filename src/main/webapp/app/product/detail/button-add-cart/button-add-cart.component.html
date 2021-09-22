@@ -1,5 +1,5 @@
 <div>
-  <button mat-raised-button color="primary" (click)="addCart()">
+  <button mat-raised-button color="primary" [disabled]="disabled" (click)="addCart()">
     <fa-icon icon="cart-plus"></fa-icon>
     Add to cart
   </button>
