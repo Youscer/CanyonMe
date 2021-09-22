@@ -4,14 +4,18 @@ import com.canyoncorp.canyonme.domain.*;
 import com.canyoncorp.canyonme.domain.enumeration.OrderState;
 import com.canyoncorp.canyonme.domain.enumeration.PaymentMode;
 import com.canyoncorp.canyonme.repository.PaymentFeesRepository;
+import com.canyoncorp.canyonme.repository.PersonRepository;
 import com.canyoncorp.canyonme.repository.PurchasedOrderRepository;
 import com.canyoncorp.canyonme.repository.ShippingFeesRepository;
 import com.canyoncorp.canyonme.service.OrderService;
 import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.service.UnavailableProductException;
 import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
+import com.canyoncorp.canyonme.service.dto.PersonDTO;
 import com.canyoncorp.canyonme.service.dto.ProductDTO;
 import com.canyoncorp.canyonme.service.dto.PurchasedOrderDTO;
+import com.canyoncorp.canyonme.service.mapper.PersonMapper;
+import com.canyoncorp.canyonme.service.mapper.PersonMapperImpl;
 import com.canyoncorp.canyonme.service.mapper.ProductMapper;
 import com.canyoncorp.canyonme.service.mapper.PurchasedOrderMapper;
 import com.canyoncorp.canyonme.web.rest.vm.OrderLineVM;
@@ -35,6 +39,8 @@ public class OrderServiceImpl implements OrderService {
     private PurchasedOrderMapper purchasedOrderMapper;
     private ShippingFeesRepository shippingFeesRepository;
     private PaymentFeesRepository paymentFeesRepository;
+    private PersonRepository personRepository;
+    private PersonMapper personMapper;
     private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(
@@ -42,13 +48,17 @@ public class OrderServiceImpl implements OrderService {
         PurchasedOrderRepository purchasedOrderRepository,
         PurchasedOrderMapper purchasedOrderMapper,
         ShippingFeesRepository shippingFeesRepository,
-        PaymentFeesRepository paymentFeesRepository
+        PaymentFeesRepository paymentFeesRepository,
+        PersonRepository personRepository,
+        PersonMapper personMapper
     ) {
         this.productService = productService;
         this.purchasedOrderRepository = purchasedOrderRepository;
         this.purchasedOrderMapper = purchasedOrderMapper;
         this.shippingFeesRepository = shippingFeesRepository;
         this.paymentFeesRepository = paymentFeesRepository;
+        this.personRepository = personRepository;
+        this.personMapper = personMapper;
     }
 
     @Transactional
@@ -110,7 +120,10 @@ public class OrderServiceImpl implements OrderService {
         purchasedOrderDTO.setShippingAddress(orderVM.getShippingAddress());
         purchasedOrderDTO.setPaymentMode(paymentFees.getPaymentMode().toString());
         purchasedOrderDTO.setShippingMode(shippingFees.getShippingMode().toString());
-        // TODO: set Person
+
+        // setting Person
+        List<PersonDTO> personDTOS = personMapper.toDto(personRepository.findByUserIsCurrentUser());
+        if (!personDTOS.isEmpty()) purchasedOrderDTO.setPerson(personDTOS.get(0));
 
         // inserting to db
         PurchasedOrder purchasedOrder = purchasedOrderMapper.toEntity(purchasedOrderDTO);
