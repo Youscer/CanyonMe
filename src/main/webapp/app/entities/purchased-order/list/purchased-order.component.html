@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-purchased-order"
-        [routerLink]="['/entities', 'purchased-order/new']"
+        [routerLink]="['/entities/purchased-order/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.purchasedOrder.home.createLabel"> Create a new Purchased Order </span>
@@ -39,6 +39,8 @@
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.shippingFees">Shipping Fees</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.paymentMode">Payment Mode</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.paymentFees">Payment Fees</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.shippingAddress">Shipping Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.billingAddress">Billing Address</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.person">Person</span></th>
           <th scope="col"></th>
         </tr>
@@ -54,6 +56,8 @@
           <td>{{ purchasedOrder.shippingFees }}</td>
           <td>{{ purchasedOrder.paymentMode }}</td>
           <td>{{ purchasedOrder.paymentFees }}</td>
+          <td>{{ purchasedOrder.shippingAddress }}</td>
+          <td>{{ purchasedOrder.billingAddress }}</td>
           <td>
             <div *ngIf="purchasedOrder.person">
               <a [routerLink]="['/entities', 'person', purchasedOrder.person?.id, 'view']">{{ purchasedOrder.person?.id }}</a>

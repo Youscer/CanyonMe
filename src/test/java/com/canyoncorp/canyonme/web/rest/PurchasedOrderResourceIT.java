@@ -9,6 +9,8 @@ import com.canyoncorp.canyonme.IntegrationTest;
 import com.canyoncorp.canyonme.domain.PurchasedOrder;
 import com.canyoncorp.canyonme.domain.enumeration.OrderState;
 import com.canyoncorp.canyonme.repository.PurchasedOrderRepository;
+import com.canyoncorp.canyonme.service.dto.PurchasedOrderDTO;
+import com.canyoncorp.canyonme.service.mapper.PurchasedOrderMapper;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
@@ -50,6 +52,12 @@ class PurchasedOrderResourceIT {
     private static final Float DEFAULT_PAYMENT_FEES = 1F;
     private static final Float UPDATED_PAYMENT_FEES = 2F;
 
+    private static final String DEFAULT_SHIPPING_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_SHIPPING_ADDRESS = "BBBBBBBBBB";
+
+    private static final String DEFAULT_BILLING_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_BILLING_ADDRESS = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/purchased-orders";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -58,6 +66,9 @@ class PurchasedOrderResourceIT {
 
     @Autowired
     private PurchasedOrderRepository purchasedOrderRepository;
+
+    @Autowired
+    private PurchasedOrderMapper purchasedOrderMapper;
 
     @Autowired
     private EntityManager em;
@@ -80,7 +91,9 @@ class PurchasedOrderResourceIT {
             .shippingMode(DEFAULT_SHIPPING_MODE)
             .shippingFees(DEFAULT_SHIPPING_FEES)
             .paymentMode(DEFAULT_PAYMENT_MODE)
-            .paymentFees(DEFAULT_PAYMENT_FEES);
+            .paymentFees(DEFAULT_PAYMENT_FEES)
+            .shippingAddress(DEFAULT_SHIPPING_ADDRESS)
+            .billingAddress(DEFAULT_BILLING_ADDRESS);
         return purchasedOrder;
     }
 
@@ -97,7 +110,9 @@ class PurchasedOrderResourceIT {
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
             .paymentMode(UPDATED_PAYMENT_MODE)
-            .paymentFees(UPDATED_PAYMENT_FEES);
+            .paymentFees(UPDATED_PAYMENT_FEES)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .billingAddress(UPDATED_BILLING_ADDRESS);
         return purchasedOrder;
     }
 
@@ -111,9 +126,10 @@ class PurchasedOrderResourceIT {
     void createPurchasedOrder() throws Exception {
         int databaseSizeBeforeCreate = purchasedOrderRepository.findAll().size();
         // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isCreated());
 
@@ -127,6 +143,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(DEFAULT_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(DEFAULT_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(DEFAULT_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(DEFAULT_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(DEFAULT_BILLING_ADDRESS);
     }
 
     @Test
@@ -134,13 +152,14 @@ class PurchasedOrderResourceIT {
     void createPurchasedOrderWithExistingId() throws Exception {
         // Create the PurchasedOrder with an existing ID
         purchasedOrder.setId(1L);
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
 
         int databaseSizeBeforeCreate = purchasedOrderRepository.findAll().size();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -157,10 +176,11 @@ class PurchasedOrderResourceIT {
         purchasedOrder.setOrderDate(null);
 
         // Create the PurchasedOrder, which fails.
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
 
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -176,10 +196,11 @@ class PurchasedOrderResourceIT {
         purchasedOrder.setOrderState(null);
 
         // Create the PurchasedOrder, which fails.
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
 
         restPurchasedOrderMockMvc
             .perform(
-                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -204,7 +225,9 @@ class PurchasedOrderResourceIT {
             .andExpect(jsonPath("$.[*].shippingMode").value(hasItem(DEFAULT_SHIPPING_MODE)))
             .andExpect(jsonPath("$.[*].shippingFees").value(hasItem(DEFAULT_SHIPPING_FEES.doubleValue())))
             .andExpect(jsonPath("$.[*].paymentMode").value(hasItem(DEFAULT_PAYMENT_MODE)))
-            .andExpect(jsonPath("$.[*].paymentFees").value(hasItem(DEFAULT_PAYMENT_FEES.doubleValue())));
+            .andExpect(jsonPath("$.[*].paymentFees").value(hasItem(DEFAULT_PAYMENT_FEES.doubleValue())))
+            .andExpect(jsonPath("$.[*].shippingAddress").value(hasItem(DEFAULT_SHIPPING_ADDRESS)))
+            .andExpect(jsonPath("$.[*].billingAddress").value(hasItem(DEFAULT_BILLING_ADDRESS)));
     }
 
     @Test
@@ -224,7 +247,9 @@ class PurchasedOrderResourceIT {
             .andExpect(jsonPath("$.shippingMode").value(DEFAULT_SHIPPING_MODE))
             .andExpect(jsonPath("$.shippingFees").value(DEFAULT_SHIPPING_FEES.doubleValue()))
             .andExpect(jsonPath("$.paymentMode").value(DEFAULT_PAYMENT_MODE))
-            .andExpect(jsonPath("$.paymentFees").value(DEFAULT_PAYMENT_FEES.doubleValue()));
+            .andExpect(jsonPath("$.paymentFees").value(DEFAULT_PAYMENT_FEES.doubleValue()))
+            .andExpect(jsonPath("$.shippingAddress").value(DEFAULT_SHIPPING_ADDRESS))
+            .andExpect(jsonPath("$.billingAddress").value(DEFAULT_BILLING_ADDRESS));
     }
 
     @Test
@@ -252,13 +277,16 @@ class PurchasedOrderResourceIT {
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
             .paymentMode(UPDATED_PAYMENT_MODE)
-            .paymentFees(UPDATED_PAYMENT_FEES);
+            .paymentFees(UPDATED_PAYMENT_FEES)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .billingAddress(UPDATED_BILLING_ADDRESS);
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(updatedPurchasedOrder);
 
         restPurchasedOrderMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedPurchasedOrder.getId())
+                put(ENTITY_API_URL_ID, purchasedOrderDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(updatedPurchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isOk());
 
@@ -272,6 +300,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(UPDATED_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(UPDATED_BILLING_ADDRESS);
     }
 
     @Test
@@ -280,12 +310,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, purchasedOrder.getId())
+                put(ENTITY_API_URL_ID, purchasedOrderDTO.getId())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -300,12 +333,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -320,9 +356,14 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrder)))
+            .perform(
+                put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
+            )
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the PurchasedOrder in the database
@@ -346,7 +387,8 @@ class PurchasedOrderResourceIT {
             .orderState(UPDATED_ORDER_STATE)
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
-            .paymentMode(UPDATED_PAYMENT_MODE);
+            .paymentMode(UPDATED_PAYMENT_MODE)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS);
 
         restPurchasedOrderMockMvc
             .perform(
@@ -366,6 +408,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(DEFAULT_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(DEFAULT_BILLING_ADDRESS);
     }
 
     @Test
@@ -386,7 +430,9 @@ class PurchasedOrderResourceIT {
             .shippingMode(UPDATED_SHIPPING_MODE)
             .shippingFees(UPDATED_SHIPPING_FEES)
             .paymentMode(UPDATED_PAYMENT_MODE)
-            .paymentFees(UPDATED_PAYMENT_FEES);
+            .paymentFees(UPDATED_PAYMENT_FEES)
+            .shippingAddress(UPDATED_SHIPPING_ADDRESS)
+            .billingAddress(UPDATED_BILLING_ADDRESS);
 
         restPurchasedOrderMockMvc
             .perform(
@@ -406,6 +452,8 @@ class PurchasedOrderResourceIT {
         assertThat(testPurchasedOrder.getShippingFees()).isEqualTo(UPDATED_SHIPPING_FEES);
         assertThat(testPurchasedOrder.getPaymentMode()).isEqualTo(UPDATED_PAYMENT_MODE);
         assertThat(testPurchasedOrder.getPaymentFees()).isEqualTo(UPDATED_PAYMENT_FEES);
+        assertThat(testPurchasedOrder.getShippingAddress()).isEqualTo(UPDATED_SHIPPING_ADDRESS);
+        assertThat(testPurchasedOrder.getBillingAddress()).isEqualTo(UPDATED_BILLING_ADDRESS);
     }
 
     @Test
@@ -414,12 +462,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, purchasedOrder.getId())
+                patch(ENTITY_API_URL_ID, purchasedOrderDTO.getId())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -434,12 +485,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, count.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -454,10 +508,15 @@ class PurchasedOrderResourceIT {
         int databaseSizeBeforeUpdate = purchasedOrderRepository.findAll().size();
         purchasedOrder.setId(count.incrementAndGet());
 
+        // Create the PurchasedOrder
+        PurchasedOrderDTO purchasedOrderDTO = purchasedOrderMapper.toDto(purchasedOrder);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restPurchasedOrderMockMvc
             .perform(
-                patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(purchasedOrder))
+                patch(ENTITY_API_URL)
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(purchasedOrderDTO))
             )
             .andExpect(status().isMethodNotAllowed());
 

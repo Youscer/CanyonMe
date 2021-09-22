@@ -1,9 +1,7 @@
 <mat-toolbar color="primary">
-
   <mat-toolbar-row>
-
     <!-- Logo -->
-    <a routerLink="/" class="tool-item" (click)=resetSearch()>
+    <a routerLink="/" class="tool-item" (click)="resetSearch()">
       <!-- <mat-icon>panorama_fish_eye</mat-icon> -->
       <img src="../../../content/images/CanyonMe_montagnes.png" alt="CanyonMe Logo" class="canyonme" />
       <span class="site-title">CanyonMe</span>
@@ -12,7 +10,7 @@
     <div class="resp-spacer"></div>
     <!-- Search Bar -->
     <form [formGroup]="searchForm" class="toolbar-spacer tool-item classic-search" (ngSubmit)="searchThis()">
-      <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
+      <input matInput type="text" [(ngModel)]="searchword" formControlName="name" />
       <button mat-icon-button type="submit" class="inside-icon">
         <mat-icon color="primary">search</mat-icon>
       </button>
@@ -26,31 +24,31 @@
     </a>
     <!-- Admin Menu -->
     <mat-menu #adminMenu="matMenu" class="toolbar-menu">
-      <button mat-menu-item [matMenuTriggerFor]="entitiesMenu" (click)=resetSearch()>
+      <button mat-menu-item [matMenuTriggerFor]="entitiesMenu" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>Entities</span>
       </button>
-      <button mat-menu-item routerLink="admin/user-management" (click)=resetSearch()>
+      <button mat-menu-item routerLink="admin/user-management" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>User Management</span>
       </button>
-      <button mat-menu-item routerLink="/admin/metrics" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/admin/metrics" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>Metrics</span>
       </button>
-      <button mat-menu-item routerLink="/admin/health" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/admin/health" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>Health</span>
       </button>
-      <button mat-menu-item routerLink="/admin/configuration" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/admin/configuration" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>Configuration</span>
       </button>
-      <button mat-menu-item routerLink="/admin/logs" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/admin/logs" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>Logs</span>
       </button>
-      <button mat-menu-item routerLink="/admin/docs" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/admin/docs" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>API</span>
       </button>
@@ -58,70 +56,69 @@
 
     <!-- Entities Menu -->
     <mat-menu #entitiesMenu="matMenu">
-      <button mat-menu-item routerLink="/entities/address" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/address" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>address</span>
       </button>
-      <button mat-menu-item routerLink="/entities/discount" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/discount" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>discount</span>
       </button>
-      <button mat-menu-item routerLink="/entities/employee" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/employee" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>employee</span>
       </button>
-      <button mat-menu-item routerLink="/entities/order-line" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/order-line" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>order-line</span>
       </button>
-      <button mat-menu-item routerLink="/entities/payment-fees" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/payment-fees" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>payment-fees</span>
       </button>
-      <button mat-menu-item routerLink="/entities/person" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/person" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>person</span>
       </button>
-      <button mat-menu-item routerLink="/entities/picture" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/picture" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>picture</span>
       </button>
-      <button mat-menu-item routerLink="/entities/product" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/product" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>product</span>
       </button>
-      <button mat-menu-item routerLink="/entities/purchased-order" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/purchased-order" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>purchased-order</span>
       </button>
-      <button mat-menu-item routerLink="/entities/shipping-fees" (click)=resetSearch()>
+      <button mat-menu-item routerLink="/entities/shipping-fees" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>shipping-fees</span>
       </button>
     </mat-menu>
 
-
     <!-- Login -->
     <a [matMenuTriggerFor]="accountMenu" class="tool-item">
       <mat-icon>person</mat-icon>
-      <span>{{ account?.firstName ?? "Account" }}</span>
+      <span>{{ account?.firstName ?? 'Account' }}</span>
       <mat-icon class="arrow-drop-down">arrow_drop_down</mat-icon>
     </a>
     <!-- Login Menu -->
     <mat-menu #accountMenu="matMenu" class="toolbar-menu">
-      <button *ngIf="!account" mat-menu-item routerLink="/login" (click)=resetSearch()>
+      <button *ngIf="!account" mat-menu-item routerLink="/login" (click)="resetSearch()">
         <mat-icon>exit_to_app</mat-icon>
         <span>Login</span>
       </button>
-      <button *ngIf="!account" mat-menu-item routerLink="account/register" (click)=resetSearch()>
+      <button *ngIf="!account" mat-menu-item routerLink="account/register" (click)="resetSearch()">
         <mat-icon>person_add</mat-icon>
         <span>Register</span>
       </button>
-      <button *ngIf="account" mat-menu-item routerLink="account/settings" (click)=resetSearch()>
+      <button *ngIf="account" mat-menu-item routerLink="account/settings" (click)="resetSearch()">
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </button>
-      <button *ngIf="account" mat-menu-item routerLink="account/password" (click)=resetSearch()>
+      <button *ngIf="account" mat-menu-item routerLink="account/password" (click)="resetSearch()">
         <mat-icon>lock</mat-icon>
         <span>Password</span>
       </button>
@@ -131,24 +128,22 @@
       </button>
     </mat-menu>
 
-
     <!-- Cart -->
-    <a routerLink="/cart" class="tool-item" (click)=resetSearch()>
+    <a routerLink="/cart" class="tool-item" (click)="resetSearch()">
       <mat-icon matBadgeSize="small" [matBadge]="getCartItemCount()" [matBadgeHidden]="hideBadge" matBadgeColor="warn">
-        shopping_cart</mat-icon>
+        shopping_cart</mat-icon
+      >
       <span>Cart</span>
     </a>
-
   </mat-toolbar-row>
 
   <!-- Responsive search bar -->
-  <mat-toolbar-row class="responsive-search" style="z-index: 1;">
+  <mat-toolbar-row class="responsive-search" style="z-index: 1">
     <form [formGroup]="searchForm" (ngSubmit)="searchThis()">
-      <input matInput type="text" [(ngModel)]="searchword" formControlName="name">
+      <input matInput type="text" [(ngModel)]="searchword" formControlName="name" />
       <button mat-icon-button type="submit" class="inside-icon">
         <mat-icon color="primary">search</mat-icon>
       </button>
     </form>
   </mat-toolbar-row>
-
 </mat-toolbar>

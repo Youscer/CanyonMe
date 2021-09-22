@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-product"
-        [routerLink]="['/entities', 'product/new']"
+        [routerLink]="['/entities/product/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.product.home.createLabel"> Create a new Product </span>
@@ -37,6 +37,7 @@
           <th scope="col"><span jhiTranslate="canyonMeApp.product.brand">Brand</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.product.description">Description</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.product.unitPrice">Unit Price</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.product.quantity">Quantity</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -49,6 +50,7 @@
           <td>{{ product.brand }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.unitPrice }}</td>
+          <td>{{ product.quantity }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button

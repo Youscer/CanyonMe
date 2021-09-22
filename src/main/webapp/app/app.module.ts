@@ -1,3 +1,4 @@
+import { MatDividerModule } from '@angular/material/divider';
 import { registerLocaleData } from '@angular/common';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import locale from '@angular/common/locales/en';
@@ -29,6 +30,9 @@ import { NgxWebstorageModule, SessionStorageService } from 'ngx-webstorage';
 import { AppRoutingModule } from './app-routing.module';
 import { SERVER_API_URL } from './app.constants';
 import { CartComponent } from './cart/list/cart.component';
+import { MatListModule } from '@angular/material/list';
+import { MatGridListModule } from '@angular/material/grid-list';
+
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { NgbDateDayjsAdapter } from './config/datepicker-adapter';
 import './config/dayjs';
@@ -47,16 +51,19 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ToolBarComponent } from './layouts/toolbar/toolbar.component';
 import { UploadComponent } from './shared/upload/upload.component';
-
+import { ProductUpdateComponent } from './entities/product/update/product-update.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
     BrowserModule,
     SharedModule,
     HomeModule,
+
     // jhipster-needle-angular-add-module JHipster will add new module here
     EntityRoutingModule,
     AppRoutingModule,
+
     // Set this to true to enable service worker (PWA)
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
     HttpClientModule,
@@ -76,6 +83,8 @@ import { UploadComponent } from './shared/upload/upload.component';
     NoopAnimationsModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
+
+    // Material
     MatButtonModule,
     MatCardModule,
     MatToolbarModule,
@@ -86,7 +95,13 @@ import { UploadComponent } from './shared/upload/upload.component';
     MatProgressSpinnerModule,
     MatSliderModule,
     MatFormFieldModule,
+    MatInputModule,
+    MatListModule,
+    MatGridListModule,
     // firebase
+    MatDividerModule,
+
+    // Firebase
     AngularFireStorageModule,
     AngularFireModule.initializeApp(firebaseConfig),
   ],
@@ -108,7 +123,8 @@ import { UploadComponent } from './shared/upload/upload.component';
     FooterComponent,
     CartComponent,
     UploadComponent,
-    ToolBarComponent
+    ToolBarComponent,
+    ProductUpdateComponent,
   ],
   bootstrap: [MainComponent],
 })

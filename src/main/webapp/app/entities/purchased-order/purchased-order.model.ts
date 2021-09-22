@@ -11,6 +11,8 @@ export interface IPurchasedOrder {
   shippingFees?: number | null;
   paymentMode?: string | null;
   paymentFees?: number | null;
+  shippingAddress?: string | null;
+  billingAddress?: string | null;
   orderLines?: IOrderLine[] | null;
   person?: IPerson | null;
 }
@@ -24,6 +26,8 @@ export class PurchasedOrder implements IPurchasedOrder {
     public shippingFees?: number | null,
     public paymentMode?: string | null,
     public paymentFees?: number | null,
+    public shippingAddress?: string | null,
+    public billingAddress?: string | null,
     public orderLines?: IOrderLine[] | null,
     public person?: IPerson | null
   ) {}

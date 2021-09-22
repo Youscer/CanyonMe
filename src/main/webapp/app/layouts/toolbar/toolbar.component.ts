@@ -11,7 +11,6 @@ import { Account } from 'app/core/auth/account.model';
 import { LANGUAGES } from 'app/config/language.constants';
 import { OnInit, Component } from '@angular/core';
 
-
 @Component({
   selector: 'jhi-toolbar',
   templateUrl: './toolbar.component.html',
@@ -25,7 +24,7 @@ export class ToolBarComponent implements OnInit {
   version = '';
   account: Account | null = null;
 
-  searchword: string = "";
+  searchword: string = '';
   searchForm: FormGroup;
 
   hideBadge: boolean = false;
@@ -58,12 +57,12 @@ export class ToolBarComponent implements OnInit {
     this.router.navigate(['/catalog'], { queryParams: { s: this.searchword } });
   }
   resetSearch(): void {
-    this.searchword = "";
+    this.searchword = '';
   }
 
   getCartItemCount(): number {
     const totalQuantity = this.cartService.getTotalQuantity();
-    if (totalQuantity > 0){
+    if (totalQuantity > 0) {
       this.hideBadge = false;
     } else {
       this.hideBadge = true;

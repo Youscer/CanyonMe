@@ -17,7 +17,7 @@ export class ProductComponent implements OnInit {
 
   searchName?: string;
 
-  constructor(protected productService: ProductService, protected modalService: NgbModal, private route: ActivatedRoute) { }
+  constructor(protected productService: ProductService, protected modalService: NgbModal, private route: ActivatedRoute) {}
 
   loadAll(): void {
     this.isLoading = true;
@@ -37,7 +37,7 @@ export class ProductComponent implements OnInit {
     }
 
     this.productService.getAll(params).subscribe(
-      (products) => {
+      products => {
         this.isLoading = false;
         this.products = products;
       },
@@ -48,18 +48,14 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    this.route.queryParams.subscribe(
-      params => {
-        if (params.s) {
-          this.searchName = String(params.s);
-        }else{
-          this.searchName = undefined;
-        }
-        this.loadAll();
+    this.route.queryParams.subscribe(params => {
+      if (params.s) {
+        this.searchName = String(params.s);
+      } else {
+        this.searchName = undefined;
       }
-    );
-
+      this.loadAll();
+    });
   }
 
   trackId(index: number, item: IProduct): number {

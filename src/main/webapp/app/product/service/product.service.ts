@@ -26,7 +26,7 @@ export class ProductService {
 
   getAll(req?: any): Observable<IProduct[]> {
     const options = createRequestOption(req);
-    return this.http.get<IProduct[]>(this.resourceUrl, { params: options } );
+    return this.http.get<IProduct[]>(this.resourceUrl, { params: options });
   }
 
   /**

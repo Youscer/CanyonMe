@@ -1,3 +1,4 @@
+import { OrderService } from './../service/order.service';
 import { ShippingFees } from './../../entities/shipping-fees/shipping-fees.model';
 import { Cart, ICart } from './../../cart/cart.model';
 import { Component, OnInit } from '@angular/core';
@@ -9,6 +10,7 @@ import { HttpResponse } from '@angular/common/http';
 import { PaymentFeesService } from 'app/entities/payment-fees/service/payment-fees.service';
 import { IPaymentFees } from 'app/entities/payment-fees/payment-fees.model';
 import { Router } from '@angular/router';
+import { IProduct } from 'app/product/product.model';
 
 // Colonnes Tableau panier recap
 export interface cartData {
@@ -93,7 +95,8 @@ export class PurchaseRecapComponent implements OnInit {
     private _formBuilder: FormBuilder,
     protected shippingFeesService: ShippingFeesService,
     protected paymentFeesService: PaymentFeesService,
-    private router: Router
+    private router: Router,
+    public orderService: OrderService
   ) {
     this.cart = new Cart();
     this.shippingFees === new ShippingFees();
@@ -121,6 +124,23 @@ export class PurchaseRecapComponent implements OnInit {
       this.selectedBillingZipCode = '';
     }
     this.checkboxFlag = checked;
+  }
+
+  postCartOrder(): void {
+    this.orderService.postCartOrder(this.cartService.getCart(), 1, 1, '35 rue du test', '35 rue du test').subscribe(
+      () => {
+        this.cartService.deleteAllCart();
+        this.router.navigate(['/purchase-confirmation']);
+      },
+      (error) => {
+        switch (error.status) {
+          case 409:
+            this.cartService.adjustQuantity(error.error as IProduct[]);
+            this.router.navigate(['/purchase-confirmation']);
+            break;
+        }
+      }
+    );
   }
 
   loadAll(): void {
@@ -155,10 +175,6 @@ export class PurchaseRecapComponent implements OnInit {
     totalCommandPrice = this.totalPriceCart + (this.selectedShippingMode?.fees ?? 0) + (this.selectedPaymentMode?.fees ?? 0);
     //totalCommandPrice = this.totalPriceCart
     return totalCommandPrice;
-  }
-
-  processOrder(): void {
-    this.router.navigate(['/purchase-confirmation']);
   }
 
   ngOnInit(): void {

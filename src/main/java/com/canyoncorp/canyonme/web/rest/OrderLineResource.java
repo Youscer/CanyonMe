@@ -2,6 +2,8 @@ package com.canyoncorp.canyonme.web.rest;
 
 import com.canyoncorp.canyonme.domain.OrderLine;
 import com.canyoncorp.canyonme.repository.OrderLineRepository;
+import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
+import com.canyoncorp.canyonme.service.mapper.OrderLineMapper;
 import com.canyoncorp.canyonme.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -36,24 +38,29 @@ public class OrderLineResource {
 
     private final OrderLineRepository orderLineRepository;
 
-    public OrderLineResource(OrderLineRepository orderLineRepository) {
+    private final OrderLineMapper orderLineMapper;
+
+    public OrderLineResource(OrderLineRepository orderLineRepository, OrderLineMapper orderLineMapper) {
         this.orderLineRepository = orderLineRepository;
+        this.orderLineMapper = orderLineMapper;
     }
 
     /**
      * {@code POST  /order-lines} : Create a new orderLine.
      *
-     * @param orderLine the orderLine to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new orderLine, or with status {@code 400 (Bad Request)} if the orderLine has already an ID.
+     * @param orderLineDTO the orderLineDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new orderLineDTO, or with status {@code 400 (Bad Request)} if the orderLine has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/order-lines")
-    public ResponseEntity<OrderLine> createOrderLine(@Valid @RequestBody OrderLine orderLine) throws URISyntaxException {
-        log.debug("REST request to save OrderLine : {}", orderLine);
-        if (orderLine.getId() != null) {
+    public ResponseEntity<OrderLineDTO> createOrderLine(@Valid @RequestBody OrderLineDTO orderLineDTO) throws URISyntaxException {
+        log.debug("REST request to save OrderLine : {}", orderLineDTO);
+        if (orderLineDTO.getId() != null) {
             throw new BadRequestAlertException("A new orderLine cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        OrderLine result = orderLineRepository.save(orderLine);
+        OrderLine orderLine = orderLineMapper.toEntity(orderLineDTO);
+        orderLine = orderLineRepository.save(orderLine);
+        OrderLineDTO result = orderLineMapper.toDto(orderLine);
         return ResponseEntity
             .created(new URI("/api/order-lines/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -63,23 +70,23 @@ public class OrderLineResource {
     /**
      * {@code PUT  /order-lines/:id} : Updates an existing orderLine.
      *
-     * @param id the id of the orderLine to save.
-     * @param orderLine the orderLine to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated orderLine,
-     * or with status {@code 400 (Bad Request)} if the orderLine is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the orderLine couldn't be updated.
+     * @param id the id of the orderLineDTO to save.
+     * @param orderLineDTO the orderLineDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated orderLineDTO,
+     * or with status {@code 400 (Bad Request)} if the orderLineDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the orderLineDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/order-lines/{id}")
-    public ResponseEntity<OrderLine> updateOrderLine(
+    public ResponseEntity<OrderLineDTO> updateOrderLine(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody OrderLine orderLine
+        @Valid @RequestBody OrderLineDTO orderLineDTO
     ) throws URISyntaxException {
-        log.debug("REST request to update OrderLine : {}, {}", id, orderLine);
-        if (orderLine.getId() == null) {
+        log.debug("REST request to update OrderLine : {}, {}", id, orderLineDTO);
+        if (orderLineDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, orderLine.getId())) {
+        if (!Objects.equals(id, orderLineDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -87,34 +94,36 @@ public class OrderLineResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        OrderLine result = orderLineRepository.save(orderLine);
+        OrderLine orderLine = orderLineMapper.toEntity(orderLineDTO);
+        orderLine = orderLineRepository.save(orderLine);
+        OrderLineDTO result = orderLineMapper.toDto(orderLine);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orderLine.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orderLineDTO.getId().toString()))
             .body(result);
     }
 
     /**
      * {@code PATCH  /order-lines/:id} : Partial updates given fields of an existing orderLine, field will ignore if it is null
      *
-     * @param id the id of the orderLine to save.
-     * @param orderLine the orderLine to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated orderLine,
-     * or with status {@code 400 (Bad Request)} if the orderLine is not valid,
-     * or with status {@code 404 (Not Found)} if the orderLine is not found,
-     * or with status {@code 500 (Internal Server Error)} if the orderLine couldn't be updated.
+     * @param id the id of the orderLineDTO to save.
+     * @param orderLineDTO the orderLineDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated orderLineDTO,
+     * or with status {@code 400 (Bad Request)} if the orderLineDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the orderLineDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the orderLineDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/order-lines/{id}", consumes = "application/merge-patch+json")
-    public ResponseEntity<OrderLine> partialUpdateOrderLine(
+    public ResponseEntity<OrderLineDTO> partialUpdateOrderLine(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody OrderLine orderLine
+        @NotNull @RequestBody OrderLineDTO orderLineDTO
     ) throws URISyntaxException {
-        log.debug("REST request to partial update OrderLine partially : {}, {}", id, orderLine);
-        if (orderLine.getId() == null) {
+        log.debug("REST request to partial update OrderLine partially : {}, {}", id, orderLineDTO);
+        if (orderLineDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, orderLine.getId())) {
+        if (!Objects.equals(id, orderLineDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -122,34 +131,21 @@ public class OrderLineResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<OrderLine> result = orderLineRepository
-            .findById(orderLine.getId())
+        Optional<OrderLineDTO> result = orderLineRepository
+            .findById(orderLineDTO.getId())
             .map(
                 existingOrderLine -> {
-                    if (orderLine.getProduct() != null) {
-                        existingOrderLine.setProduct(orderLine.getProduct());
-                    }
-                    if (orderLine.getProductName() != null) {
-                        existingOrderLine.setProductName(orderLine.getProductName());
-                    }
-                    if (orderLine.getQuantity() != null) {
-                        existingOrderLine.setQuantity(orderLine.getQuantity());
-                    }
-                    if (orderLine.getUnitPrice() != null) {
-                        existingOrderLine.setUnitPrice(orderLine.getUnitPrice());
-                    }
-                    if (orderLine.getDiscount() != null) {
-                        existingOrderLine.setDiscount(orderLine.getDiscount());
-                    }
+                    orderLineMapper.partialUpdate(existingOrderLine, orderLineDTO);
 
                     return existingOrderLine;
                 }
             )
-            .map(orderLineRepository::save);
+            .map(orderLineRepository::save)
+            .map(orderLineMapper::toDto);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orderLine.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, orderLineDTO.getId().toString())
         );
     }
 
@@ -159,28 +155,29 @@ public class OrderLineResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of orderLines in body.
      */
     @GetMapping("/order-lines")
-    public List<OrderLine> getAllOrderLines() {
+    public List<OrderLineDTO> getAllOrderLines() {
         log.debug("REST request to get all OrderLines");
-        return orderLineRepository.findAll();
+        List<OrderLine> orderLines = orderLineRepository.findAll();
+        return orderLineMapper.toDto(orderLines);
     }
 
     /**
      * {@code GET  /order-lines/:id} : get the "id" orderLine.
      *
-     * @param id the id of the orderLine to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the orderLine, or with status {@code 404 (Not Found)}.
+     * @param id the id of the orderLineDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the orderLineDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/order-lines/{id}")
-    public ResponseEntity<OrderLine> getOrderLine(@PathVariable Long id) {
+    public ResponseEntity<OrderLineDTO> getOrderLine(@PathVariable Long id) {
         log.debug("REST request to get OrderLine : {}", id);
-        Optional<OrderLine> orderLine = orderLineRepository.findById(id);
-        return ResponseUtil.wrapOrNotFound(orderLine);
+        Optional<OrderLineDTO> orderLineDTO = orderLineRepository.findById(id).map(orderLineMapper::toDto);
+        return ResponseUtil.wrapOrNotFound(orderLineDTO);
     }
 
     /**
      * {@code DELETE  /order-lines/:id} : delete the "id" orderLine.
      *
-     * @param id the id of the orderLine to delete.
+     * @param id the id of the orderLineDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/order-lines/{id}")

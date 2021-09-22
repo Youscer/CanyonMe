@@ -77,8 +77,18 @@ export class CartService {
 
   getTotalQuantity(): number {
     let totalQuantity = 0;
-    this.cart.items.forEach( item => totalQuantity += (item.quantity) );
+    this.cart.items.forEach(item => (totalQuantity += item.quantity));
     return totalQuantity;
+  }
+
+  adjustQuantity(conflict: IProduct[]): void {
+    conflict.forEach(productConflict => {
+      if (productConflict.quantity > 0) {
+        this.cart.changeQuantitySet(productConflict, productConflict.quantity);
+      } else {
+        this.cart.deleteProduct(productConflict.id);
+      }
+    });
   }
 
   private reconstructCart(products: IProduct[]): void {
