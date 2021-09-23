@@ -7,6 +7,8 @@ import com.canyoncorp.canyonme.repository.PaymentFeesRepository;
 import com.canyoncorp.canyonme.repository.PersonRepository;
 import com.canyoncorp.canyonme.repository.PurchasedOrderRepository;
 import com.canyoncorp.canyonme.repository.ShippingFeesRepository;
+import com.canyoncorp.canyonme.security.SecurityUtils;
+import com.canyoncorp.canyonme.service.MailService;
 import com.canyoncorp.canyonme.service.OrderService;
 import com.canyoncorp.canyonme.service.ProductService;
 import com.canyoncorp.canyonme.service.UnavailableProductException;
@@ -35,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderServiceImpl implements OrderService {
 
     private ProductService productService;
+    private MailService mailService;
     private PurchasedOrderRepository purchasedOrderRepository;
     private PurchasedOrderMapper purchasedOrderMapper;
     private ShippingFeesRepository shippingFeesRepository;
@@ -45,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
 
     public OrderServiceImpl(
         ProductService productService,
+        MailService mailService,
         PurchasedOrderRepository purchasedOrderRepository,
         PurchasedOrderMapper purchasedOrderMapper,
         ShippingFeesRepository shippingFeesRepository,
@@ -53,6 +57,7 @@ public class OrderServiceImpl implements OrderService {
         PersonMapper personMapper
     ) {
         this.productService = productService;
+        this.mailService = mailService;
         this.purchasedOrderRepository = purchasedOrderRepository;
         this.purchasedOrderMapper = purchasedOrderMapper;
         this.shippingFeesRepository = shippingFeesRepository;
@@ -127,6 +132,14 @@ public class OrderServiceImpl implements OrderService {
 
         // inserting to db
         PurchasedOrder purchasedOrder = purchasedOrderMapper.toEntity(purchasedOrderDTO);
-        return purchasedOrderMapper.toDto(purchasedOrderRepository.save(purchasedOrder));
+        PurchasedOrderDTO newOrder = purchasedOrderMapper.toDto(purchasedOrderRepository.save(purchasedOrder));
+        if (newOrder != null && !personDTOS.isEmpty()) mailService.sendEmail(
+            personDTOS.get(0).getEmail(),
+            "CanYonMe order " + newOrder.getId(),
+            "Paiment confirmed !!, Thank you for trusting us, we hope see you again !",
+            false,
+            false
+        );
+        return purchasedOrderDTO;
     }
 }
