@@ -20,7 +20,7 @@ export class ButtonAddCartComponent {
   addCart(): void {
     this.cartService.addProduct(this.product, 1);
     const snackBarRef = this.snackBar.open(this.product.name + ' added to cart.', 'Undo', {
-      duration: 5000,
+      duration: 10000,
     });
     snackBarRef.onAction().subscribe(() => {
       this.cartService.subQuantity(this.product, 1, true);
