@@ -16,34 +16,33 @@ export class HomeComponent implements OnInit, OnDestroy {
   slides: ISlide[] = [
     {
       image: 'https://i.ibb.co/J2TTDcV/canyoning-5.jpg',
-      title: 'Lorem ipsum',
+      title: 'What is Canyoning ?',
       description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
-    },
-    {
-      image: 'https://i.ibb.co/KxkcQtB/canyoning-4.jpg',
-      title: 'Lorem ipsum',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
-    },
-    {
-      image: 'https://i.ibb.co/qdmc86n/canyoning-3.jpg',
-      title: 'Lorem ipsum',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
-    },
-    {
-      image: 'https://i.ibb.co/NSFBP3N/canyoning-2.jpg',
-
-      title: 'Lorem ipsum',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
+        'Canyoning is a sporting activity in the great outdoors, aquatic and fun. It consists of progressing on foot in the bed of a river, in gorges or narrow ravines.',
     },
     {
       image: 'https://i.ibb.co/V3kCqHP/canyoning-1.jpg',
-      title: 'Lorem ipsum',
+      title: 'Canyoning, for who ?',
       description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem id ratione illo incidunt similique sed non minima dolorum commodi odit.',
+        'Canyoning is open to everyone, for half a day, a day, a weekend or a stay. You just have to adapt the route',
+    },
+    {
+      image: 'https://i.ibb.co/NSFBP3N/canyoning-2.jpg',
+      title: 'With this in mind, we need canyoning equipment',
+      description:
+        "Since we are operating in cool water, wearing a neoprene suit is necessary for swimming to be pleasant. In addition, the safety rules require you to have equipment specific to the activity, we find, among other things, the helmet, the harness and the semi-static rope.",
+    },
+    {
+      image: 'https://i.ibb.co/qdmc86n/canyoning-3.jpg',
+      title: 'What is Canyoning ?',
+      description:
+        'Canyoning is a sporting activity in the great outdoors, aquatic and fun. It consists of progressing on foot in the bed of a river, in gorges or narrow ravines.',
+    },
+    {
+      image: 'https://i.ibb.co/KxkcQtB/canyoning-4.jpg',
+      title: 'Canyoning, for who ?',
+      description:
+        'Canyoning is open to everyone, for half a day, a day, a weekend or a stay. You just have to adapt the route',
     },
   ];
 
