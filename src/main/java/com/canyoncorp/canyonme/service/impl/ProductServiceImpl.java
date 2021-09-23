@@ -154,6 +154,12 @@ public class ProductServiceImpl implements ProductService {
         return newProductDTO;
     }
 
+    @Override
+    public void deleteProduct(Long id) {
+        pictureService.deletePicturesOfProduct(id);
+        productRepository.deleteById(id);
+    }
+
     private void setPictures(ProductDTO productDTO) {
         productDTO.setPictures(pictureService.getProductPictures(productDTO));
     }

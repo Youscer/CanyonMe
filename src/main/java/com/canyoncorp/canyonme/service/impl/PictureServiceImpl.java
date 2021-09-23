@@ -44,4 +44,9 @@ public class PictureServiceImpl implements PictureService {
         Picture picture = pictureRepository.save(pictureMapper.toEntity(pictureDTO));
         return pictureMapper.toDto(picture);
     }
+
+    @Override
+    public void deletePicturesOfProduct(Long id) {
+        pictureRepository.deleteAllByProductId(id);
+    }
 }
