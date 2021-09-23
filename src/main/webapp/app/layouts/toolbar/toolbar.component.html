@@ -10,7 +10,7 @@
     <div class="resp-spacer"></div>
     <!-- Search Bar -->
     <form [formGroup]="searchForm" class="toolbar-spacer tool-item classic-search" (ngSubmit)="searchThis()">
-      <input matInput type="text" [(ngModel)]="searchword" formControlName="name" />
+      <input matInput type="text" [(ngModel)]="searchword" formControlName="name" placeholder="Find a product, a brand..."/>
       <button mat-icon-button type="submit" class="inside-icon">
         <mat-icon color="primary">search</mat-icon>
       </button>
