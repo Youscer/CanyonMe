@@ -129,8 +129,34 @@ export class PurchaseRecapComponent implements OnInit {
     this.checkboxFlag = checked;
   }
 
+  getShippingAddress(): string {
+    return String(this.selectedShippingFirstName) + " "
+      + String(this.selectedShippingLastName) + " "
+      + String(this.selectedShippingStreet) + " "
+      + String(this.selectedShippingComplement) + " "
+      + String(this.selectedShippingZipCode) + " "
+      + String(this.selectedShippingCity) + " "
+      + String(this.selectedShippingState);
+  }
+
+  getBillingAddress(): string {
+    return String(this.selectedBillingFirstName) + " "
+      + String(this.selectedBillingLastName) + " "
+      + String(this.selectedBillingStreet) + " "
+      + String(this.selectedBillingComplement) + " "
+      + String(this.selectedBillingZipCode) + " "
+      + String(this.selectedBillingCity) + " "
+      + String(this.selectedBillingState);
+  }
+
   postCartOrder(): void {
-    this.orderService.postCartOrder(this.cartService.getCart(), 1, 1, '35 rue du test', '35 rue du test').subscribe(
+    this.orderService.postCartOrder(
+      this.cartService.getCart(),
+      this.selectedShippingMode!.id!, 
+      this.selectedPaymentMode!.id!,
+      this.getShippingAddress(),
+      this.getBillingAddress()
+    ).subscribe(
       () => {
         this.cartService.deleteAllCart();
         this.router.navigate(['/purchase-confirmation']);
