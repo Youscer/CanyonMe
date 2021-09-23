@@ -116,7 +116,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private PurchasedOrderDTO createPurchasedOrderDTO(OrderVM orderVM) {
-        ShippingFees shippingFees = shippingFeesRepository.getOne(orderVM.getPaymentFeesId());
+        ShippingFees shippingFees = shippingFeesRepository.getOne(orderVM.getShippingFeesId());
         PaymentFees paymentFees = paymentFeesRepository.getOne(orderVM.getPaymentFeesId());
         PurchasedOrderDTO purchasedOrderDTO = new PurchasedOrderDTO();
         purchasedOrderDTO.setOrderDate(LocalDate.now());
