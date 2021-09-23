@@ -5,4 +5,6 @@ package com.canyoncorp.canyonme.domain.enumeration;
  */
 public enum PaymentMode {
     YES_CARD,
+    CREDIT_CARD,
+    PAYPAL,
 }

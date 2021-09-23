@@ -5,4 +5,5 @@ package com.canyoncorp.canyonme.domain.enumeration;
  */
 public enum ShippingMode {
     DHL,
+    CHRONOPOST,
 }
