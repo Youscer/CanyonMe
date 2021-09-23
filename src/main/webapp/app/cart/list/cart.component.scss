@@ -11,7 +11,7 @@
   margin-right: 50px;
   margin-bottom: 20px;
   max-height: 400px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -33,7 +33,6 @@
 .detail-img {
   height: 100px;
   width: 100px;
-  background-image: url("https://firebasestorage.googleapis.com/v0/b/canyonme-e86ae.appspot.com/o/img%2F1632276054774_2008197_ST.jpg?alt=media&token=7888f9a9-fdd5-4b95-ac28-018dda697f05");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -70,7 +69,6 @@
 }
 
 ::ng-deep .cart-item-card-button {
-
   transform: scale(0.8) !important;
 }
 
@@ -159,7 +157,7 @@
 
   .order-card {
     background-color: #ddd;
-    border-top: 1px solid #AAA;
+    border-top: 1px solid #aaa;
     min-width: 250px;
   }
 }

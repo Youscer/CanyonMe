@@ -1,16 +1,18 @@
-import { OrderService } from './../service/order.service';
-import { ShippingFees } from './../../entities/shipping-fees/shipping-fees.model';
-import { Cart, ICart } from './../../cart/cart.model';
+import { HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { CartService } from 'app/cart/services/cart.service';
+import { IPaymentFees } from 'app/entities/payment-fees/payment-fees.model';
+import { PaymentFeesService } from 'app/entities/payment-fees/service/payment-fees.service';
 import { ShippingFeesService } from 'app/entities/shipping-fees/service/shipping-fees.service';
 import { IShippingFees } from 'app/entities/shipping-fees/shipping-fees.model';
-import { HttpResponse } from '@angular/common/http';
-import { PaymentFeesService } from 'app/entities/payment-fees/service/payment-fees.service';
-import { IPaymentFees } from 'app/entities/payment-fees/payment-fees.model';
-import { Router } from '@angular/router';
 import { IProduct } from 'app/product/product.model';
+import { Cart, ICart } from './../../cart/cart.model';
+import { ShippingFees } from './../../entities/shipping-fees/shipping-fees.model';
+import { OrderService } from './../service/order.service';
+import { DialogOrderComponent } from './dialog/dialog-order.component';
 
 // Colonnes Tableau panier recap
 export interface cartData {
@@ -96,7 +98,8 @@ export class PurchaseRecapComponent implements OnInit {
     protected shippingFeesService: ShippingFeesService,
     protected paymentFeesService: PaymentFeesService,
     private router: Router,
-    public orderService: OrderService
+    public orderService: OrderService,
+    public dialog: MatDialog
   ) {
     this.cart = new Cart();
     this.shippingFees === new ShippingFees();
@@ -132,12 +135,11 @@ export class PurchaseRecapComponent implements OnInit {
         this.cartService.deleteAllCart();
         this.router.navigate(['/purchase-confirmation']);
       },
-      (error) => {
-        switch (error.status) {
-          case 409:
-            this.cartService.adjustQuantity(error.error as IProduct[]);
-            this.router.navigate(['/cart']);
-            break;
+      error => {
+        if (Number(error.status) === 409) {
+          const changes = this.cartService.adjustQuantity(error.error as IProduct[]);
+          this.dialog.open(DialogOrderComponent, { data: changes });
+          this.router.navigate(['/cart']);
         }
       }
     );

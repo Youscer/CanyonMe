@@ -1,3 +1,4 @@
+import { IProduct } from './../../entities/product/product.model';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Product } from 'app/product/product.model';
@@ -59,5 +60,13 @@ export class CartComponent implements OnInit {
 
   getTotalPrice(): number {
     return this.cartService.getTotalPrice();
+  }
+
+  getLink(product: IProduct): string {
+    if (product.pictures && product.pictures.length > 0 && product.pictures[0].link) {
+      return product.pictures[0].link;
+    } else {
+      return '../../../../content/images/no_image.png';
+    }
   }
 }

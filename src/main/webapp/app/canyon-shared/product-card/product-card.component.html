@@ -4,7 +4,7 @@
       <div class="pcard-name">
         <span> {{ product.name }} </span>
       </div>
-      <div class="pcard-img"></div>
+      <div class="pcard-img" [ngStyle]="{ 'background-image': 'url(' + imgLink + ')' }"></div>
     </mat-card-content>
     <mat-card-content class="pcard-price">
       <span> {{ product.unitPrice | currency }} </span>
@@ -15,6 +15,5 @@
         <button mat-raised-button color="primary" (click)="addToCart()">Add to cart</button>
       </div>
     </mat-card-content>
-
   </mat-card>
 </div>

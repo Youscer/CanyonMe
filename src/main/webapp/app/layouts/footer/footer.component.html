@@ -1,3 +1,28 @@
-<div class="footer">
-    <p jhiTranslate="footer">This is your footer</p>
-</div>
+<mat-toolbar color="primary" class="tool-footer">
+  <div class="footer-adress">
+    CanyonCorp<br />
+    110 esplanade du Général-de-Gaulle<br />
+    92932 Paris La Défense
+  </div>
+
+  <div class="list-icons">
+    <!-- Facebook -->
+    <a class="net-icon">
+      <fa-icon [icon]="['fab', 'facebook']" [styles]="{ color: 'white' }"></fa-icon>
+    </a>
+    <!-- Twitter -->
+    <a class="net-icon">
+      <fa-icon [icon]="['fab', 'twitter']" [styles]="{ color: 'white' }"></fa-icon>
+    </a>
+    <!--Instagram-->
+    <a class="net-icon">
+      <fa-icon [icon]="['fab', 'instagram']" [styles]="{ color: 'white' }"></fa-icon>
+    </a>
+    <!--Pinterest-->
+    <a class="net-icon">
+      <fa-icon [icon]="['fab', 'pinterest']" [styles]="{ color: 'white' }"></fa-icon>
+    </a>
+  </div>
+
+  <div class="footer-copyright">© 2021 CanyonCorp</div>
+</mat-toolbar>
