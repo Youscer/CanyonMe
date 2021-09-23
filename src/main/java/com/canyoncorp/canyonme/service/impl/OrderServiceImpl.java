@@ -3,10 +3,7 @@ package com.canyoncorp.canyonme.service.impl;
 import com.canyoncorp.canyonme.domain.*;
 import com.canyoncorp.canyonme.domain.enumeration.OrderState;
 import com.canyoncorp.canyonme.domain.enumeration.PaymentMode;
-import com.canyoncorp.canyonme.repository.PaymentFeesRepository;
-import com.canyoncorp.canyonme.repository.PersonRepository;
-import com.canyoncorp.canyonme.repository.PurchasedOrderRepository;
-import com.canyoncorp.canyonme.repository.ShippingFeesRepository;
+import com.canyoncorp.canyonme.repository.*;
 import com.canyoncorp.canyonme.security.SecurityUtils;
 import com.canyoncorp.canyonme.service.MailService;
 import com.canyoncorp.canyonme.service.OrderService;
@@ -16,10 +13,7 @@ import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
 import com.canyoncorp.canyonme.service.dto.PersonDTO;
 import com.canyoncorp.canyonme.service.dto.ProductDTO;
 import com.canyoncorp.canyonme.service.dto.PurchasedOrderDTO;
-import com.canyoncorp.canyonme.service.mapper.PersonMapper;
-import com.canyoncorp.canyonme.service.mapper.PersonMapperImpl;
-import com.canyoncorp.canyonme.service.mapper.ProductMapper;
-import com.canyoncorp.canyonme.service.mapper.PurchasedOrderMapper;
+import com.canyoncorp.canyonme.service.mapper.*;
 import com.canyoncorp.canyonme.web.rest.vm.OrderLineVM;
 import com.canyoncorp.canyonme.web.rest.vm.OrderVM;
 import java.time.LocalDate;
@@ -44,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private PaymentFeesRepository paymentFeesRepository;
     private PersonRepository personRepository;
     private PersonMapper personMapper;
+    private OrderLineRepository orderLineRepository;
+    private OrderLineMapper orderLineMapper;
     private final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(
@@ -54,7 +50,9 @@ public class OrderServiceImpl implements OrderService {
         ShippingFeesRepository shippingFeesRepository,
         PaymentFeesRepository paymentFeesRepository,
         PersonRepository personRepository,
-        PersonMapper personMapper
+        PersonMapper personMapper,
+        OrderLineRepository orderLineRepository,
+        OrderLineMapper orderLineMapper
     ) {
         this.productService = productService;
         this.mailService = mailService;
@@ -64,6 +62,8 @@ public class OrderServiceImpl implements OrderService {
         this.paymentFeesRepository = paymentFeesRepository;
         this.personRepository = personRepository;
         this.personMapper = personMapper;
+        this.orderLineRepository = orderLineRepository;
+        this.orderLineMapper = orderLineMapper;
     }
 
     @Transactional
@@ -87,7 +87,9 @@ public class OrderServiceImpl implements OrderService {
 
         // creating new purchasedOrder
         PurchasedOrderDTO purchasedOrderDTO = createPurchasedOrderDTO(order);
-        System.out.println(purchasedOrderDTO);
+        for (int i = 0; i < remainingItems.size(); i++) {
+            createOrderLine(order.getOrderLines().get(i), remainingItems.get(i), purchasedOrderDTO);
+        }
 
         return remainingItems;
     }
@@ -115,6 +117,15 @@ public class OrderServiceImpl implements OrderService {
         return orderLineDTOS;
     }
 
+    public OrderLineDTO createOrderLine(OrderLineVM orderLineVM, ProductDTO productDTO, PurchasedOrderDTO purchasedOrderDTO) {
+        OrderLineDTO orderLineDTO = orderLineVM.toOrderLineDTO();
+        orderLineDTO.setOrder(purchasedOrderDTO);
+        orderLineDTO.setUnitPrice(productDTO.getUnitPrice());
+        orderLineDTO.setProductName(productDTO.getName());
+        OrderLineDTO newOrderLine = orderLineMapper.toDto(orderLineRepository.save(orderLineMapper.toEntity(orderLineDTO)));
+        return newOrderLine;
+    }
+
     private PurchasedOrderDTO createPurchasedOrderDTO(OrderVM orderVM) {
         ShippingFees shippingFees = shippingFeesRepository.getOne(orderVM.getShippingFeesId());
         PaymentFees paymentFees = paymentFeesRepository.getOne(orderVM.getPaymentFeesId());
@@ -133,6 +144,7 @@ public class OrderServiceImpl implements OrderService {
         // inserting to db
         PurchasedOrder purchasedOrder = purchasedOrderMapper.toEntity(purchasedOrderDTO);
         PurchasedOrderDTO newOrder = purchasedOrderMapper.toDto(purchasedOrderRepository.save(purchasedOrder));
+
         if (newOrder != null && !personDTOS.isEmpty()) mailService.sendEmail(
             personDTOS.get(0).getEmail(),
             "CanYonMe order " + newOrder.getId(),
@@ -140,6 +152,6 @@ public class OrderServiceImpl implements OrderService {
             false,
             false
         );
-        return purchasedOrderDTO;
+        return newOrder;
     }
 }

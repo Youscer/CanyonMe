@@ -1,5 +1,7 @@
 package com.canyoncorp.canyonme.web.rest.vm;
 
+import com.canyoncorp.canyonme.service.dto.OrderLineDTO;
+
 public class OrderLineVM {
 
     private Long productId;
@@ -10,6 +12,13 @@ public class OrderLineVM {
     public OrderLineVM(Long productId, Long quantity) {
         this.productId = productId;
         this.quantity = quantity;
+    }
+
+    public OrderLineDTO toOrderLineDTO() {
+        OrderLineDTO orderLineDTO = new OrderLineDTO();
+        orderLineDTO.setQuantity(quantity);
+        orderLineDTO.setProduct(productId);
+        return orderLineDTO;
     }
 
     public Long getProductId() {
