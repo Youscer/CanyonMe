@@ -1,0 +1,33 @@
+{
+  "canyonMeApp": {
+    "purchasedOrder": {
+      "home": {
+        "title": "Purchased Orders",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Purchased Order",
+        "createOrEditLabel": "Create or edit a Purchased Order",
+        "notFound": "No Purchased Orders found"
+      },
+      "created": "A new Purchased Order is created with identifier {{ param }}",
+      "updated": "A Purchased Order is updated with identifier {{ param }}",
+      "deleted": "A Purchased Order is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Purchased Order {{ id }}?"
+      },
+      "detail": {
+        "title": "Purchased Order"
+      },
+      "id": "Id",
+      "orderDate": "Order Date",
+      "orderState": "Order State",
+      "shippingMode": "Shipping Mode",
+      "shippingFees": "Shipping Fees",
+      "paymentMode": "Payment Mode",
+      "paymentFees": "Payment Fees",
+      "shippingAddress": "Shipping Address",
+      "billingAddress": "Billing Address",
+      "orderLine": "Order Line",
+      "person": "Person"
+    }
+  }
+}

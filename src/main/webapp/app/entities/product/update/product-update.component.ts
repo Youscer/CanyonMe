@@ -7,19 +7,24 @@ import { finalize } from 'rxjs/operators';
 
 import { IProduct, Product } from '../product.model';
 import { ProductService } from '../service/product.service';
+import { Picture } from '../../picture/picture.model';
 
 @Component({
   selector: 'jhi-product-update',
   templateUrl: './product-update.component.html',
+  styleUrls: ['./product-update.component.scss'],
 })
 export class ProductUpdateComponent implements OnInit {
   isSaving = false;
+  pictures: Array<string> | undefined;
 
   editForm = this.fb.group({
-    id: [null, [Validators.required]],
+    id: [],
     name: [null, [Validators.required]],
+    brand: [null, [Validators.required]],
     description: [null, [Validators.required]],
     unitPrice: [null, [Validators.required]],
+    quantity: [null, [Validators.required]],
   });
 
   constructor(protected productService: ProductService, protected activatedRoute: ActivatedRoute, protected fb: FormBuilder) {}
@@ -44,6 +49,10 @@ export class ProductUpdateComponent implements OnInit {
     }
   }
 
+  public getPictures(pictures: Array<string>): void {
+    this.pictures = pictures;
+  }
+
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IProduct>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe(
       () => this.onSaveSuccess(),
@@ -61,14 +70,17 @@ export class ProductUpdateComponent implements OnInit {
 
   protected onSaveFinalize(): void {
     this.isSaving = false;
+    this.pictures = [];
   }
 
   protected updateForm(product: IProduct): void {
     this.editForm.patchValue({
       id: product.id,
       name: product.name,
+      brand: product.brand,
       description: product.description,
       unitPrice: product.unitPrice,
+      quantity: product.quantity,
     });
   }
 
@@ -77,8 +89,11 @@ export class ProductUpdateComponent implements OnInit {
       ...new Product(),
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
+      brand: this.editForm.get(['brand'])!.value,
       description: this.editForm.get(['description'])!.value,
       unitPrice: this.editForm.get(['unitPrice'])!.value,
+      quantity: this.editForm.get(['quantity'])!.value,
+      pictures: this.pictures?.map(p => new Picture(null, p, null)),
     };
   }
 }

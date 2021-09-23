@@ -1,0 +1,36 @@
+<div class="p-root">
+  <h2 id="page-heading" data-cy="ProductHeading">
+    <span jhiTranslate="canyonMeApp.product.home.title">Products</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="canyonMeApp.product.home.refreshListLabel">Refresh List</span>
+      </button>
+    </div>
+  </h2>
+
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+  <div class="main-div">
+    <div class="p-filters mat-elevation-z3">
+      <span class="h3"> Filters </span>
+      <span>Min price : {{ minValue | currency }}</span>
+      <mat-slider thumbLabel tickInterval="1000" step="5" min="0" [max]="maxValue" [(ngModel)]="minValue" (change)="loadAll()" aria-label="units"></mat-slider>
+      <span>Max price : {{ maxValue | currency }}</span>
+      <mat-slider thumbLabel tickInterval="1000" step="5" [min]="minValue" max="500" [(ngModel)]="maxValue" (change)="loadAll()" aria-label="units"></mat-slider>
+    </div>
+    <div>
+      <div class="alert alert-warning" id="no-result" *ngIf="products?.length === 0">
+        <span jhiTranslate="canyonMeApp.product.home.notFound">No products found</span>
+      </div>
+
+      <div *ngIf="products && products.length > 0" class="mat-elevation-z3">
+        <jhi-product-grid [products]="products!"></jhi-product-grid>
+      </div>
+    </div>
+  </div>
+
+</div>

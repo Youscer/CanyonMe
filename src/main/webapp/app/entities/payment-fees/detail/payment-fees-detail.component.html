@@ -1,0 +1,36 @@
+<div class="row justify-content-center">
+  <div class="col-8">
+    <div *ngIf="paymentFees">
+      <h2 data-cy="paymentFeesDetailsHeading"><span jhiTranslate="canyonMeApp.paymentFees.detail.title">Payment Fees</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ paymentFees.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.paymentFees.paymentMode">Payment Mode</span></dt>
+        <dd>
+          <span jhiTranslate="{{ 'canyonMeApp.PaymentMode.' + paymentFees.paymentMode }}">{{ paymentFees.paymentMode }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.paymentFees.fees">Fees</span></dt>
+        <dd>
+          <span>{{ paymentFees.fees }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/entities', 'payment-fees', paymentFees.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

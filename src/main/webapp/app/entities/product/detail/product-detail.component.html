@@ -18,6 +18,10 @@
         <dd>
           <span>{{ product.name }}</span>
         </dd>
+        <dt><span jhiTranslate="canyonMeApp.product.brand">Brand</span></dt>
+        <dd>
+          <span>{{ product.brand }}</span>
+        </dd>
         <dt><span jhiTranslate="canyonMeApp.product.description">Description</span></dt>
         <dd>
           <span>{{ product.description }}</span>
@@ -26,13 +30,17 @@
         <dd>
           <span>{{ product.unitPrice }}</span>
         </dd>
+        <dt><span jhiTranslate="canyonMeApp.product.quantity">Quantity</span></dt>
+        <dd>
+          <span>{{ product.quantity }}</span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/entities', 'product', product.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

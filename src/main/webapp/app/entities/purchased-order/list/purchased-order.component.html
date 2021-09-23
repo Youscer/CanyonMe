@@ -1,0 +1,98 @@
+<div>
+  <h2 id="page-heading" data-cy="PurchasedOrderHeading">
+    <span jhiTranslate="canyonMeApp.purchasedOrder.home.title">Purchased Orders</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="canyonMeApp.purchasedOrder.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-purchased-order"
+        [routerLink]="['/entities/purchased-order/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="canyonMeApp.purchasedOrder.home.createLabel"> Create a new Purchased Order </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="purchasedOrders?.length === 0">
+    <span jhiTranslate="canyonMeApp.purchasedOrder.home.notFound">No purchasedOrders found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="purchasedOrders && purchasedOrders.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.id">Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.orderDate">Order Date</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.orderState">Order State</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.shippingMode">Shipping Mode</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.shippingFees">Shipping Fees</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.paymentMode">Payment Mode</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.paymentFees">Payment Fees</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.shippingAddress">Shipping Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.billingAddress">Billing Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.purchasedOrder.person">Person</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let purchasedOrder of purchasedOrders; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/entities', 'purchased-order', purchasedOrder.id, 'view']">{{ purchasedOrder.id }}</a>
+          </td>
+          <td>{{ purchasedOrder.orderDate | formatMediumDate }}</td>
+          <td jhiTranslate="{{ 'canyonMeApp.OrderState.' + purchasedOrder.orderState }}">{{ purchasedOrder.orderState }}</td>
+          <td>{{ purchasedOrder.shippingMode }}</td>
+          <td>{{ purchasedOrder.shippingFees }}</td>
+          <td>{{ purchasedOrder.paymentMode }}</td>
+          <td>{{ purchasedOrder.paymentFees }}</td>
+          <td>{{ purchasedOrder.shippingAddress }}</td>
+          <td>{{ purchasedOrder.billingAddress }}</td>
+          <td>
+            <div *ngIf="purchasedOrder.person">
+              <a [routerLink]="['/entities', 'person', purchasedOrder.person?.id, 'view']">{{ purchasedOrder.person?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/entities', 'purchased-order', purchasedOrder.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/entities', 'purchased-order', purchasedOrder.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(purchasedOrder)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,134 @@
+
+
+// Entities
+
+entity ShippingFees {
+	shippingMode ShippingMode required
+    fees Float required
+}
+
+entity PaymentFees {
+	paymentMode PaymentMode required
+    fees Float required
+}
+
+entity Address {
+	streetNumber String
+    street String required
+    compliment1 String
+    compliment2 String
+    zipCode Integer required
+    city String required
+    state String
+    country String required
+}
+
+entity Person {
+	id Long required
+    firstname String required
+    lastname String required
+    genderId Gender required
+    email String required
+    password String required
+}
+
+entity Client {
+	id Long required
+    birthDate String required
+}
+
+entity Employee {
+    id Long required
+    role Role required
+}
+
+entity PurchaseOrder {
+	id Long required
+    orderDate LocalDate required
+    orderStateId OrderState required
+    shippingMode String 
+    shippingFees Float 
+    paymentMode String 
+    paymentFees Float 
+}
+
+entity OrderLine {
+	id Long required
+    productId Long required
+    productName String required
+    quantity Long required
+    unitPrice Float required
+    discount Float
+}
+
+entity Product {
+	id Long required
+    name String required
+    description String required
+    unitPrice Float required
+}
+
+entity Picture {
+	link String required
+}
+
+entity Discount {
+	rate Float required
+    startDate LocalDate
+    endDate LocalDate
+}
+
+// Enumerations
+
+enum Role {
+	STOCK_MANAGER
+    ORDER_PREPARATOR
+    SELLER
+}
+
+enum ShippingMode {
+	DHL
+}
+
+enum PaymentMode {
+	YES_CARD
+}
+
+enum Gender {
+	MISTER, MISS, NON_BINARY
+}
+
+enum OrderState {
+	NEW, TO_COMPLETE, VALIDATED, PAYED, TO_SEND, SENT
+}
+
+// Relationships
+
+relationship ManyToOne {
+	Picture{productId} to Product
+}
+
+relationship OneToOne {
+	Client{billingAddress} to Address
+    Client{shippingAddress} to Address
+}
+
+relationship OneToMany {
+	Client{personId} to Person
+}
+
+relationship OneToMany {
+	Employee{personId} to Person
+}
+
+relationship OneToMany {
+	Client to PurchaseOrder{clientId}
+}
+
+relationship OneToMany {
+	PurchaseOrder to OrderLine{orderId}
+}
+
+relationship OneToMany {
+	Product to Discount{productId}
+}

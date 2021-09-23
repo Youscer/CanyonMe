@@ -77,6 +77,12 @@ out/
 *.code-workspace
 
 ######################
+# Visual Studio Code
+# JDL plugin auto generated images
+######################
+*.png
+
+######################
 # Maven
 ######################
 /log/

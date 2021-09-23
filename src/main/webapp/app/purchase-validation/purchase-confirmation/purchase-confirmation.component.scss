@@ -1,0 +1,19 @@
+.canyonme {
+  display: block;
+  width: 30%;
+}
+
+.confirm-purchase {
+  display: flex;
+}
+
+.confirm-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirm-message > * {
+  margin: 20px;
+}

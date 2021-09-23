@@ -12,8 +12,10 @@
     <link rel="icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webapp" />
     <link rel="stylesheet" href="content/css/loading.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
   </head>
+
   <body>
     <!--[if lt IE 9]>
       <p class="browserupgrade">
@@ -108,6 +110,7 @@
       window.onload = function () {
         setTimeout(showError, 4000);
       };
+
       function showError() {
         var errorElm = document.getElementById('jhipster-error');
         if (errorElm && errorElm.style) {

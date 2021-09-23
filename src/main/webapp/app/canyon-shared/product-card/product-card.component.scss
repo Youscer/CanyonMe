@@ -1,0 +1,127 @@
+.pcard {
+  --card-w: 200px;
+  --card-h: 250px;
+  --pad: 20px;
+  --t-time: 0.2s;
+
+  --span-w: calc(var(--card-w) + var(--pad));
+
+  padding: var(--pad);
+  transition: var(--t-time);
+}
+
+.pcard-info {
+  cursor: pointer;
+}
+
+.pcard > mat-card {
+  padding: 0px !important;
+  border: 1px solid lightgray !important;
+  transition: border var(--t-time);
+  overflow: hidden;
+}
+
+.pcard > mat-card:hover {
+  border: 1px solid rgba($color: #3f51b5, $alpha: 1) !important;
+  transition: border var(--t-time);
+}
+
+.pcard:hover .pcard-img {
+  width: calc(var(--card-w) + var(--pad));
+  height: calc(var(--card-h) + var(--pad));
+  transition: var(--t-time);
+}
+
+.pcard:hover .pcard-name > span {
+  width: calc(var(--span-w) + var(--pad));
+  transition: var(--t-time);
+}
+
+.pcard:hover {
+  padding: calc(var(--pad) / 2);
+  transition: var(--t-time);
+}
+
+.pcard:hover .pcard-button {
+  height: 50px;
+  border-top-left-radius: 0%;
+  border-top-right-radius: 0%;
+  transition: var(--t-time);
+}
+
+.pcard:hover .pcard-price {
+  height: 0px;
+  transition: 0s;
+}
+
+.pcard-img {
+  width: var(--card-w);
+  height: var(--card-h);
+  margin-right: 5px;
+  margin-left: 5px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  transition: var(--t-time);
+}
+
+.pcard-name {
+  background-color: rgba($color: rgb(230, 230, 230), $alpha: 0.8);
+  position: absolute;
+  top: 0px;
+}
+
+.pcard-name span {
+  text-align: center;
+  padding-top: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  width: var(--span-w);
+  height: 40px;
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  text-overflow: ellipsis;
+  transition: var(--t-time);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.pcard-button {
+  background-color: rgba($color: rgb(230, 230, 230), $alpha: 0.8);
+  position: absolute;
+  bottom: 0;
+  height: 0px;
+  width: 100%;
+  border-top-left-radius: 100%;
+  border-top-right-radius: 100%;
+  transition: var(--t-time);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.pcard-button span {
+  padding-left: 10px;
+  color: black;
+}
+
+.pcard-price {
+  /*   background-color: rgba($color: rgb(230, 100, 100), $alpha: 0.8); */
+  position: absolute;
+  bottom: -10px;
+  height: 50px;
+  width: 100%;
+
+  display: flex;
+  justify-content: start;
+  align-items: flex-end;
+  overflow: hidden;
+  transition: var(--t-time);
+}
+
+.pcard-price > span {
+  padding-left: 10px;
+}

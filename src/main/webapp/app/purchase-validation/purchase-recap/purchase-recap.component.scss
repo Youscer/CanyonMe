@@ -1,0 +1,100 @@
+@use '~@angular/material' as mat;
+.required::after {
+  content: ' *';
+  color: red;
+}
+
+.form-control.ng-invalid ~ label.checkbox-inline::after {
+  content: ' *';
+  color: red;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.mat-radio-button {
+  margin: 0 12px;
+}
+
+.adresses {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  margin-bottom: 2%;
+}
+
+.adresses .left-side {
+  width: 50%;
+  padding-right: 5%;
+}
+
+.adresses .right-side {
+  width: 50%;
+  padding-right: 5%;
+  margin-left: auto;
+}
+
+.order-validation {
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+
+.order-validation .left-side {
+  width: 50%;
+  margin-bottom: 5%;
+}
+
+.order-validation .right-side {
+  width: 40%;
+  margin-top: 41px;
+  margin-left: 10%;
+}
+
+table {
+  width: 100%;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.cart-card-container {
+  padding-right: 50px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.cart-item-card {
+  max-height: 200px;
+  background-color: #eeeeee;
+}
+
+.cart-item-card-button {
+  background-color: #ddd;
+}
+
+.adress-card {
+  background-color: #eeeeee;
+  display: block;
+  position: sticky;
+  top: 20px;
+  margin-left: 10%;
+}
+
+.total {
+  margin-bottom: 2%;
+  margin-top: 2%;
+}
+
+.sous-total {
+  display: flex;
+}
+
+.sous-montant {
+  margin-left: auto;
+  margin-right: 25%;
+}
+
+.recap {
+  display: flex;
+}

@@ -19,9 +19,11 @@
       },
       "id": "Id",
       "name": "Name",
+      "brand": "Brand",
       "description": "Description",
       "unitPrice": "Unit Price",
-      "orderLine": "Order Line"
+      "quantity": "Quantity",
+      "discount": "Discount"
     }
   }
 }

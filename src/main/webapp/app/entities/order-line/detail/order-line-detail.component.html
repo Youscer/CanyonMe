@@ -14,6 +14,14 @@
         <dd>
           <span>{{ orderLine.id }}</span>
         </dd>
+        <dt><span jhiTranslate="canyonMeApp.orderLine.product">Product</span></dt>
+        <dd>
+          <span>{{ orderLine.product }}</span>
+        </dd>
+        <dt><span jhiTranslate="canyonMeApp.orderLine.productName">Product Name</span></dt>
+        <dd>
+          <span>{{ orderLine.productName }}</span>
+        </dd>
         <dt><span jhiTranslate="canyonMeApp.orderLine.quantity">Quantity</span></dt>
         <dd>
           <span>{{ orderLine.quantity }}</span>
@@ -22,16 +30,14 @@
         <dd>
           <span>{{ orderLine.unitPrice }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.orderLine.orderId">Order Id</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.orderLine.discount">Discount</span></dt>
         <dd>
-          <div *ngIf="orderLine.orderId">
-            <a [routerLink]="['/purchase-order', orderLine.orderId?.id, 'view']">{{ orderLine.orderId?.id }}</a>
-          </div>
+          <span>{{ orderLine.discount }}</span>
         </dd>
-        <dt><span jhiTranslate="canyonMeApp.orderLine.productId">Product Id</span></dt>
+        <dt><span jhiTranslate="canyonMeApp.orderLine.order">Order</span></dt>
         <dd>
-          <div *ngIf="orderLine.productId">
-            <a [routerLink]="['/product', orderLine.productId?.id, 'view']">{{ orderLine.productId?.id }}</a>
+          <div *ngIf="orderLine.order">
+            <a [routerLink]="['/entities', 'purchased-order', orderLine.order?.id, 'view']">{{ orderLine.order?.id }}</a>
           </div>
         </dd>
       </dl>
@@ -40,7 +46,7 @@
         <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
       </button>
 
-      <button type="button" [routerLink]="['/order-line', orderLine.id, 'edit']" class="btn btn-primary">
+      <button type="button" [routerLink]="['/entities', 'order-line', orderLine.id, 'edit']" class="btn btn-primary">
         <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
       </button>
     </div>

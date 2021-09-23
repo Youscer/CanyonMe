@@ -1,0 +1,110 @@
+<div>
+  <h2 id="page-heading" data-cy="PersonHeading">
+    <span jhiTranslate="canyonMeApp.person.home.title">People</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info mr-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="canyonMeApp.person.home.refreshListLabel">Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-person"
+        [routerLink]="['/entities/person/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="canyonMeApp.person.home.createLabel"> Create a new Person </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="people?.length === 0">
+    <span jhiTranslate="canyonMeApp.person.home.notFound">No people found</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="people && people.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.id">Id</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.firstname">Firstname</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.lastname">Lastname</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.gender">Gender</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.birthDate">Birth Date</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.email">Email</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.password">Password</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.billingAddress">Billing Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.shippingAddress">Shipping Address</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.user">User</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.person.employee">Employee</span></th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of people; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/entities', 'person', person.id, 'view']">{{ person.id }}</a>
+          </td>
+          <td>{{ person.firstname }}</td>
+          <td>{{ person.lastname }}</td>
+          <td jhiTranslate="{{ 'canyonMeApp.Gender.' + person.gender }}">{{ person.gender }}</td>
+          <td>{{ person.birthDate | formatMediumDatetime }}</td>
+          <td>{{ person.email }}</td>
+          <td>{{ person.password }}</td>
+          <td>
+            <div *ngIf="person.billingAddress">
+              <a [routerLink]="['/entities', 'address', person.billingAddress?.id, 'view']">{{ person.billingAddress?.id }}</a>
+            </div>
+          </td>
+          <td>
+            <div *ngIf="person.shippingAddress">
+              <a [routerLink]="['/entities', 'address', person.shippingAddress?.id, 'view']">{{ person.shippingAddress?.id }}</a>
+            </div>
+          </td>
+          <td>
+            {{ person.user?.login }}
+          </td>
+          <td>
+            <div *ngIf="person.employee">
+              <a [routerLink]="['/entities', 'employee', person.employee?.id, 'view']">{{ person.employee?.id }}</a>
+            </div>
+          </td>
+          <td class="text-right">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/entities', 'person', person.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/entities', 'person', person.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(person)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

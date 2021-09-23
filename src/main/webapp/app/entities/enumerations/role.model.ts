@@ -1,0 +1,7 @@
+export enum Role {
+  STOCK_MANAGER = 'STOCK_MANAGER',
+
+  ORDER_PREPARATOR = 'ORDER_PREPARATOR',
+
+  SELLER = 'SELLER',
+}

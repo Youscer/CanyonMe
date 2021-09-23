@@ -22,8 +22,11 @@ describe('Service Tests', () => {
 
       elemDefault = {
         id: 0,
+        product: 0,
+        productName: 'AAAAAAA',
         quantity: 0,
         unitPrice: 0,
+        discount: 0,
       };
     });
 
@@ -59,8 +62,11 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
+            product: 1,
+            productName: 'BBBBBB',
             quantity: 1,
             unitPrice: 1,
+            discount: 1,
           },
           elemDefault
         );
@@ -77,8 +83,8 @@ describe('Service Tests', () => {
       it('should partial update a OrderLine', () => {
         const patchObject = Object.assign(
           {
-            quantity: 1,
-            unitPrice: 1,
+            product: 1,
+            productName: 'BBBBBB',
           },
           new OrderLine()
         );
@@ -98,8 +104,11 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 1,
+            product: 1,
+            productName: 'BBBBBB',
             quantity: 1,
             unitPrice: 1,
+            discount: 1,
           },
           elemDefault
         );
@@ -151,7 +160,7 @@ describe('Service Tests', () => {
         });
 
         it('should add only unique OrderLine to an array', () => {
-          const orderLineArray: IOrderLine[] = [{ id: 123 }, { id: 456 }, { id: 41751 }];
+          const orderLineArray: IOrderLine[] = [{ id: 123 }, { id: 456 }, { id: 91128 }];
           const orderLineCollection: IOrderLine[] = [{ id: 123 }];
           expectedResult = service.addOrderLineToCollectionIfMissing(orderLineCollection, ...orderLineArray);
           expect(expectedResult).toHaveLength(3);

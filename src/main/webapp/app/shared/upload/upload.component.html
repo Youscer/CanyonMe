@@ -1,0 +1,46 @@
+<!-- <div>
+	<input type="file" (change)="uploadFile($event)">
+	<div>{{ progress$ | async }}</div>
+	<a [href]="url$ | async">{{ url$ | async }}</a>
+</div> -->
+
+<div class="container">
+  <div class="container">
+    <mat-form-field class="full-width" appearance="outline">
+      <div class="myfilebrowser">
+        <mat-toolbar>
+          <!-- Readonly Input to show File names -->
+          <input matInput [(ngModel)]="path" readonly />
+          <!-- Browse Button -->
+          <button mat-flat-button color="primary">Browse</button>
+        </mat-toolbar>
+        <!-- Fetch selected filed on change -->
+        <input
+          type="file"
+          #UploadFileInput
+          id="fileUpload"
+          (change)="uploadFile($event)"
+          name="fileUpload"
+          multiple="multiple"
+          accept="image/*"
+        />
+      </div>
+    </mat-form-field>
+  </div>
+
+  <div class="container" *ngIf="links.length > 0">
+    <mat-progress-bar mode="determinate" value="{{ progress$ | async }}"></mat-progress-bar>
+    <mat-divider></mat-divider>
+    <mat-grid-list cols="4">
+      <mat-grid-tile *ngFor="let link of links">
+        <a target="_blank" href="{{ link }}">
+          <img src="{{ link }}" />
+        </a>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div>
+
+<!-- <label class="btn btn-outline-primary">
+	<input type="file" >
+</label> -->

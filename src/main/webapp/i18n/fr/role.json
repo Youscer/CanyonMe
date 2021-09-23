@@ -1,0 +1,10 @@
+{
+  "canyonMeApp": {
+    "Role": {
+      "null": "",
+      "STOCK_MANAGER": "STOCK_MANAGER",
+      "ORDER_PREPARATOR": "ORDER_PREPARATOR",
+      "SELLER": "SELLER"
+    }
+  }
+}

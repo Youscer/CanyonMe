@@ -12,7 +12,7 @@
         id="jh-create-entity"
         data-cy="entityCreateButton"
         class="btn btn-primary jh-create-entity create-product"
-        [routerLink]="['/product/new']"
+        [routerLink]="['/entities/product/new']"
       >
         <fa-icon icon="plus"></fa-icon>
         <span jhiTranslate="canyonMeApp.product.home.createLabel"> Create a new Product </span>
@@ -34,24 +34,28 @@
         <tr>
           <th scope="col"><span jhiTranslate="canyonMeApp.product.id">Id</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.product.name">Name</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.product.brand">Brand</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.product.description">Description</span></th>
           <th scope="col"><span jhiTranslate="canyonMeApp.product.unitPrice">Unit Price</span></th>
+          <th scope="col"><span jhiTranslate="canyonMeApp.product.quantity">Quantity</span></th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let product of products; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/product', product.id, 'view']">{{ product.id }}</a>
+            <a [routerLink]="['/entities', 'product', product.id, 'view']">{{ product.id }}</a>
           </td>
           <td>{{ product.name }}</td>
+          <td>{{ product.brand }}</td>
           <td>{{ product.description }}</td>
           <td>{{ product.unitPrice }}</td>
+          <td>{{ product.quantity }}</td>
           <td class="text-right">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/product', product.id, 'view']"
+                [routerLink]="['/entities', 'product', product.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -61,7 +65,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/product', product.id, 'edit']"
+                [routerLink]="['/entities', 'product', product.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >

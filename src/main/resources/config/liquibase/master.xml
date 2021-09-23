@@ -15,13 +15,22 @@
     <property name="datetimeType" value="datetime" dbms="oracle, mssql, postgresql, h2"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210909073254_added_entity_Client.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210909073255_added_entity_PurchaseOrder.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210909073256_added_entity_OrderLine.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210909073257_added_entity_Product.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114851_added_entity_ShippingFees.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114852_added_entity_PaymentFees.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114853_added_entity_Address.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114854_added_entity_Person.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114855_added_entity_Employee.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114856_added_entity_PurchasedOrder.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114857_added_entity_OrderLine.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114858_added_entity_Product.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114859_added_entity_Picture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114900_added_entity_Discount.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <include file="config/liquibase/changelog/20210909073255_added_entity_constraints_PurchaseOrder.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20210909073256_added_entity_constraints_OrderLine.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114854_added_entity_constraints_Person.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114856_added_entity_constraints_PurchasedOrder.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114857_added_entity_constraints_OrderLine.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114859_added_entity_constraints_Picture.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210911114900_added_entity_constraints_Discount.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

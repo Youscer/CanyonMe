@@ -1,0 +1,124 @@
+<div>
+  <h2 id="page-heading" data-cy="ProductHeading">
+    <span>My Cart</span>
+
+    <div class="d-flex justify-content-end">
+      <button mat-raised-button color="primary" class="mr-2" (click)="deleteCart()" [disabled]="cart.items.length === 0">
+        <fa-icon icon="clipboard-list"></fa-icon>
+        Delete Cart
+      </button>
+      <button mat-raised-button color="primary" class="mr-2" (click)="refreshCart()" [disabled]="isLoading || cart.items.length === 0">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="canyonMeApp.product.home.refreshListLabel">Refresh List</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="main-container">
+    <!-- Card No Item -->
+    <div *ngIf="cart.items.length === 0" class="no-item" style="flex: 3">
+      <mat-card class="d-flex justify-content-center align-items-center cart-item-card flex-column mat-elevation-z3">
+        <span class="h3">Your cart is empty</span>
+        <button mat-raised-button color="primary" [routerLink]="['/']" class="mat-elevation-z1" style="width: 100%; max-width: 300px">
+          <mat-icon>playlist_add_check</mat-icon>
+          <span>Continue shopping</span>
+        </button>
+      </mat-card>
+    </div>
+
+    <!-- Card Items -->
+    <div *ngIf="cart.items && cart.items.length > 0" style="flex: 3">
+      <!-- labels -->
+      <div class="cart-item-card mat-elevation-z3 labels">
+        <div class="item-card-content">
+          <div class="detail-name text-center" style="flex: 2">
+            <span>Item</span>
+          </div>
+          <!-- <div class="divider"></div> -->
+          <!--           <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider> -->
+          <div class="detail-quantity text-center" style="flex: 1">
+            <span>Quantity</span>
+          </div>
+          <!--           <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider> -->
+          <div class="detail-price text-center" style="flex: 1">
+            <span>Price</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-card *ngFor="let item of cart.items" class="cart-item-card mat-elevation-z3">
+        <mat-card-content class="item-card-content">
+          <!-- Item Image -->
+          <a [routerLink]="['/catalog', item.product.id]">
+            <div class="detail-img" [ngStyle]="{ 'background-image': 'url(' + getLink(item.product) + ')' }"></div>
+          </a>
+          <!-- Item Details -->
+          <div class="detail-name">
+            <a [routerLink]="['/catalog', item.product.id]">
+              <span class="h4"> {{ item.product.name }} </span>
+            </a>
+          </div>
+
+          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
+
+          <!-- Quantity manager -->
+          <div class="detail-quantity">
+            <button
+              mat-raised-button
+              color="primary"
+              class="cart-item-card-button button-minus mat-elevation-z1"
+              mat-button
+              (click)="addQuantity(item.product, -1)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+            <span class="h4 span-quantity">{{ item.quantity }}</span>
+            <button
+              mat-raised-button
+              color="primary"
+              class="cart-item-card-button button-plus mat-elevation-z1"
+              mat-button
+              (click)="addQuantity(item.product, 1)"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" class="cart-item-card-button mat-elevation-z1" mat-button (click)="deleteItem(item)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+
+          <mat-divider [vertical]="true" class="mat-divider-vertical"></mat-divider>
+
+          <!-- Total price -->
+          <div class="detail-price">
+            <span class="h4">{{ item.product.unitPrice * item.quantity | currency }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Card Order -->
+    <mat-card class="d-flex flex-column order-card justify-content-between mat-elevation-z3" style="flex: 1">
+      <div class="d-flex flex-column px-4">
+        <span class="h2">Total price</span>
+        <div class="my-3 vdivider"></div>
+        <span *ngIf="cart.items.length !== 0" class="h3" style="text-align: end">{{ getTotalPrice() | currency }}</span>
+        <span *ngIf="cart.items.length === 0" class="h3" style="text-align: end">--</span>
+      </div>
+      <button
+        mat-raised-button
+        color="primary"
+        [routerLink]="['/purchase-validation']"
+        class="mat-elevation-z1"
+        [disabled]="cart.items.length === 0"
+      >
+        <mat-icon>playlist_add_check</mat-icon>
+        <span>Checkout</span>
+      </button>
+    </mat-card>
+  </div>
+</div>

@@ -1,6 +1,8 @@
 @import 'bootstrap-variables';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
+@import '~@angular/material/theming';
+@include mat-core();
 
 /* ==============================================================
 Bootstrap tweaks
@@ -15,6 +17,7 @@ h4 {
 }
 
 /* Increase contrast of links to get 100% on Lighthouse Accessability Audit. Override this color if you want to change the link color, or use a Bootswatch theme */
+
 a {
   color: #533f03;
   font-weight: bold;
@@ -25,11 +28,13 @@ a:hover {
 }
 
 /* override hover color for dropdown-item forced by bootstrap to all a:not([href]):not([tabindex]) elements in _reboot.scss */
+
 a:not([href]):not([tabindex]):hover.dropdown-item {
   color: $dropdown-link-hover-color;
 }
 
 /* override .dropdown-item.active background-color on hover */
+
 .dropdown-item.active:hover {
   background-color: mix($dropdown-link-hover-bg, $dropdown-link-active-bg, 50%);
 }
@@ -46,6 +51,7 @@ a:hover {
 /* ==========================================================================
 Browser Upgrade Prompt
 ========================================================================== */
+
 .browserupgrade {
   margin: 0.2em 0;
   background: #ccc;
@@ -58,6 +64,7 @@ Generic styles
 ========================================================================== */
 
 /* Error highlight on input fields */
+
 .ng-valid[required],
 .ng-valid.required {
   border-left: 5px solid green;
@@ -114,6 +121,7 @@ Generic styles
 /* ==========================================================================
 Custom alerts for notification
 ========================================================================== */
+
 .alerts {
   .alert {
     text-overflow: ellipsis;
@@ -156,6 +164,7 @@ Custom alerts for notification
 /* ==========================================================================
 entity detail page css
 ========================================================================== */
+
 .row-md.jh-entity-details {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -185,6 +194,7 @@ entity detail page css
 /* ==========================================================================
 ui bootstrap tweaks
 ========================================================================== */
+
 .nav,
 .pagination,
 .carousel,
@@ -200,3 +210,8 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */
+
+.align-buttons {
+  display: flex;
+  justify-content: space-around;
+}
