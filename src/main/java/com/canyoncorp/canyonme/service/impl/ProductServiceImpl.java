@@ -18,9 +18,11 @@ import com.canyoncorp.canyonme.web.rest.vm.PictureVM;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import javax.persistence.LockModeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,7 +119,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     /* Methodes to purchase and creat a product */
-
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     public Optional<ProductDTO> purchase(OrderLineDTO orderLineDTO) {
         Optional<ProductDTO> product = getProduct(orderLineDTO);
 
@@ -150,6 +152,12 @@ public class ProductServiceImpl implements ProductService {
         }
         newProductDTO.setPictures(pictureDTOS);
         return newProductDTO;
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        pictureService.deletePicturesOfProduct(id);
+        productRepository.deleteById(id);
     }
 
     private void setPictures(ProductDTO productDTO) {

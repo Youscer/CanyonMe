@@ -9,4 +9,6 @@ public interface PictureService {
     List<PictureDTO> getProductPictures(ProductDTO product);
 
     PictureDTO creatPicture(PictureVM pictureVM, ProductDTO productDTO);
+
+    public void deletePicturesOfProduct(Long id);
 }

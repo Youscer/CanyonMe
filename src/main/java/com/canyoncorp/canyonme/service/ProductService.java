@@ -25,6 +25,8 @@ public interface ProductService {
 
     public ProductDTO addProduct(ProductDTO productDTO);
 
+    public void deleteProduct(Long id);
+
     // TODO: add function to remove a product (Qeury)
 
     // purchase operations
