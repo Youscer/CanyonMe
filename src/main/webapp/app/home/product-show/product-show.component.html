@@ -1,0 +1,18 @@
+<div class="container">
+  <h2>Our new products</h2>
+  <div class="row align-items-center">
+    <div class="col-md-1">
+      <button mat-mini-fab color="primary" aria-label="previous product" (click)="updateElements(-1)">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+    </div>
+    <div class="col-md-10">
+      <jhi-product-grid [products]="products"></jhi-product-grid>
+    </div>
+    <div class="col-md-1">
+      <button mat-mini-fab color="primary" aria-label="next product" (click)="updateElements(1)">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

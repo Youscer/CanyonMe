@@ -36,7 +36,7 @@ import { purchaseValidationRoutes } from './purchase-validation.route';
     MatDividerModule,
     MatCardModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   exports: [RouterModule],
   declarations: [PurchaseRecapComponent, PurchaseConfirmationComponent, DialogOrderComponent],

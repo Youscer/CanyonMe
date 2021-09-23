@@ -82,14 +82,14 @@ export class CartService {
   }
 
   adjustQuantity(conflict: IProduct[]): string[] {
-    const changes : string[] = [];
+    const changes: string[] = [];
     conflict.forEach(productConflict => {
       if (productConflict.quantity > 0) {
         this.cart.changeQuantitySet(productConflict, productConflict.quantity);
-        changes.push(productConflict.name + " have been reduced from your cart to " + String(productConflict.quantity));
+        changes.push(productConflict.name + ' have been reduced from your cart to ' + String(productConflict.quantity));
       } else {
         this.cart.deleteProduct(productConflict.id);
-        changes.push(productConflict.name + " have been removed from your cart, no more stock");
+        changes.push(productConflict.name + ' have been removed from your cart, no more stock');
       }
     });
     return changes;

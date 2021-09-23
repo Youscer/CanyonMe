@@ -62,11 +62,11 @@ export class CartComponent implements OnInit {
     return this.cartService.getTotalPrice();
   }
 
-  getLink(product: IProduct) : string{
-    if( product.pictures && product.pictures.length > 0 && product.pictures[0].link){
+  getLink(product: IProduct): string {
+    if (product.pictures && product.pictures.length > 0 && product.pictures[0].link) {
       return product.pictures[0].link;
-    }else{
-      return "../../../../content/images/no_image.png";
+    } else {
+      return '../../../../content/images/no_image.png';
     }
   }
 }

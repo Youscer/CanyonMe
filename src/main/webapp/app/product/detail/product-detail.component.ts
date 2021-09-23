@@ -29,8 +29,8 @@ export class ProductDetailComponent implements OnInit {
         this.product = product;
         if (product.pictures && product.pictures.length > 0) {
           this.imgs = product.pictures.map<string>(img => img.link!);
-        }else{
-          this.imgs = ["../../../../content/images/no_image.png"];
+        } else {
+          this.imgs = ['../../../../content/images/no_image.png'];
         }
         this.imgMain = this.imgs[0];
       },

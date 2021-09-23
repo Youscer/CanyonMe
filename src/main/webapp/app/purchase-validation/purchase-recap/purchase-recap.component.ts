@@ -99,7 +99,7 @@ export class PurchaseRecapComponent implements OnInit {
     protected paymentFeesService: PaymentFeesService,
     private router: Router,
     public orderService: OrderService,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {
     this.cart = new Cart();
     this.shippingFees === new ShippingFees();
@@ -135,7 +135,7 @@ export class PurchaseRecapComponent implements OnInit {
         this.cartService.deleteAllCart();
         this.router.navigate(['/purchase-confirmation']);
       },
-      (error) => {
+      error => {
         if (Number(error.status) === 409) {
           const changes = this.cartService.adjustQuantity(error.error as IProduct[]);
           this.dialog.open(DialogOrderComponent, { data: changes });

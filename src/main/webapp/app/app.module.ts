@@ -41,7 +41,6 @@ import { missingTranslationHandler, translatePartialLoader } from './config/tran
 import { EntityRoutingModule } from './entities/entity-routing.module';
 // firebase
 import { firebaseConfig } from './environment';
-import { HomeComponent } from './home/home.component';
 import { HomeModule } from './home/home.module';
 import { ErrorComponent } from './layouts/error/error.component';
 import { FooterComponent } from './layouts/footer/footer.component';
@@ -114,7 +113,6 @@ import { MatInputModule } from '@angular/material/input';
     { provide: BUCKET, useValue: firebaseConfig.storageBucket },
   ],
   declarations: [
-    HomeComponent,
     MainComponent,
     NavbarComponent,
     ErrorComponent,

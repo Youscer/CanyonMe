@@ -15,4 +15,4 @@ import { ProductRoutingModule } from './route/product-routing.module';
   imports: [SharedModule, ProductRoutingModule, MatButtonModule, MatCardModule, ProductGridModule, MatSliderModule, MatIconModule],
   declarations: [ProductComponent, ProductDetailComponent, ButtonAddCartComponent, ConfirmAddCartComponent],
 })
-export class ProductModule { }
+export class ProductModule {}

@@ -11,7 +11,7 @@
   margin-right: 50px;
   margin-bottom: 20px;
   max-height: 400px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -69,7 +69,6 @@
 }
 
 ::ng-deep .cart-item-card-button {
-
   transform: scale(0.8) !important;
 }
 
@@ -158,7 +157,7 @@
 
   .order-card {
     background-color: #ddd;
-    border-top: 1px solid #AAA;
+    border-top: 1px solid #aaa;
     min-width: 250px;
   }
 }

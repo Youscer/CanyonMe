@@ -8,12 +8,11 @@ import { IProduct } from 'app/product/product.model';
   templateUrl: './product-card.component.html',
   styleUrls: ['./product-card.component.scss'],
 })
-export class ProductCardComponent implements OnInit{
-    
+export class ProductCardComponent implements OnInit {
   @Input() product!: IProduct;
   errmsg: string;
 
-  imgLink : string = "../../../../content/images/no_image.png";
+  imgLink: string = '../../../../content/images/no_image.png';
 
   constructor(private cartService: CartService, private snackBar: MatSnackBar) {
     this.errmsg = '';
@@ -25,7 +24,7 @@ export class ProductCardComponent implements OnInit{
     }
   }
 
-  addToCart(): void{
+  addToCart(): void {
     this.cartService.addProduct(this.product, 1);
     const snackBarRef = this.snackBar.open(this.product.name + ' added to cart.', 'Undo', {
       duration: 5000,
@@ -34,5 +33,4 @@ export class ProductCardComponent implements OnInit{
       this.cartService.subQuantity(this.product, 1, true);
     });
   }
-
 }

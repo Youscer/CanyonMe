@@ -4,25 +4,27 @@
       <!--       <h2 data-cy="productDetailsHeading"><span jhiTranslate="canyonMeApp.product.detail.title">Product</span></h2>
  -->
       <div class="product-main">
-
         <!-- IMAGES -->
         <div class="imgs-div">
           <div class="other-imgs">
-            <div *ngFor="let imgLink of imgs" class="other-img mat-elevation-z2" [ngStyle]="{'background-image': 'url(' + imgLink + ')'}" (mouseover)="imgMain=imgLink">
+            <div
+              *ngFor="let imgLink of imgs"
+              class="other-img mat-elevation-z2"
+              [ngStyle]="{ 'background-image': 'url(' + imgLink + ')' }"
+              (mouseover)="imgMain = imgLink"
+            >
               <!-- [ngStyle]="{'background-image': imgLink}" -->
             </div>
           </div>
           <div class="v-divider"></div>
-          <div class="img-principale mat-elevation-z4" [ngStyle]="{'background-image': 'url(' + imgMain + ')'}"></div>
+          <div class="img-principale mat-elevation-z4" [ngStyle]="{ 'background-image': 'url(' + imgMain + ')' }"></div>
         </div>
-
-
 
         <!-- Informations -->
         <div class="info-div">
           <div class="info-text">
-            <h1> {{ product.name }} </h1>
-            <p> {{ product.description }} </p>
+            <h1>{{ product.name }}</h1>
+            <p>{{ product.description }}</p>
           </div>
           <div class="info-end">
             <div class="info-pricing">
@@ -44,9 +46,7 @@
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
     <span>{{ errmsg }}</span>
   </div>
