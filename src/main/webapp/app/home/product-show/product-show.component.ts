@@ -25,7 +25,7 @@ export class ProductShowComponent implements OnInit {
     const params: any = {};
 
     this.productService.getAll().subscribe(products => {
-      this.allProducts = products;
+      this.allProducts = products.slice(-10);
       this.products = this.allProducts.slice(0, 3);
     });
   }
