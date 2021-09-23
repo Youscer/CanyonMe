@@ -33,7 +33,7 @@ export class ProductShowComponent implements OnInit {
   updateElements(step: number): void {
     const newItems: Array<Product> = [];
     const length = this.allProducts.length;
-    this.firstItem = (this.firstItem + step) % length;
+    this.firstItem = (this.firstItem + step + length) % length;
     for (let i = 0; i < 3; i++) {
       newItems.push(this.allProducts[(this.firstItem + i) % length]);
     }
