@@ -36,7 +36,7 @@ export class CartComponent implements OnInit {
 
   deleteItem(item: ICartItem): void {
     const snackBarRef = this.snackBar.open(item.product.name + ' deleted.', 'Undo', {
-      duration: 5000,
+      duration: 10000,
     });
     snackBarRef.onAction().subscribe(() => {
       this.cartService.addProduct(item.product, item.quantity);
@@ -48,7 +48,7 @@ export class CartComponent implements OnInit {
     const tempCart: Cart = new Cart();
     Object.assign(tempCart, this.cart);
     const snackBarRef = this.snackBar.open('Your cart has been deleted.', 'Undo', {
-      duration: 5000,
+      duration: 10000,
     });
     snackBarRef.onAction().subscribe(() => {
       for (const item of tempCart.items) {

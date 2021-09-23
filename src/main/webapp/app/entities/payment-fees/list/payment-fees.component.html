@@ -43,7 +43,7 @@
           <td>
             <a [routerLink]="['/entities', 'payment-fees', paymentFees.id, 'view']">{{ paymentFees.id }}</a>
           </td>
-          <td jhiTranslate="{{ 'canyonMeApp.PaymentMode.' + paymentFees.paymentMode }}">{{ paymentFees.paymentMode }}</td>
+          <td>{{ paymentFees.paymentMode }}</td>
           <td>{{ paymentFees.fees }}</td>
           <td class="text-right">
             <div class="btn-group">
