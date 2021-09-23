@@ -21,7 +21,8 @@
           <label class="form-control-label" jhiTranslate="canyonMeApp.paymentFees.paymentMode" for="field_paymentMode">Payment Mode</label>
           <select class="form-control" name="paymentMode" formControlName="paymentMode" id="field_paymentMode" data-cy="paymentMode">
             <option [ngValue]="null">{{ 'canyonMeApp.PaymentMode.null' | translate }}</option>
-            <option value="YES_CARD">{{ 'canyonMeApp.PaymentMode.YES_CARD' | translate }}</option>
+            <option value="CREDIT_CARD">Credit Card</option>
+            <option value="PAYPAL">Paypal</option>
           </select>
           <div *ngIf="editForm.get('paymentMode')!.invalid && (editForm.get('paymentMode')!.dirty || editForm.get('paymentMode')!.touched)">
             <small
